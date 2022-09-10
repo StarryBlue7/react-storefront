@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/StarryBlue7/react-storefront/issues"
   },
-  "homepage": "https://github.com/StarryBlue7/react-storefront#readme"
+  "homepage": "https://github.com/StarryBlue7/react-storefront#readme",
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
 }
