@@ -1,0 +1,26 @@
+[
+  {
+    "fullName": "Tie-Dye T-Shirt",
+    "shortName": "Tie-Dye T-Shirt",
+    "modelNumber": "TDT10001",
+    "price": 30.99,
+    "tags": ["Retro", "Pride", "Casual", "Spring", "Summer", "Hot Weather"],
+    "categories": ["Apparel", "Tops", "T-Shirt"]
+  },
+  {
+    "fullName": "Distressed Jeans",
+    "shortName": "Distressed Jeans",
+    "modelNumber": "DJN10001",
+    "price": 45.99,
+    "tags": ["Modern", "Casual", "Autumn", "Winter"],
+    "categories": ["Apparel", "Bottoms", "Pants"]
+  },
+  {
+    "fullName": "Squirrel Mug",
+    "shortName": "Squirrel Mug",
+    "modelNumber": "SQM10001",
+    "price": 15.99,
+    "tags": ["Cold Weather", "Cute", "Autumn", "Winter"],
+    "categories": ["Home & Garden", "Mugs"]
+  }
+]
