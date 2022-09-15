@@ -7,17 +7,17 @@ module.exports = [
         subcategories: [
           { name: "T-Shirts" },
           { name: "Jackets" },
-          { name: "Sweaters" },
-        ],
+          { name: "Sweaters" }
+        ]
       },
       {
         name: "Bottoms",
-        subcategories: [{ name: "Pants" }, { name: "Shorts" }],
+        subcategories: [{ name: "Pants" }, { name: "Shorts" }]
       },
       {
-        name: "Hats",
-      },
-    ],
+        name: "Hats"
+      }
+    ]
   },
   {
     name: "Home & Garden",
@@ -27,16 +27,16 @@ module.exports = [
       },
       {
         name: "Decor",
-        subcategories: [{ name: "Art Prints" }, { name: "Figurines" }],
-      },
-    ],
+        subcategories: [{ name: "Art Prints" }, { name: "Figurines" }]
+      }
+    ]
   },
   {
     name: "Toys & Games",
     subcategories: [
       {
         name: "Plush Toys",
-      },
-    ],
-  },
+      }
+    ]
+  }
 ];
