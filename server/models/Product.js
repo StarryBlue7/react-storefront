@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const productSchema = new Schema(
   {
@@ -6,13 +6,13 @@ const productSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      minLength: 3
+      minLength: 3,
     },
     shortName: {
       type: String,
       required: true,
       unique: true,
-      minLength: 3
+      minLength: 3,
     },
     modelNumber: {
       type: String,
@@ -21,10 +21,20 @@ const productSchema = new Schema(
     },
     price: {
       type: Number,
-      required: true
+      required: true,
     },
-    tags: [],
-    categories: [],
+    tags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Tag",
+      },
+    ],
+    categories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
   },
   {
     toJSON: {
@@ -33,6 +43,6 @@ const productSchema = new Schema(
   }
 );
 
-const Product = model('Product', productSchema);
+const Product = model("Product", productSchema);
 
 module.exports = Product;
