@@ -17,10 +17,32 @@ connection.once('open', async () => {
   await Tag.deleteMany({});
   await Order.deleteMany({});
 
-  // Add students to the collection and await the results
-  const tags = await Tag.collection.insertMany(tagData);
+  // Seed categories
+  const allCategories = flattenCategories(categoryData);
+  const categories = await Category.collection.insertMany(allCategories);
+  console.log(categories);
 
-  console.table(tags);
+  // Seed tags
+  const tags = await Tag.collection.insertMany(tagData);
+  console.log(tags);
+
   console.info('Seeding complete!');
   process.exit(0);
 });
+
+// Recursively flatten category tree into array
+function flattenCategories(categoryData) {
+  const categoryArray = [];
+  
+  function flatten(category) {
+    categoryArray.push({name: category.name})
+    if (!category.subcategories) {
+      return;
+    }
+    return category.subcategories.forEach(subcategory => flatten(subcategory))
+  }
+
+  categoryData.forEach(category => flatten(category));
+
+  return categoryArray;
+}
