@@ -8,6 +8,16 @@ const categorySchema = new Schema(
       unique: true,
       minLength: 3,
     },
+    parentCategory: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    subCategories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
   },
   {
     toJSON: {
