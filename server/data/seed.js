@@ -20,17 +20,31 @@ connection.once('open', async () => {
   // Seed categories
   const allCategories = flattenCategories(categoryData);
   const categories = await Category.collection.insertMany(allCategories);
-  console.log(categories);
+  // Create obj to correspond categories to db ObjectIds
+  const categoryIds = {};
+  allCategories.forEach((category, i) => {
+    categoryIds[category.name] = categories.insertedIds[i];
+  });
+  console.log('Categories: ', categoryIds);
 
   // Seed tags
   const tags = await Tag.collection.insertMany(tagData);
-  console.log(tags);
+  // Create obj to correspond tags to db ObjectIds
+  const tagIds = {};
+  tagData.forEach((tag, i) => {
+    tagIds[tag.name] = tags.insertedIds[i];
+  });
+  console.log('Tags: ', tagIds);
 
   console.info('Seeding complete!');
   process.exit(0);
 });
 
-// Recursively flatten category tree into array
+/**
+ * Recursively flatten category tree into array
+ * @param {Object[]} categoryData Array of category object trees
+ * @returns {Object[]} Flattened array of all categories
+ */
 function flattenCategories(categoryData) {
   const categoryArray = [];
   
