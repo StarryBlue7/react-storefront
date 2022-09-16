@@ -34,12 +34,17 @@ connection.once('open', async () => {
 function flattenCategories(categoryData) {
   const categoryArray = [];
   
-  function flatten(category) {
-    categoryArray.push({name: category.name})
+  function flatten(category, parentCategory) {
+    categoryArray.push({
+      name: category.name, 
+      subcategories: category.subcategories,
+      parentCategory: parentCategory ? parentCategory.name : null
+    });
+
     if (!category.subcategories) {
       return;
     }
-    return category.subcategories.forEach(subcategory => flatten(subcategory))
+    return category.subcategories.forEach(subcategory => flatten(subcategory, category))
   }
 
   categoryData.forEach(category => flatten(category));
