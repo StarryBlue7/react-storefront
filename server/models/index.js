@@ -1,7 +1,7 @@
-const User = require("./User");
-const Product = require("./Product");
-const Order = require("./Order");
-const Category = require("./Category");
-const Tag = require("./Tag");
+import User from "./User";
+import Product from "./Product";
+import Order from "./Order";
+import Category from "./Category";
+import Tag from "./Tag";
 
-module.exports = { User, Product, Order, Category, Tag };
+export { User, Product, Order, Category, Tag };
