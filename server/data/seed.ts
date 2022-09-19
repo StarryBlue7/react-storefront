@@ -1,6 +1,6 @@
 const connection = require("../config/connection");
 const { User, Product, Category, Tag, Order } = require("../models");
-const { Types } = require('mongoose');
+const { Types } = require("mongoose");
 
 const categoryData: any[] = require("./category-tree");
 const tagData: any[] = require("./tags.json");
