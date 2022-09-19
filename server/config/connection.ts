@@ -1,4 +1,5 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
+
 mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/react-stripe-store",
   {
@@ -6,4 +7,5 @@ mongoose.connect(
     useUnifiedTopology: true,
   }
 );
+
 module.exports = mongoose.connection;
