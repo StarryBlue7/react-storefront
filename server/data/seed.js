@@ -1,14 +1,14 @@
-const connection = require('../config/connection');
-const { User, Product, Category, Tag, Order } = require('../models');
+const connection = require("../config/connection");
+const { User, Product, Category, Tag, Order } = require("../models");
 
-const categoryData = require('./category-tree');
-const tagData = require('./tags.json');
-const productData = require('./products.json');
+const categoryData = require("./category-tree");
+const tagData = require("./tags.json");
+const productData = require("./products.json");
 
-connection.on('error', (err) => err);
+connection.on("error", (err) => err);
 
-connection.once('open', async () => {
-  console.log('Connected to database');
+connection.once("open", async () => {
+  console.log("Connected to database");
 
   // Drop tables
   await User.deleteMany({});
@@ -25,7 +25,24 @@ connection.once('open', async () => {
   allCategories.forEach((category, i) => {
     categoryIds[category.name] = categories.insertedIds[i];
   });
-  console.log('Categories: ', categoryIds);
+  // Update categories with ObjectId references
+  allCategories.forEach(async (category) => {
+    const parentCategory = category.parentCategory
+      ? categoryIds[category.parentCategory]
+      : null;
+    const subCategories = category.subCategories
+      ? category.subCategories.map(
+          (subCategory) => categoryIds[subCategory.name]
+        )
+      : null;
+    return await Category.updateOne(
+      { name: category.name },
+      { parentCategory, subCategories }
+    );
+  });
+  console.log("Categories: ", categoryIds);
+
+  //--------------------------------------------------------------------------------------------------------------------
 
   // Seed tags
   const tags = await Tag.collection.insertMany(tagData);
@@ -34,20 +51,24 @@ connection.once('open', async () => {
   tagData.forEach((tag, i) => {
     tagIds[tag.name] = tags.insertedIds[i];
   });
-  console.log('Tags: ', tagIds);
+  console.log("Tags: ", tagIds);
+
+  //--------------------------------------------------------------------------------------------------------------------
 
   // Seed products
   // Replace tag/category names with ObjectIds
-  const referProducts = productData.map(product => {
-    const refTags = product.tags.map(tag => tagIds[tag]);
-    const refCategories = product.categories.map(category => categoryIds[category]);
+  const referProducts = productData.map((product) => {
+    const refTags = product.tags.map((tag) => tagIds[tag]);
+    const refCategories = product.categories.map(
+      (category) => categoryIds[category]
+    );
 
-    return {...product, tags: refTags, categories: refCategories}
+    return { ...product, tags: refTags, categories: refCategories };
   });
   const products = await Product.collection.insertMany(referProducts);
-  console.log('Products: ', products)
+  console.log("Products: ", products);
 
-  console.info('Seeding complete!');
+  console.info("Seeding complete!");
   process.exit(0);
 });
 
@@ -58,21 +79,23 @@ connection.once('open', async () => {
  */
 function flattenCategories(categoryData) {
   const categoryArray = [];
-  
+
   function flatten(category, parentCategory) {
     categoryArray.push({
-      name: category.name, 
-      subcategories: category.subcategories,
-      parentCategory: parentCategory ? parentCategory.name : null
+      name: category.name,
+      subCategories: category.subCategories,
+      parentCategory: parentCategory ? parentCategory.name : null,
     });
 
-    if (!category.subcategories) {
+    if (!category.subCategories) {
       return;
     }
-    return category.subcategories.forEach(subcategory => flatten(subcategory, category))
+    return category.subCategories.forEach((subcategory) =>
+      flatten(subcategory, category)
+    );
   }
 
-  categoryData.forEach(category => flatten(category));
+  categoryData.forEach((category) => flatten(category));
 
   return categoryArray;
 }
