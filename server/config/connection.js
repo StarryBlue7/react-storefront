@@ -4,7 +4,7 @@ mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/react-stripe-store",
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   }
 );
 
