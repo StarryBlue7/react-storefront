@@ -36,6 +36,17 @@ connection.once('open', async () => {
   });
   console.log('Tags: ', tagIds);
 
+  // Seed products
+  // Replace tag/category names with ObjectIds
+  const referProducts = productData.map(product => {
+    const refTags = product.tags.map(tag => tagIds[tag]);
+    const refCategories = product.categories.map(category => categoryIds[category]);
+
+    return {...product, tags: refTags, categories: refCategories}
+  });
+  const products = await Product.collection.insertMany(referProducts);
+  console.log('Products: ', products)
+
   console.info('Seeding complete!');
   process.exit(0);
 });
