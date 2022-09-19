@@ -1,10 +1,10 @@
 [
   {
     "name": "Apparel",
-    "subcategories": [
+    "subCategories": [
       {
         "name": "Tops",
-        "subcategories": [
+        "subCategories": [
           { "name": "T-Shirts" },
           { "name": "Jackets" },
           { "name": "Sweaters" }
@@ -12,7 +12,7 @@
       },
       {
         "name": "Bottoms",
-        "subcategories": [{ "name": "Pants" }, { "name": "Shorts" }]
+        "subCategories": [{ "name": "Pants" }, { "name": "Shorts" }]
       },
       {
         "name": "Hats"
@@ -21,19 +21,19 @@
   },
   {
     "name": "Home & Garden",
-    "subcategories": [
+    "subCategories": [
       {
         "name": "Mugs"
       },
       {
         "name": "Decor",
-        "subcategories": [{ "name": "Art Prints" }, { "name": "Figurines" }]
+        "subCategories": [{ "name": "Art Prints" }, { "name": "Figurines" }]
       }
     ]
   },
   {
     "name": "Toys & Games",
-    "subcategories": [
+    "subCategories": [
       {
         "name": "Plush Toys"
       }
