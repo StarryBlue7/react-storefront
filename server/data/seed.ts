@@ -1,6 +1,6 @@
 const connection = require("../config/connection");
 import { User, Product, Category, Tag, Order } from "../models";
-import { Types } from "mongoose";
+import { ObjectId } from "mongoose";
 
 const categoryData: any[] = require("./category-tree.json");
 const tagData: any[] = require("./tags.json");
@@ -29,10 +29,10 @@ connection.once("open", async () => {
   // Update categories with ObjectId references
   const categoryUpdates = await Promise.all(
     allCategories.map(async (category) => {
-      const parentCategory: Types.ObjectId = category.parentCategory
+      const parentCategory: ObjectId = category.parentCategory
         ? categoryIds[category.parentCategory]
         : null;
-      const subCategories: Types.ObjectId[] = category.subCategories
+      const subCategories: ObjectId[] = category.subCategories
         ? category.subCategories.map(
             (subCategory) => categoryIds[subCategory.name]
           )
