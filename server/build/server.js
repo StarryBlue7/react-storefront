@@ -64,8 +64,7 @@ var startApolloServer = function (typeDefs, resolvers) { return __awaiter(_this,
                 server.applyMiddleware({ app: app });
                 db.once("open", function () {
                     app.listen(PORT, function () {
-                        console.log("API server running on port ".concat(PORT, "!"));
-                        console.log("Use GraphQL at http://localhost:".concat(PORT).concat(server.graphqlPath));
+                        console.log("Listening on port ".concat(PORT, "!"));
                     });
                 });
                 return [2 /*return*/];

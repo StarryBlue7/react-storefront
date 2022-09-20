@@ -5,5 +5,5 @@
     "target": "es5",
     "watch": true
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "build"],
 }
