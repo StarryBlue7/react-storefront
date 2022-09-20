@@ -16,6 +16,11 @@ const typeDefs = gql`
     likes: [Tag]
   }
 
+  type Auth {
+    token: ID!
+    username: User
+  }
+
   type Order {
     _id: ID!
     orderNum: String!
@@ -53,6 +58,11 @@ const typeDefs = gql`
     products: [Product]
     tags: [Tag]
     categories: [Category]
+  }
+
+  type Mutation {
+    addUser(username: String!, email: String!, password: String!): Auth
+    login(username: String!, password: String!): Auth
   }
 `;
 
