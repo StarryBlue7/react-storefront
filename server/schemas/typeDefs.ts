@@ -46,6 +46,14 @@ const typeDefs = gql`
     parentCategory: ID
     subCategories: [ID]
   }
+
+  type Query {
+    user: User
+    orders(_id: String): [Order]
+    products: [Product]
+    tags: [Tag]
+    categories: [Category]
+  }
 `;
 
 module.exports = typeDefs;
