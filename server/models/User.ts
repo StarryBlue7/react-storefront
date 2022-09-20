@@ -1,7 +1,16 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model, Types } from "mongoose";
 const bcrypt = require("bcrypt");
 
-const userSchema = new Schema(
+interface IUser {
+  username: string;
+  email: string;
+  emailVerified: boolean;
+  password: string;
+  orders?: Types.ObjectId[];
+  likes?: Types.ObjectId[];
+}
+
+const userSchema = new Schema<IUser>(
   {
     username: {
       type: String,
@@ -59,4 +68,4 @@ userSchema.methods.isCorrectPassword = async function (password) {
 
 const User = model("User", userSchema);
 
-module.exports = User;
+export default User;

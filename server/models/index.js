@@ -1,7 +1,8 @@
-import User from "./User";
-import Product from "./Product";
-import Order from "./Order";
-import Category from "./Category";
-import Tag from "./Tag";
-
-export { User, Product, Order, Category, Tag };
+"use strict";
+exports.__esModule = true;
+exports.Category = void 0;
+// const User = require("./User");
+// const Product = require("./Product");
+// const Order = require("./Order");
+var Category_1 = require("./Category");
+exports.Category = Category_1["default"];

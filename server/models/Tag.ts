@@ -1,6 +1,10 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model, Types } from "mongoose";
 
-const tagSchema = new Schema(
+interface ITag {
+  name: string;
+}
+
+const tagSchema = new Schema<ITag>(
   {
     name: {
       type: String,
@@ -17,4 +21,4 @@ const tagSchema = new Schema(
 
 const Tag = model("Tag", tagSchema);
 
-module.exports = Tag;
+export default Tag;

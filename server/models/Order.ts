@@ -1,6 +1,14 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model, Types } from "mongoose";
 
-const orderSchema = new Schema(
+interface IOrder {
+  orderNum: string;
+  items: Types.ObjectId[];
+  createdAt: Date;
+  shippedAt?: Date;
+  estimatedArrival?: Date;
+}
+
+const orderSchema = new Schema<IOrder>(
   {
     orderNum: {
       type: String,
@@ -42,4 +50,4 @@ orderSchema.virtual("itemCount").get(function () {
 
 const Order = model("Order", orderSchema);
 
-module.exports = Order;
+export default Order;
