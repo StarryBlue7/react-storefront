@@ -1,20 +1,17 @@
-const express = require("express");
-const path = require("path");
-const db = require("./config/connection");
+var express = require("express");
+var path = require("path");
+var db = require("./config/connection");
 // const routes = require("./routes");
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
+var app = express();
+var PORT = process.env.PORT || 3001;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
-
 // app.use(routes);
-
-db.once("open", () => {
-  app.listen(PORT, () => console.log(`Listening on Port: ${PORT}`));
+db.once("open", function () {
+  app.listen(PORT, function () {
+    return console.log("Listening on Port: ".concat(PORT));
+  });
 });

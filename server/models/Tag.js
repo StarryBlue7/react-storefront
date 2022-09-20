@@ -1,6 +1,7 @@
-const { Schema, model } = require("mongoose");
-
-const tagSchema = new Schema(
+"use strict";
+exports.__esModule = true;
+var mongoose_1 = require("mongoose");
+var tagSchema = new mongoose_1.Schema(
   {
     name: {
       type: String,
@@ -14,7 +15,5 @@ const tagSchema = new Schema(
     },
   }
 );
-
-const Tag = model("Tag", tagSchema);
-
-module.exports = Tag;
+var Tag = (0, mongoose_1.model)("Tag", tagSchema);
+exports["default"] = Tag;

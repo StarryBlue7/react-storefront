@@ -1,7 +1,14 @@
-"use strict";
-exports.__esModule = true;
-var mongoose_1 = require("mongoose");
-var orderSchema = new mongoose_1.Schema(
+import { Schema, model, Types } from "mongoose";
+
+interface IOrder {
+  orderNum: string;
+  items: Types.ObjectId[];
+  createdAt: Date;
+  shippedAt?: Date;
+  estimatedArrival?: Date;
+}
+
+const orderSchema = new Schema<IOrder>(
   {
     orderNum: {
       type: String,
@@ -11,19 +18,22 @@ var orderSchema = new mongoose_1.Schema(
     },
     items: [
       {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Product",
       },
     ],
     createdAt: {
       type: Date,
       default: Date.now,
+      // get: timestamp => dateFormat(timestamp)
     },
     shippedAt: {
       type: Date,
+      // get: timestamp => dateFormat(timestamp)
     },
     estimatedArrival: {
       type: Date,
+      // get: timestamp => dateFormat(timestamp)
     },
   },
   {
@@ -33,8 +43,11 @@ var orderSchema = new mongoose_1.Schema(
     },
   }
 );
+
 orderSchema.virtual("itemCount").get(function () {
   return this.items.length;
 });
-var Order = (0, mongoose_1.model)("Order", orderSchema);
-exports["default"] = Order;
+
+const Order = model("Order", orderSchema);
+
+export default Order;

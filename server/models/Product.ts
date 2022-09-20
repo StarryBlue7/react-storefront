@@ -1,7 +1,15 @@
-"use strict";
-exports.__esModule = true;
-var mongoose_1 = require("mongoose");
-var productSchema = new mongoose_1.Schema(
+import { Schema, model, Types } from "mongoose";
+
+interface IProduct {
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  price: number;
+  tags?: Types.ObjectId[];
+  categories?: Types.ObjectId[];
+}
+
+const productSchema = new Schema<IProduct>(
   {
     fullName: {
       type: String,
@@ -26,13 +34,13 @@ var productSchema = new mongoose_1.Schema(
     },
     tags: [
       {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Tag",
       },
     ],
     categories: [
       {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Category",
       },
     ],
@@ -43,5 +51,7 @@ var productSchema = new mongoose_1.Schema(
     },
   }
 );
-var Product = (0, mongoose_1.model)("Product", productSchema);
-exports["default"] = Product;
+
+const Product = model("Product", productSchema);
+
+export default Product;
