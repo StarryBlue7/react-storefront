@@ -5,19 +5,22 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "watch": "nodemon server.js",
-    "seed": "node data/seed.js"
+    "start": "node build/server.js",
+    "watch": "nodemon build/server.js",
+    "seed": "node build/data/seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^18.7.18",
     "apollo-server-express": "^3.10.2",
     "bcrypt": "^5.0.1",
     "express": "^4.18.1",
+    "graphql": "^16.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.6.0"
+    "mongoose": "^6.6.0",
+    "typescript": "^4.8.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"

@@ -2,7 +2,8 @@
   "compilerOptions": {
     "outDir": "./build",
     "allowJs": true,
-    "target": "es5"
+    "target": "es5",
+    "watch": true
   },
-  "include": ["./server.ts", "./config/*", "./data/*", "./models/*"]
+  "exclude": ["node_modules", "build"],
 }
