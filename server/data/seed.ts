@@ -1,8 +1,8 @@
 const connection = require("../config/connection");
-const { User, Product, Category, Tag, Order } = require("../models");
-const { Types } = require("mongoose");
+import { User, Product, Category, Tag, Order } from "../models";
+import { Types } from "mongoose";
 
-const categoryData: any[] = require("./category-tree");
+const categoryData: any[] = require("./category-tree.json");
 const tagData: any[] = require("./tags.json");
 const productData: any[] = require("./products.json");
 
@@ -27,21 +27,25 @@ connection.once("open", async () => {
     categoryIds[category.name] = categories.insertedIds[i];
   });
   // Update categories with ObjectId references
-  allCategories.forEach(async (category) => {
-    const parentCategory = category.parentCategory
-      ? categoryIds[category.parentCategory]
-      : null;
-    const subCategories = category.subCategories
-      ? category.subCategories.map(
-          (subCategory) => categoryIds[subCategory.name]
-        )
-      : null;
-    return await Category.updateOne(
-      { name: category.name },
-      { parentCategory, subCategories }
-    );
-  });
-  console.log("Categories: ", categoryIds);
+  const categoryUpdates = await Promise.all(
+    allCategories.map(async (category) => {
+      const parentCategory: Types.ObjectId = category.parentCategory
+        ? categoryIds[category.parentCategory]
+        : null;
+      const subCategories: Types.ObjectId[] = category.subCategories
+        ? category.subCategories.map(
+            (subCategory) => categoryIds[subCategory.name]
+          )
+        : null;
+
+      return Category.findOneAndUpdate(
+        { name: category.name },
+        { parentCategory, subCategories },
+        { new: true }
+      );
+    })
+  );
+  console.log("Categories: ", categoryUpdates);
 
   //--------------------------------------------------------------------------------------------------------------------
 

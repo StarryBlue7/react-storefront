@@ -1,3 +1,4 @@
+"use strict";
 var __assign =
   (this && this.__assign) ||
   function () {
@@ -146,67 +147,64 @@ var __generator =
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   };
-var _this = this;
+exports.__esModule = true;
 var connection = require("../config/connection");
-var _a = require("../models"),
-  User = _a.User,
-  Product = _a.Product,
-  Category = _a.Category,
-  Tag = _a.Tag,
-  Order = _a.Order;
-var Types = require("mongoose").Types;
-var categoryData = require("./category-tree");
+var models_1 = require("../models");
+var categoryData = require("./category-tree.json");
 var tagData = require("./tags.json");
 var productData = require("./products.json");
 connection.on("error", function (err) {
   return err;
 });
 connection.once("open", function () {
-  return __awaiter(_this, void 0, void 0, function () {
+  return __awaiter(void 0, void 0, void 0, function () {
     var allCategories,
       categories,
       categoryIds,
+      categoryUpdates,
       tags,
       tagIds,
       referProducts,
       products;
-    var _this = this;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
           console.log("Connected to database");
           // Drop tables
-          return [4 /*yield*/, User.deleteMany({})];
+          return [4 /*yield*/, models_1.User.deleteMany({})];
         case 1:
           // Drop tables
           _a.sent();
-          return [4 /*yield*/, Product.deleteMany({})];
+          return [4 /*yield*/, models_1.Product.deleteMany({})];
         case 2:
           _a.sent();
-          return [4 /*yield*/, Category.deleteMany({})];
+          return [4 /*yield*/, models_1.Category.deleteMany({})];
         case 3:
           _a.sent();
-          return [4 /*yield*/, Tag.deleteMany({})];
+          return [4 /*yield*/, models_1.Tag.deleteMany({})];
         case 4:
           _a.sent();
-          return [4 /*yield*/, Order.deleteMany({})];
+          return [4 /*yield*/, models_1.Order.deleteMany({})];
         case 5:
           _a.sent();
           allCategories = flattenCategories(categoryData);
-          return [4 /*yield*/, Category.collection.insertMany(allCategories)];
+          return [
+            4 /*yield*/,
+            models_1.Category.collection.insertMany(allCategories),
+          ];
         case 6:
           categories = _a.sent();
           categoryIds = {};
           allCategories.forEach(function (category, i) {
             categoryIds[category.name] = categories.insertedIds[i];
           });
-          // Update categories with ObjectId references
-          allCategories.forEach(function (category) {
-            return __awaiter(_this, void 0, void 0, function () {
-              var parentCategory, subCategories;
-              return __generator(this, function (_a) {
-                switch (_a.label) {
-                  case 0:
+          return [
+            4 /*yield*/,
+            Promise.all(
+              allCategories.map(function (category) {
+                return __awaiter(void 0, void 0, void 0, function () {
+                  var parentCategory, subCategories;
+                  return __generator(this, function (_a) {
                     parentCategory = category.parentCategory
                       ? categoryIds[category.parentCategory]
                       : null;
@@ -216,24 +214,26 @@ connection.once("open", function () {
                         })
                       : null;
                     return [
-                      4 /*yield*/,
-                      Category.updateOne(
+                      2 /*return*/,
+                      models_1.Category.findOneAndUpdate(
                         { name: category.name },
                         {
                           parentCategory: parentCategory,
                           subCategories: subCategories,
-                        }
+                        },
+                        { new: true }
                       ),
                     ];
-                  case 1:
-                    return [2 /*return*/, _a.sent()];
-                }
-              });
-            });
-          });
-          console.log("Categories: ", categoryIds);
-          return [4 /*yield*/, Tag.collection.insertMany(tagData)];
+                  });
+                });
+              })
+            ),
+          ];
         case 7:
+          categoryUpdates = _a.sent();
+          console.log("Categories: ", categoryUpdates);
+          return [4 /*yield*/, models_1.Tag.collection.insertMany(tagData)];
+        case 8:
           tags = _a.sent();
           tagIds = {};
           tagData.forEach(function (tag, i) {
@@ -252,8 +252,11 @@ connection.once("open", function () {
               categories: refCategories,
             });
           });
-          return [4 /*yield*/, Product.collection.insertMany(referProducts)];
-        case 8:
+          return [
+            4 /*yield*/,
+            models_1.Product.collection.insertMany(referProducts),
+          ];
+        case 9:
           products = _a.sent();
           console.log("Products: ", products);
           console.info("Seeding complete!");
