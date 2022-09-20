@@ -4,5 +4,5 @@
     "allowJs": true,
     "target": "es5"
   },
-  "include": ["./server.js", "./config/**/*", "./data/**/*", "./models/**/*"]
+  "include": ["./server.ts", "./config/*", "./data/*", "./models/*"]
 }
