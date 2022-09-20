@@ -1,6 +1,7 @@
-const { Schema, model } = require("mongoose");
-
-const categorySchema = new Schema(
+"use strict";
+exports.__esModule = true;
+var mongoose_1 = require("mongoose");
+var categorySchema = new mongoose_1.Schema(
   {
     name: {
       type: String,
@@ -9,12 +10,12 @@ const categorySchema = new Schema(
       minLength: 3,
     },
     parentCategory: {
-      type: Schema.Types.ObjectId,
+      type: mongoose_1.Schema.Types.ObjectId,
       ref: "Category",
     },
     subCategories: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose_1.Schema.Types.ObjectId,
         ref: "Category",
       },
     ],
@@ -25,7 +26,5 @@ const categorySchema = new Schema(
     },
   }
 );
-
-const Category = model("Category", categorySchema);
-
-module.exports = Category;
+var Category = (0, mongoose_1.model)("Category", categorySchema);
+exports["default"] = Category;
