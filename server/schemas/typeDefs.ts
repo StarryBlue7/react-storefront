@@ -53,17 +53,18 @@ const typeDefs = gql`
   }
 
   type Query {
-    user: User
-    orders(_id: String): [Order]
+    # user: User
+    # orders(_id: String): [Order]
     products: [Product]
-    tags: [Tag]
-    categories: [Category]
+    product(productId: String!): Product
+    # tags: [Tag]
+    # categories: [Category]
   }
 
-  type Mutation {
-    addUser(username: String!, email: String!, password: String!): Auth
-    login(username: String!, password: String!): Auth
-  }
+  # type Mutation {
+  #   addUser(username: String!, email: String!, password: String!): Auth
+  #   login(username: String!, password: String!): Auth
+  # }
 `;
 
-module.exports = typeDefs;
+export default typeDefs;
