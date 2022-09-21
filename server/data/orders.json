@@ -1,0 +1,36 @@
+[
+  {
+    "items": [
+      {
+        "product": "Squirrel Mug",
+        "quantity": 3
+      },
+      {
+        "product": "Distressed Jeans",
+        "quantity": 1
+      }
+    ],
+    "toAddress": "1234 Tree St.",
+    "createdBy": "squirrel"
+  },
+  {
+    "items": [
+      {
+        "product": "Tie-Dye T-Shirt",
+        "quantity": 2
+      }
+    ],
+    "toAddress": "1234 Tree St.",
+    "createdBy": "giraffe"
+  },
+  {
+    "items": [
+      {
+        "product": "Distressed Jeans",
+        "quantity": 1
+      }
+    ],
+    "toAddress": "567 Forest Ln.",
+    "createdBy": "panda"
+  }
+]
