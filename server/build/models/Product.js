@@ -25,7 +25,7 @@ var productSchema = new mongoose_1.Schema({
     },
     imgURL: {
         type: String,
-        default: "https://via.placeholder.com/200"
+        default: "https://via.placeholder.com/200",
     },
     tags: [
         {

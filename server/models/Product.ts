@@ -35,7 +35,7 @@ const productSchema = new Schema<IProduct>(
     },
     imgURL: {
       type: String,
-      default: "https://via.placeholder.com/200"
+      default: "https://via.placeholder.com/200",
     },
     tags: [
       {

@@ -153,7 +153,6 @@ function flattenCategories(categoryData) {
     categoryData.forEach(function (category) { return flatten(category); });
     return categoryArray;
 }
-;
 /**
  * Create object map of data names to corresponding db ObjectIds
  * @param {Object[]} data Initial seed data JSON

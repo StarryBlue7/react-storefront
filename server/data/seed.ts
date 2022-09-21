@@ -66,7 +66,7 @@ connection.once("open", async () => {
     return { ...product, tags: refTags, categories: refCategories };
   });
   const products = await Product.collection.insertMany(referProducts);
-  const productIds = getIds(productData, products)
+  const productIds = getIds(productData, products);
   console.log("Products: ", productIds);
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -75,12 +75,12 @@ connection.once("open", async () => {
   // Replace likes with tag ObjectIds
   const referUsers: any[] = userData.map((user) => {
     const refLikes: any[] = user.likes.map((like) => tagIds[like]);
-    return {...user, likes: refLikes};
+    return { ...user, likes: refLikes };
   });
   const users = await User.collection.insertMany(referUsers);
   const userIds = getIds(userData, users);
   console.log("Users: ", userIds);
-  
+
   console.info("Seeding complete!");
   process.exit(0);
 });
@@ -111,7 +111,7 @@ function flattenCategories(categoryData: any[]): any[] {
   categoryData.forEach((category) => flatten(category));
 
   return categoryArray;
-};
+}
 
 /**
  * Create object map of data names to corresponding db ObjectIds
@@ -123,7 +123,8 @@ function getIds(data: any[], response: any): any[] {
   const ids: any = {};
 
   data.forEach((entry, i) => {
-    const name: string = entry.name || entry.fullName || entry.username || entry.orderNum;
+    const name: string =
+      entry.name || entry.fullName || entry.username || entry.orderNum;
     ids[name] = response.insertedIds[i];
   });
 
