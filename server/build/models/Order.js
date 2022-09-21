@@ -2,6 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
 var newOrderId = require('../utils/orderNum').newOrderId;
+var itemSchema = new mongoose_1.Schema({
+    product: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Product",
+    },
+    quantity: {
+        type: Number,
+    }
+});
 var orderSchema = new mongoose_1.Schema({
     orderNum: {
         type: String,
@@ -9,12 +18,7 @@ var orderSchema = new mongoose_1.Schema({
         required: true,
         unique: true,
     },
-    items: [
-        {
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: "Product",
-        },
-    ],
+    items: [itemSchema],
     createdAt: {
         type: Date,
         default: Date.now()
@@ -32,7 +36,9 @@ var orderSchema = new mongoose_1.Schema({
     },
 });
 orderSchema.virtual("itemCount").get(function () {
-    return this.items.length;
+    var itemCount = 0;
+    this.items.forEach(function (item) { return itemCount += item.quantity; });
+    return itemCount;
 });
 var Order = (0, mongoose_1.model)("Order", orderSchema);
 exports.default = Order;

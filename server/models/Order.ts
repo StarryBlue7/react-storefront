@@ -3,11 +3,28 @@ const { newOrderId } = require('../utils/orderNum');
 
 interface IOrder {
   orderNum: string;
-  items: Types.ObjectId[];
+  items: IItem[];
   createdAt: Date;
   shippedAt?: Date;
   estimatedArrival?: Date;
 }
+
+interface IItem {
+  product: Types.ObjectId;
+  quantity: number;
+}
+
+const itemSchema = new Schema<IItem>(
+  {
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+    },
+    quantity: {
+      type: Number,
+    }
+  }
+)
 
 const orderSchema = new Schema<IOrder>(
   {
@@ -17,12 +34,7 @@ const orderSchema = new Schema<IOrder>(
       required: true,
       unique: true,
     },
-    items: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
+    items: [itemSchema],
     createdAt: {
       type: Date,
       default: Date.now()
@@ -43,7 +55,9 @@ const orderSchema = new Schema<IOrder>(
 );
 
 orderSchema.virtual("itemCount").get(function () {
-  return this.items.length;
+  let itemCount = 0;
+  this.items.forEach(item => itemCount += item.quantity)
+  return itemCount;
 });
 
 const Order = model("Order", orderSchema);
