@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
+var newOrderId = require('../utils/orderNum').newOrderId;
 var orderSchema = new mongoose_1.Schema({
     orderNum: {
         type: String,
-        // default: uuid(),
+        default: newOrderId(),
         required: true,
         unique: true,
     },
@@ -16,16 +17,13 @@ var orderSchema = new mongoose_1.Schema({
     ],
     createdAt: {
         type: Date,
-        default: Date.now,
-        // get: timestamp => dateFormat(timestamp)
+        default: Date.now()
     },
     shippedAt: {
-        type: Date,
-        // get: timestamp => dateFormat(timestamp)
+        type: Date
     },
     estimatedArrival: {
-        type: Date,
-        // get: timestamp => dateFormat(timestamp)
+        type: Date
     },
 }, {
     toJSON: {

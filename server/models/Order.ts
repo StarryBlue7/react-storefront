@@ -1,4 +1,5 @@
 import { Schema, model, Types } from "mongoose";
+const { newOrderId } = require('../utils/orderNum');
 
 interface IOrder {
   orderNum: string;
@@ -12,7 +13,7 @@ const orderSchema = new Schema<IOrder>(
   {
     orderNum: {
       type: String,
-      // default: uuid(),
+      default: newOrderId(),
       required: true,
       unique: true,
     },
@@ -24,16 +25,13 @@ const orderSchema = new Schema<IOrder>(
     ],
     createdAt: {
       type: Date,
-      default: Date.now,
-      // get: timestamp => dateFormat(timestamp)
+      default: Date.now()
     },
     shippedAt: {
-      type: Date,
-      // get: timestamp => dateFormat(timestamp)
+      type: Date
     },
     estimatedArrival: {
-      type: Date,
-      // get: timestamp => dateFormat(timestamp)
+      type: Date
     },
   },
   {
