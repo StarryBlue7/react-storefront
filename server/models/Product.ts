@@ -5,6 +5,7 @@ interface IProduct {
   shortName: string;
   modelNumber: string;
   price: number;
+  imgURL: string;
   tags?: Types.ObjectId[];
   categories?: Types.ObjectId[];
 }
@@ -31,6 +32,10 @@ const productSchema = new Schema<IProduct>(
     price: {
       type: Number,
       required: true,
+    },
+    imgURL: {
+      type: String,
+      default: "https://via.placeholder.com/200"
     },
     tags: [
       {
