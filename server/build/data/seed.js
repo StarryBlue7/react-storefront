@@ -55,9 +55,10 @@ var models_1 = require("../models");
 var category_tree_json_1 = __importDefault(require("./category-tree.json"));
 var tags_json_1 = __importDefault(require("./tags.json"));
 var products_json_1 = __importDefault(require("./products.json"));
+var users_json_1 = __importDefault(require("./users.json"));
 connection.on("error", function (err) { return err; });
 connection.once("open", function () { return __awaiter(void 0, void 0, void 0, function () {
-    var allCategories, categories, categoryIds, categoryUpdates, tags, tagIds, referProducts, products;
+    var allCategories, categories, categoryIds, categoryUpdates, tags, tagIds, referProducts, products, productIds, referUsers, users, userIds;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -83,10 +84,7 @@ connection.once("open", function () { return __awaiter(void 0, void 0, void 0, f
                 return [4 /*yield*/, models_1.Category.collection.insertMany(allCategories)];
             case 6:
                 categories = _a.sent();
-                categoryIds = {};
-                allCategories.forEach(function (category, i) {
-                    categoryIds[category.name] = categories.insertedIds[i];
-                });
+                categoryIds = getIds(allCategories, categories);
                 return [4 /*yield*/, Promise.all(allCategories.map(function (category) { return __awaiter(void 0, void 0, void 0, function () {
                         var parentCategory, subCategories;
                         return __generator(this, function (_a) {
@@ -105,10 +103,7 @@ connection.once("open", function () { return __awaiter(void 0, void 0, void 0, f
                 return [4 /*yield*/, models_1.Tag.collection.insertMany(tags_json_1.default)];
             case 8:
                 tags = _a.sent();
-                tagIds = {};
-                tags_json_1.default.forEach(function (tag, i) {
-                    tagIds[tag.name] = tags.insertedIds[i];
-                });
+                tagIds = getIds(tags_json_1.default, tags);
                 console.log("Tags: ", tagIds);
                 referProducts = products_json_1.default.map(function (product) {
                     var refTags = product.tags.map(function (tag) { return tagIds[tag]; });
@@ -118,7 +113,17 @@ connection.once("open", function () { return __awaiter(void 0, void 0, void 0, f
                 return [4 /*yield*/, models_1.Product.collection.insertMany(referProducts)];
             case 9:
                 products = _a.sent();
-                console.log("Products: ", products);
+                productIds = getIds(products_json_1.default, products);
+                console.log("Products: ", productIds);
+                referUsers = users_json_1.default.map(function (user) {
+                    var refLikes = user.likes.map(function (like) { return tagIds[like]; });
+                    return __assign(__assign({}, user), { likes: refLikes });
+                });
+                return [4 /*yield*/, models_1.User.collection.insertMany(referUsers)];
+            case 10:
+                users = _a.sent();
+                userIds = getIds(users_json_1.default, users);
+                console.log("Users: ", userIds);
                 console.info("Seeding complete!");
                 process.exit(0);
                 return [2 /*return*/];
@@ -147,4 +152,19 @@ function flattenCategories(categoryData) {
     }
     categoryData.forEach(function (category) { return flatten(category); });
     return categoryArray;
+}
+;
+/**
+ * Create object map of data names to corresponding db ObjectIds
+ * @param {Object[]} data Initial seed data JSON
+ * @param {Object} response Response from db entry
+ * @returns {Object} Object map of data entry names to corresponding ObjectIds in db
+ */
+function getIds(data, response) {
+    var ids = {};
+    data.forEach(function (entry, i) {
+        var name = entry.name || entry.fullName || entry.username || entry.orderNum;
+        ids[name] = response.insertedIds[i];
+    });
+    return ids;
 }

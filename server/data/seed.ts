@@ -5,6 +5,7 @@ import { ObjectId } from "mongoose";
 import categoryData from "./category-tree.json";
 import tagData from "./tags.json";
 import productData from "./products.json";
+import userData from "./users.json";
 
 connection.on("error", (err) => err);
 
@@ -22,10 +23,7 @@ connection.once("open", async () => {
   const allCategories: any[] = flattenCategories(categoryData);
   const categories: any = await Category.collection.insertMany(allCategories);
   // Create obj to correspond categories to db ObjectIds
-  const categoryIds: any = {};
-  allCategories.forEach((category, i) => {
-    categoryIds[category.name] = categories.insertedIds[i];
-  });
+  const categoryIds: any = getIds(allCategories, categories);
   // Update categories with ObjectId references
   const categoryUpdates = await Promise.all(
     allCategories.map(async (category) => {
@@ -52,10 +50,7 @@ connection.once("open", async () => {
   // Seed tags
   const tags: any = await Tag.collection.insertMany(tagData);
   // Create obj to correspond tags to db ObjectIds
-  const tagIds: any = {};
-  tagData.forEach((tag, i) => {
-    tagIds[tag.name] = tags.insertedIds[i];
-  });
+  const tagIds: any = getIds(tagData, tags);
   console.log("Tags: ", tagIds);
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -71,8 +66,21 @@ connection.once("open", async () => {
     return { ...product, tags: refTags, categories: refCategories };
   });
   const products = await Product.collection.insertMany(referProducts);
-  console.log("Products: ", products);
+  const productIds = getIds(productData, products)
+  console.log("Products: ", productIds);
 
+  //--------------------------------------------------------------------------------------------------------------------
+
+  // Seed users
+  // Replace likes with tag ObjectIds
+  const referUsers: any[] = userData.map((user) => {
+    const refLikes: any[] = user.likes.map((like) => tagIds[like]);
+    return {...user, likes: refLikes};
+  });
+  const users = await User.collection.insertMany(referUsers);
+  const userIds = getIds(userData, users);
+  console.log("Users: ", userIds);
+  
   console.info("Seeding complete!");
   process.exit(0);
 });
@@ -103,4 +111,21 @@ function flattenCategories(categoryData: any[]): any[] {
   categoryData.forEach((category) => flatten(category));
 
   return categoryArray;
+};
+
+/**
+ * Create object map of data names to corresponding db ObjectIds
+ * @param {Object[]} data Initial seed data JSON
+ * @param {Object} response Response from db entry
+ * @returns {Object} Object map of data entry names to corresponding ObjectIds in db
+ */
+function getIds(data: any[], response: any): any[] {
+  const ids: any = {};
+
+  data.forEach((entry, i) => {
+    const name: string = entry.name || entry.fullName || entry.username || entry.orderNum;
+    ids[name] = response.insertedIds[i];
+  });
+
+  return ids;
 }

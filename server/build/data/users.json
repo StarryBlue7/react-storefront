@@ -1,0 +1,20 @@
+[
+    {
+        "username": "squirrel",
+        "email": "squirrel@tree.com",
+        "password": "acorns123",
+        "likes": ["Modern", "Casual", "Spring", "Cute"]
+    },
+    {
+        "username": "giraffe",
+        "email": "giraffe@savanna.com",
+        "password": "leaves456",
+        "likes": ["Retro", "Casual", "Pride", "Summer"]
+    },
+    {
+        "username": "panda",
+        "email": "panda@forest.com",
+        "password": "bamboo789",
+        "likes": ["Formal", "Autumn", "Floral", "Cute"]
+    }
+]
