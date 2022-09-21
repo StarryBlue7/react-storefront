@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Apparel",
+        "subCategories": [
+            {
+                "name": "Tops",
+                "subCategories": [
+                    { "name": "T-Shirts" },
+                    { "name": "Jackets" },
+                    { "name": "Sweaters" }
+                ]
+            },
+            {
+                "name": "Bottoms",
+                "subCategories": [{ "name": "Pants" }, { "name": "Shorts" }]
+            },
+            {
+                "name": "Hats"
+            }
+        ]
+    },
+    {
+        "name": "Home & Garden",
+        "subCategories": [
+            {
+                "name": "Mugs"
+            },
+            {
+                "name": "Decor",
+                "subCategories": [{ "name": "Art Prints" }, { "name": "Figurines" }]
+            }
+        ]
+    },
+    {
+        "name": "Toys & Games",
+        "subCategories": [
+            {
+                "name": "Plush Toys"
+            }
+        ]
+    }
+]

@@ -1,0 +1,29 @@
+[
+    {
+        "fullName": "Tie-Dye T-Shirt",
+        "shortName": "Tie-Dye T-Shirt",
+        "modelNumber": "TDT10001",
+        "price": 30.99,
+        "imgURL": "https://images-na.ssl-images-amazon.com/images/I/51B0Setf%2BqL.jpg",
+        "tags": ["Retro", "Pride", "Casual", "Spring", "Summer", "Hot Weather"],
+        "categories": ["Apparel", "Tops", "T-Shirts"]
+    },
+    {
+        "fullName": "Distressed Jeans",
+        "shortName": "Distressed Jeans",
+        "modelNumber": "DJN10001",
+        "price": 45.99,
+        "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71ezbNCkdQL._AC_UL1500_.jpg",
+        "tags": ["Modern", "Casual", "Autumn", "Winter"],
+        "categories": ["Apparel", "Bottoms", "Pants"]
+    },
+    {
+        "fullName": "Squirrel Mug",
+        "shortName": "Squirrel Mug",
+        "modelNumber": "SQM10001",
+        "price": 15.99,
+        "imgURL": "https://secure.img1-fg.wfcdn.com/im/16802229/resize-h800-w800%5Ecompr-r85/6412/64129543/Figueiredo+Baby+Squirrel+Coffee+Mug.jpg",
+        "tags": ["Cold Weather", "Cute", "Autumn", "Winter"],
+        "categories": ["Home & Garden", "Mugs"]
+    }
+]

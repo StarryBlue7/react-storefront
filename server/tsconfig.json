@@ -2,6 +2,9 @@
   "compilerOptions": {
     "outDir": "./build",
     "allowJs": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es5",
     "watch": true
