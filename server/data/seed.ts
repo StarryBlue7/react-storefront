@@ -2,9 +2,9 @@ const connection = require("../config/connection");
 import { User, Product, Category, Tag, Order } from "../models";
 import { ObjectId } from "mongoose";
 
-const categoryData: any[] = require("./category-tree.json");
-const tagData: any[] = require("./tags.json");
-const productData: any[] = require("./products.json");
+import categoryData from "./category-tree.json";
+import tagData from "./tags.json";
+import productData from "./products.json";
 
 connection.on("error", (err) => err);
 

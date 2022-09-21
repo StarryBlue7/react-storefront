@@ -36,6 +36,7 @@ const typeDefs = gql`
     shortName: String
     modelNumber: String
     price: Float!
+    imgURL: String!
     tags: [Tag]
     categories: [Category]
   }

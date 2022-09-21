@@ -23,6 +23,10 @@ var productSchema = new mongoose_1.Schema({
         type: Number,
         required: true,
     },
+    imgURL: {
+        type: String,
+        default: "https://via.placeholder.com/200"
+    },
     tags: [
         {
             type: mongoose_1.Schema.Types.ObjectId,

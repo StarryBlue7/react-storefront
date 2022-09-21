@@ -46,12 +46,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var connection = require("../config/connection");
 var models_1 = require("../models");
-var categoryData = require("./category-tree.json");
-var tagData = require("./tags.json");
-var productData = require("./products.json");
+var category_tree_json_1 = __importDefault(require("./category-tree.json"));
+var tags_json_1 = __importDefault(require("./tags.json"));
+var products_json_1 = __importDefault(require("./products.json"));
 connection.on("error", function (err) { return err; });
 connection.once("open", function () { return __awaiter(void 0, void 0, void 0, function () {
     var allCategories, categories, categoryIds, categoryUpdates, tags, tagIds, referProducts, products;
@@ -76,7 +79,7 @@ connection.once("open", function () { return __awaiter(void 0, void 0, void 0, f
                 return [4 /*yield*/, models_1.Order.deleteMany({})];
             case 5:
                 _a.sent();
-                allCategories = flattenCategories(categoryData);
+                allCategories = flattenCategories(category_tree_json_1.default);
                 return [4 /*yield*/, models_1.Category.collection.insertMany(allCategories)];
             case 6:
                 categories = _a.sent();
@@ -99,15 +102,15 @@ connection.once("open", function () { return __awaiter(void 0, void 0, void 0, f
             case 7:
                 categoryUpdates = _a.sent();
                 console.log("Categories: ", categoryUpdates);
-                return [4 /*yield*/, models_1.Tag.collection.insertMany(tagData)];
+                return [4 /*yield*/, models_1.Tag.collection.insertMany(tags_json_1.default)];
             case 8:
                 tags = _a.sent();
                 tagIds = {};
-                tagData.forEach(function (tag, i) {
+                tags_json_1.default.forEach(function (tag, i) {
                     tagIds[tag.name] = tags.insertedIds[i];
                 });
                 console.log("Tags: ", tagIds);
-                referProducts = productData.map(function (product) {
+                referProducts = products_json_1.default.map(function (product) {
                     var refTags = product.tags.map(function (tag) { return tagIds[tag]; });
                     var refCategories = product.categories.map(function (category) { return categoryIds[category]; });
                     return __assign(__assign({}, product), { tags: refTags, categories: refCategories });
