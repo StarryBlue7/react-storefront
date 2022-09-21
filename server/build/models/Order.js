@@ -7,9 +7,7 @@ var itemSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Product",
     },
-    quantity: {
-        type: Number,
-    }
+    quantity: Number
 });
 var orderSchema = new mongoose_1.Schema({
     orderNum: {
@@ -19,10 +17,15 @@ var orderSchema = new mongoose_1.Schema({
         unique: true,
     },
     items: [itemSchema],
+    createdBy: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "User",
+    },
     createdAt: {
         type: Date,
         default: Date.now()
     },
+    toAddress: String,
     shippedAt: {
         type: Date
     },

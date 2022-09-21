@@ -4,7 +4,9 @@ const { newOrderId } = require('../utils/orderNum');
 interface IOrder {
   orderNum: string;
   items: IItem[];
+  createdBy: Types.ObjectId;
   createdAt: Date;
+  toAddress: String;
   shippedAt?: Date;
   estimatedArrival?: Date;
 }
@@ -20,9 +22,7 @@ const itemSchema = new Schema<IItem>(
       type: Schema.Types.ObjectId,
       ref: "Product",
     },
-    quantity: {
-      type: Number,
-    }
+    quantity: Number
   }
 )
 
@@ -35,10 +35,15 @@ const orderSchema = new Schema<IOrder>(
       unique: true,
     },
     items: [itemSchema],
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     createdAt: {
       type: Date,
       default: Date.now()
     },
+    toAddress: String,
     shippedAt: {
       type: Date
     },
