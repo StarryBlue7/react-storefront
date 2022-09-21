@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "./build",
     "allowJs": true,
+    "skipLibCheck": true,
     "target": "es5",
     "watch": true
   },
