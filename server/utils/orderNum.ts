@@ -4,7 +4,7 @@ const {v4: uuid} = require("uuid");
  * Generate a unique order id with prepended date & time
  * @returns {String} Unique order id with prepended date & time
  */
-function newOrderId() {
+export default function newOrderId() {
   const now = new Date().toISOString();
   // Prepend creation date as YYYY-MM-DD
   const date = now.substring(0, 10);
@@ -15,5 +15,3 @@ function newOrderId() {
 
   return `${date}-${time}-${uniqueId}`;
 }
-
-module.exports = { newOrderId };
