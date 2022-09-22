@@ -39,11 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var models_1 = require("../models");
 var resolvers = {
     Query: {
+        // Get all products
         products: function () { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, models_1.Product.find().populate("tags").populate("categories")];
             });
         }); },
+        // Single product
         product: function (parent, _a) {
             var productId = _a.productId;
             return __awaiter(void 0, void 0, void 0, function () {
@@ -54,11 +56,13 @@ var resolvers = {
                 });
             });
         },
+        // All tags
         tags: function () { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, models_1.Tag.find()];
             });
         }); },
+        // All categories
         categories: function () { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, models_1.Category.find()
@@ -66,6 +70,7 @@ var resolvers = {
                         .populate("parentCategory")];
             });
         }); },
+        // Current user, todo: get username from context instead of vars
         me: function (parent, _a) {
             var username = _a.username;
             return __awaiter(void 0, void 0, void 0, function () {
