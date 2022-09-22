@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
-var newOrderId = require('../utils/orderNum').newOrderId;
+var orderNum_1 = __importDefault(require("../utils/orderNum"));
 var itemSchema = new mongoose_1.Schema({
     product: {
         type: mongoose_1.Schema.Types.ObjectId,
@@ -12,8 +15,7 @@ var itemSchema = new mongoose_1.Schema({
 var orderSchema = new mongoose_1.Schema({
     orderNum: {
         type: String,
-        default: newOrderId(),
-        required: true,
+        default: orderNum_1.default,
         unique: true,
     },
     items: [itemSchema],
@@ -23,7 +25,7 @@ var orderSchema = new mongoose_1.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
     toAddress: String,
     shippedAt: {
