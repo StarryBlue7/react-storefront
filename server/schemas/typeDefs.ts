@@ -49,17 +49,17 @@ const typeDefs = gql`
   type Category {
     _id: ID!
     name: String!
-    parentCategory: ID
-    subCategories: [ID]
+    parentCategory: Category
+    subCategories: [Category]
   }
 
   type Query {
     # user: User
-    # orders(_id: String): [Order]
+    # order(_id: String): [Order]
     products: [Product]
     product(productId: String!): Product
-    # tags: [Tag]
-    # categories: [Category]
+    tags: [Tag]
+    categories: [Category]
   }
 
   # type Mutation {

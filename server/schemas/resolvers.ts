@@ -11,6 +11,14 @@ const resolvers = {
         .populate("tags")
         .populate("categories");
     },
+    tags: async () => {
+      return Tag.find();
+    },
+    categories: async () => {
+      return Category.find()
+        .populate("subCategories")
+        .populate("parentCategory");
+    },
   },
 };
 
