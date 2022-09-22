@@ -21,13 +21,19 @@ const typeDefs = gql`
     username: User
   }
 
+  type Item {
+    product: Product
+    quantity: Int
+  }
+
   type Order {
     _id: ID!
     orderNum: String!
-    items: [Product]!
+    items: [Item]
     createdAt: String!
     shippedAt: String
     estimatedArrival: String
+    itemCount: Int
   }
 
   type Product {
@@ -54,7 +60,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    # user: User
+    me(username: String!): User
     # order(_id: String): [Order]
     products: [Product]
     product(productId: String!): Product

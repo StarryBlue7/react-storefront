@@ -19,6 +19,14 @@ const resolvers = {
         .populate("subCategories")
         .populate("parentCategory");
     },
+    me: async (parent, { username }) => {
+      return await User.findOne({ username })
+        .populate({
+          path: "orders",
+          populate: { path: "items.product" },
+        })
+        .populate("likes");
+    },
   },
 };
 
