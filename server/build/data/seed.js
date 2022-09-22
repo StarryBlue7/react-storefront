@@ -56,9 +56,10 @@ var category_tree_json_1 = __importDefault(require("./category-tree.json"));
 var tags_json_1 = __importDefault(require("./tags.json"));
 var products_json_1 = __importDefault(require("./products.json"));
 var users_json_1 = __importDefault(require("./users.json"));
+var orders_json_1 = __importDefault(require("./orders.json"));
 connection.on("error", function (err) { return err; });
 connection.once("open", function () { return __awaiter(void 0, void 0, void 0, function () {
-    var allCategories, categories, categoryIds, categoryUpdates, tags, tagIds, referProducts, products, productIds, referUsers, users, userIds;
+    var allCategories, categories, categoryIds, categoryUpdates, tags, tagIds, referProducts, products, productIds, referUsers, users, userIds, referOrders, orders, updatedUsers;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -84,7 +85,10 @@ connection.once("open", function () { return __awaiter(void 0, void 0, void 0, f
                 return [4 /*yield*/, models_1.Category.collection.insertMany(allCategories)];
             case 6:
                 categories = _a.sent();
-                categoryIds = getIds(allCategories, categories);
+                categoryIds = {};
+                allCategories.forEach(function (category, i) {
+                    categoryIds[category.name] = categories.insertedIds[i];
+                });
                 return [4 /*yield*/, Promise.all(allCategories.map(function (category) { return __awaiter(void 0, void 0, void 0, function () {
                         var parentCategory, subCategories;
                         return __generator(this, function (_a) {
@@ -100,30 +104,49 @@ connection.once("open", function () { return __awaiter(void 0, void 0, void 0, f
             case 7:
                 categoryUpdates = _a.sent();
                 console.log("Categories: ", categoryUpdates);
-                return [4 /*yield*/, models_1.Tag.collection.insertMany(tags_json_1.default)];
+                return [4 /*yield*/, models_1.Tag.create(tags_json_1.default)];
             case 8:
                 tags = _a.sent();
-                tagIds = getIds(tags_json_1.default, tags);
+                tagIds = getIds(tags);
                 console.log("Tags: ", tagIds);
                 referProducts = products_json_1.default.map(function (product) {
                     var refTags = product.tags.map(function (tag) { return tagIds[tag]; });
                     var refCategories = product.categories.map(function (category) { return categoryIds[category]; });
                     return __assign(__assign({}, product), { tags: refTags, categories: refCategories });
                 });
-                return [4 /*yield*/, models_1.Product.collection.insertMany(referProducts)];
+                return [4 /*yield*/, models_1.Product.create(referProducts)];
             case 9:
                 products = _a.sent();
-                productIds = getIds(products_json_1.default, products);
+                productIds = getIds(products);
                 console.log("Products: ", productIds);
                 referUsers = users_json_1.default.map(function (user) {
                     var refLikes = user.likes.map(function (like) { return tagIds[like]; });
                     return __assign(__assign({}, user), { likes: refLikes });
                 });
-                return [4 /*yield*/, models_1.User.collection.insertMany(referUsers)];
+                return [4 /*yield*/, models_1.User.create(referUsers)];
             case 10:
                 users = _a.sent();
-                userIds = getIds(users_json_1.default, users);
+                userIds = getIds(users);
                 console.log("Users: ", userIds);
+                referOrders = orders_json_1.default.map(function (order) {
+                    var refItems = order.items.map(function (item) { return productIds[item.product]; });
+                    return __assign(__assign({}, order), { items: refItems, createdBy: userIds[order.createdBy] });
+                });
+                return [4 /*yield*/, models_1.Order.create(referOrders)];
+            case 11:
+                orders = _a.sent();
+                console.log("Orders: ", orders);
+                return [4 /*yield*/, Promise.all(orders.map(function (order) { return __awaiter(void 0, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, models_1.User.findByIdAndUpdate(order.createdBy, { $addToSet: { orders: order._id } }, { new: true })];
+                                case 1: return [2 /*return*/, _a.sent()];
+                            }
+                        });
+                    }); }))];
+            case 12:
+                updatedUsers = _a.sent();
+                console.log("Added orders: ", updatedUsers);
                 console.info("Seeding complete!");
                 process.exit(0);
                 return [2 /*return*/];
@@ -155,15 +178,14 @@ function flattenCategories(categoryData) {
 }
 /**
  * Create object map of data names to corresponding db ObjectIds
- * @param {Object[]} data Initial seed data JSON
  * @param {Object} response Response from db entry
  * @returns {Object} Object map of data entry names to corresponding ObjectIds in db
  */
-function getIds(data, response) {
+function getIds(response) {
     var ids = {};
-    data.forEach(function (entry, i) {
+    response.forEach(function (entry) {
         var name = entry.name || entry.fullName || entry.username || entry.orderNum;
-        ids[name] = response.insertedIds[i];
+        ids[name] = entry._id;
     });
     return ids;
 }

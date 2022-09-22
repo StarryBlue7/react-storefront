@@ -6,6 +6,7 @@ import categoryData from "./category-tree.json";
 import tagData from "./tags.json";
 import productData from "./products.json";
 import userData from "./users.json";
+import orderData from "./orders.json";
 
 connection.on("error", (err) => err);
 
@@ -23,7 +24,10 @@ connection.once("open", async () => {
   const allCategories: any[] = flattenCategories(categoryData);
   const categories: any = await Category.collection.insertMany(allCategories);
   // Create obj to correspond categories to db ObjectIds
-  const categoryIds: any = getIds(allCategories, categories);
+  const categoryIds: any = {};
+  allCategories.forEach((category, i) => {
+    categoryIds[category.name] = categories.insertedIds[i];
+  });
   // Update categories with ObjectId references
   const categoryUpdates = await Promise.all(
     allCategories.map(async (category) => {
@@ -48,9 +52,9 @@ connection.once("open", async () => {
   //--------------------------------------------------------------------------------------------------------------------
 
   // Seed tags
-  const tags: any = await Tag.collection.insertMany(tagData);
+  const tags: any = await Tag.create(tagData);
   // Create obj to correspond tags to db ObjectIds
-  const tagIds: any = getIds(tagData, tags);
+  const tagIds: any = getIds(tags);
   console.log("Tags: ", tagIds);
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -65,8 +69,8 @@ connection.once("open", async () => {
 
     return { ...product, tags: refTags, categories: refCategories };
   });
-  const products = await Product.collection.insertMany(referProducts);
-  const productIds = getIds(productData, products);
+  const products = await Product.create(referProducts);
+  const productIds = getIds(products);
   console.log("Products: ", productIds);
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -77,9 +81,24 @@ connection.once("open", async () => {
     const refLikes: any[] = user.likes.map((like) => tagIds[like]);
     return { ...user, likes: refLikes };
   });
-  const users = await User.collection.insertMany(referUsers);
-  const userIds = getIds(userData, users);
+  const users = await User.create(referUsers);
+  const userIds = getIds(users);
   console.log("Users: ", userIds);
+
+  //--------------------------------------------------------------------------------------------------------------------
+
+  // Seed orders
+  // Replace product & createdBy names with product & user ObjectIds
+  const referOrders: any[] = orderData.map(order => {
+    const refItems: any[] = order.items.map(item => productIds[item.product]);
+    return {...order, items: refItems, createdBy: userIds[order.createdBy]}
+  });
+  const orders = await Order.create(referOrders);
+  console.log("Orders: ", orders);
+  const updatedUsers = await Promise.all(orders.map(async (order) => {
+    return await User.findByIdAndUpdate(order.createdBy, {$addToSet: { orders: order._id }}, {new: true})
+  }));
+  console.log("Added orders: ", updatedUsers);
 
   console.info("Seeding complete!");
   process.exit(0);
@@ -115,17 +134,16 @@ function flattenCategories(categoryData: any[]): any[] {
 
 /**
  * Create object map of data names to corresponding db ObjectIds
- * @param {Object[]} data Initial seed data JSON
  * @param {Object} response Response from db entry
  * @returns {Object} Object map of data entry names to corresponding ObjectIds in db
  */
-function getIds(data: any[], response: any): any[] {
+ function getIds(response: any): any {
   const ids: any = {};
 
-  data.forEach((entry, i) => {
+  response.forEach((entry) => {
     const name: string =
       entry.name || entry.fullName || entry.username || entry.orderNum;
-    ids[name] = response.insertedIds[i];
+    ids[name] = entry._id;
   });
 
   return ids;
