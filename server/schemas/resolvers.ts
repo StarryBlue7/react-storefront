@@ -1,6 +1,8 @@
 import { AuthenticationError } from "apollo-server-express";
 import { User, Product, Category, Tag, Order } from "../models";
 
+const { signToken } = require("../utils/auth");
+
 const resolvers = {
   Query: {
     // Get all products
@@ -8,7 +10,7 @@ const resolvers = {
       return Product.find().populate("tags").populate("categories");
     },
     // Single product
-    product: async (parent, { productId }) => {
+    product: async (_parent, { productId }) => {
       return Product.findById(productId)
         .populate("tags")
         .populate("categories");
@@ -24,7 +26,7 @@ const resolvers = {
         .populate("parentCategory");
     },
     // Current user, todo: get username from context instead of vars
-    me: async (parent, { username }) => {
+    me: async (_parent, { username }) => {
       return await User.findOne({ username })
         .populate({
           path: "orders",
@@ -35,6 +37,30 @@ const resolvers = {
     // Get single order data, todo: check user matches createdBy
     order: async (parent, { orderId }) => {
       return await Order.findOne({ orderId }).populate("items.product");
+    },
+  },
+  Mutation: {
+    addUser: async (_parent, { username, email, password }) => {
+      const user = await User.create({ username, email, password });
+      const token = signToken(user);
+      return { token, user };
+    },
+    login: async (_parent, { username, password }) => {
+      // Check user exists
+      const user = await User.findOne({ username });
+      if (!user) {
+        throw new AuthenticationError("User not found!");
+      }
+
+      // Check password
+      const correctPw = await user.isCorrectPassword(password);
+      if (!correctPw) {
+        throw new AuthenticationError("Username or password was incorrect.");
+      }
+
+      const token = signToken(user);
+
+      return { token, user };
     },
   },
 };

@@ -18,7 +18,7 @@ const typeDefs = gql`
 
   type Auth {
     token: ID!
-    username: User
+    user: User
   }
 
   type Item {
@@ -68,10 +68,10 @@ const typeDefs = gql`
     categories: [Category]
   }
 
-  # type Mutation {
-  #   addUser(username: String!, email: String!, password: String!): Auth
-  #   login(username: String!, password: String!): Auth
-  # }
+  type Mutation {
+    addUser(username: String!, email: String!, password: String!): Auth
+    login(username: String!, password: String!): Auth
+  }
 `;
 
 export default typeDefs;
