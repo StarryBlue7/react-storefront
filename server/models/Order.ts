@@ -1,39 +1,53 @@
 import { Schema, model, Types } from "mongoose";
+import newOrderId from "../utils/orderNum";
 
 interface IOrder {
   orderNum: string;
-  items: Types.ObjectId[];
+  items: IItem[];
+  createdBy: Types.ObjectId;
   createdAt: Date;
+  toAddress: String;
   shippedAt?: Date;
   estimatedArrival?: Date;
 }
+
+interface IItem {
+  product: Types.ObjectId;
+  quantity: number;
+}
+
+const itemSchema = new Schema<IItem>(
+  {
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+    },
+    quantity: Number
+  }
+)
 
 const orderSchema = new Schema<IOrder>(
   {
     orderNum: {
       type: String,
-      // default: uuid(),
-      required: true,
+      default: newOrderId,
       unique: true,
     },
-    items: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
+    items: [itemSchema],
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     createdAt: {
       type: Date,
-      default: Date.now,
-      // get: timestamp => dateFormat(timestamp)
+      default: Date.now
     },
+    toAddress: String,
     shippedAt: {
-      type: Date,
-      // get: timestamp => dateFormat(timestamp)
+      type: Date
     },
     estimatedArrival: {
-      type: Date,
-      // get: timestamp => dateFormat(timestamp)
+      type: Date
     },
   },
   {
@@ -45,7 +59,9 @@ const orderSchema = new Schema<IOrder>(
 );
 
 orderSchema.virtual("itemCount").get(function () {
-  return this.items.length;
+  let itemCount = 0;
+  this.items.forEach(item => itemCount += item.quantity)
+  return itemCount;
 });
 
 const Order = model("Order", orderSchema);
