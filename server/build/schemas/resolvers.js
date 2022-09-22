@@ -72,23 +72,26 @@ var resolvers = {
                         .populate("parentCategory")];
             });
         }); },
-        // Current user, todo: get username from context instead of vars
-        me: function (_parent, _a) {
-            var username = _a.username;
-            return __awaiter(void 0, void 0, void 0, function () {
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
-                        case 0: return [4 /*yield*/, models_1.User.findOne({ username: username })
+        // Current user
+        me: function (_parent, _args, context) { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!context.user) return [3 /*break*/, 2];
+                        return [4 /*yield*/, models_1.User.findById(context.user._id)
                                 .populate({
                                 path: "orders",
                                 populate: { path: "items.product" },
                             })
                                 .populate("likes")];
-                        case 1: return [2 /*return*/, _b.sent()];
-                    }
-                });
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        new apollo_server_express_1.AuthenticationError("You need to be logged in!");
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
             });
-        },
+        }); },
         // Get single order data, todo: check user matches createdBy
         order: function (parent, _a) {
             var orderId = _a.orderId;

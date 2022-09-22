@@ -25,14 +25,18 @@ const resolvers = {
         .populate("subCategories")
         .populate("parentCategory");
     },
-    // Current user, todo: get username from context instead of vars
-    me: async (_parent, { username }) => {
-      return await User.findOne({ username })
-        .populate({
-          path: "orders",
-          populate: { path: "items.product" },
-        })
-        .populate("likes");
+    // Current user
+    me: async (_parent, _args, context) => {
+      if (context.user) {
+        return await User.findById(context.user._id)
+          .populate({
+            path: "orders",
+            populate: { path: "items.product" },
+          })
+          .populate("likes");
+      } else {
+        new AuthenticationError("You need to be logged in!");
+      }
     },
     // Get single order data, todo: check user matches createdBy
     order: async (parent, { orderId }) => {
