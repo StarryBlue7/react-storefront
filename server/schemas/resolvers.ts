@@ -32,6 +32,10 @@ const resolvers = {
         })
         .populate("likes");
     },
+    // Get single order data, todo: check user matches createdBy
+    order: async (parent, { orderId }) => {
+      return await Order.findOne({ orderId }).populate("items.product");
+    },
   },
 };
 

@@ -87,6 +87,18 @@ var resolvers = {
                 });
             });
         },
+        // Get single order data, todo: check user matches createdBy
+        order: function (parent, _a) {
+            var orderId = _a.orderId;
+            return __awaiter(void 0, void 0, void 0, function () {
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4 /*yield*/, models_1.Order.findOne({ orderId: orderId }).populate("items.product")];
+                        case 1: return [2 /*return*/, _b.sent()];
+                    }
+                });
+            });
+        },
     },
 };
 exports.default = resolvers;
