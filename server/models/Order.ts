@@ -16,15 +16,13 @@ interface IItem {
   quantity: number;
 }
 
-const itemSchema = new Schema<IItem>(
-  {
-    product: {
-      type: Schema.Types.ObjectId,
-      ref: "Product",
-    },
-    quantity: Number
-  }
-)
+const itemSchema = new Schema<IItem>({
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: "Product",
+  },
+  quantity: Number,
+});
 
 const orderSchema = new Schema<IOrder>(
   {
@@ -40,14 +38,14 @@ const orderSchema = new Schema<IOrder>(
     },
     createdAt: {
       type: Date,
-      default: Date.now
+      default: Date.now,
     },
     toAddress: String,
     shippedAt: {
-      type: Date
+      type: Date,
     },
     estimatedArrival: {
-      type: Date
+      type: Date,
     },
   },
   {
@@ -60,7 +58,7 @@ const orderSchema = new Schema<IOrder>(
 
 orderSchema.virtual("itemCount").get(function () {
   let itemCount = 0;
-  this.items.forEach(item => itemCount += item.quantity)
+  this.items.forEach((item) => (itemCount += item.quantity));
   return itemCount;
 });
 

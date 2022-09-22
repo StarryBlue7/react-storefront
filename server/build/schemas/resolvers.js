@@ -54,6 +54,18 @@ var resolvers = {
                 });
             });
         },
+        tags: function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, models_1.Tag.find()];
+            });
+        }); },
+        categories: function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, models_1.Category.find()
+                        .populate("subCategories")
+                        .populate("parentCategory")];
+            });
+        }); },
     },
 };
 exports.default = resolvers;
