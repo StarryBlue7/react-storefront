@@ -10,7 +10,7 @@ var itemSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Product",
     },
-    quantity: Number
+    quantity: Number,
 });
 var orderSchema = new mongoose_1.Schema({
     orderNum: {
@@ -25,14 +25,14 @@ var orderSchema = new mongoose_1.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     toAddress: String,
     shippedAt: {
-        type: Date
+        type: Date,
     },
     estimatedArrival: {
-        type: Date
+        type: Date,
     },
 }, {
     toJSON: {
@@ -42,7 +42,7 @@ var orderSchema = new mongoose_1.Schema({
 });
 orderSchema.virtual("itemCount").get(function () {
     var itemCount = 0;
-    this.items.forEach(function (item) { return itemCount += item.quantity; });
+    this.items.forEach(function (item) { return (itemCount += item.quantity); });
     return itemCount;
 });
 var Order = (0, mongoose_1.model)("Order", orderSchema);

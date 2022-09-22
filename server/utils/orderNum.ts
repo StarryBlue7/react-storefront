@@ -1,4 +1,4 @@
-const {v4: uuid} = require("uuid");
+const { v4: uuid } = require("uuid");
 
 /**
  * Generate a unique order id with prepended date & time

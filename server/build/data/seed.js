@@ -129,7 +129,9 @@ connection.once("open", function () { return __awaiter(void 0, void 0, void 0, f
                 userIds = getIds(users);
                 console.log("Users: ", userIds);
                 referOrders = orders_json_1.default.map(function (order) {
-                    var refItems = order.items.map(function (item) { return productIds[item.product]; });
+                    var refItems = order.items.map(function (item) {
+                        return __assign(__assign({}, item), { product: productIds[item.product] });
+                    });
                     return __assign(__assign({}, order), { items: refItems, createdBy: userIds[order.createdBy] });
                 });
                 return [4 /*yield*/, models_1.Order.create(referOrders)];

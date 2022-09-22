@@ -39,11 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var models_1 = require("../models");
 var resolvers = {
     Query: {
+        // Get all products
         products: function () { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, models_1.Product.find().populate("tags").populate("categories")];
             });
         }); },
+        // Single product
         product: function (parent, _a) {
             var productId = _a.productId;
             return __awaiter(void 0, void 0, void 0, function () {
@@ -51,6 +53,49 @@ var resolvers = {
                     return [2 /*return*/, models_1.Product.findById(productId)
                             .populate("tags")
                             .populate("categories")];
+                });
+            });
+        },
+        // All tags
+        tags: function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, models_1.Tag.find()];
+            });
+        }); },
+        // All categories
+        categories: function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, models_1.Category.find()
+                        .populate("subCategories")
+                        .populate("parentCategory")];
+            });
+        }); },
+        // Current user, todo: get username from context instead of vars
+        me: function (parent, _a) {
+            var username = _a.username;
+            return __awaiter(void 0, void 0, void 0, function () {
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4 /*yield*/, models_1.User.findOne({ username: username })
+                                .populate({
+                                path: "orders",
+                                populate: { path: "items.product" },
+                            })
+                                .populate("likes")];
+                        case 1: return [2 /*return*/, _b.sent()];
+                    }
+                });
+            });
+        },
+        // Get single order data, todo: check user matches createdBy
+        order: function (parent, _a) {
+            var orderId = _a.orderId;
+            return __awaiter(void 0, void 0, void 0, function () {
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4 /*yield*/, models_1.Order.findOne({ orderId: orderId }).populate("items.product")];
+                        case 1: return [2 /*return*/, _b.sent()];
+                    }
                 });
             });
         },

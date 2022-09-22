@@ -21,13 +21,19 @@ const typeDefs = gql`
     username: User
   }
 
+  type Item {
+    product: Product
+    quantity: Int
+  }
+
   type Order {
     _id: ID!
     orderNum: String!
-    items: [Product]!
+    items: [Item]
     createdAt: String!
     shippedAt: String
     estimatedArrival: String
+    itemCount: Int
   }
 
   type Product {
@@ -49,17 +55,17 @@ const typeDefs = gql`
   type Category {
     _id: ID!
     name: String!
-    parentCategory: ID
-    subCategories: [ID]
+    parentCategory: Category
+    subCategories: [Category]
   }
 
   type Query {
-    # user: User
-    # orders(_id: String): [Order]
+    me(username: String!): User
+    order(orderId: String!): Order
     products: [Product]
     product(productId: String!): Product
-    # tags: [Tag]
-    # categories: [Category]
+    tags: [Tag]
+    categories: [Category]
   }
 
   # type Mutation {
