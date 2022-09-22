@@ -104,14 +104,22 @@ var resolvers = {
     },
     Mutation: {
         addUser: function (_parent, _a) {
-            var username = _a.username, email = _a.email, password = _a.password;
+            var username = _a.username, email = _a.email, password = _a.password, _b = _a.likes, likes = _b === void 0 ? [] : _b, orderId = _a.orderId;
             return __awaiter(void 0, void 0, void 0, function () {
-                var user, token;
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
-                        case 0: return [4 /*yield*/, models_1.User.create({ username: username, email: email, password: password })];
+                var orders, user, token;
+                return __generator(this, function (_c) {
+                    switch (_c.label) {
+                        case 0:
+                            orders = orderId ? [orderId] : [];
+                            return [4 /*yield*/, models_1.User.create({
+                                    username: username,
+                                    email: email,
+                                    password: password,
+                                    likes: likes,
+                                    orders: orders,
+                                })];
                         case 1:
-                            user = _b.sent();
+                            user = _c.sent();
                             token = signToken(user);
                             return [2 /*return*/, { token: token, user: user }];
                     }

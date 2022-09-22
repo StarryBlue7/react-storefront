@@ -40,8 +40,18 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: async (_parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
+    addUser: async (
+      _parent,
+      { username, email, password, likes = [], orderId }
+    ) => {
+      const orders = orderId ? [orderId] : [];
+      const user = await User.create({
+        username,
+        email,
+        password,
+        likes,
+        orders,
+      });
       const token = signToken(user);
       return { token, user };
     },
