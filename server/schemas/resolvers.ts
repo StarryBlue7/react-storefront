@@ -39,7 +39,7 @@ const resolvers = {
       }
     },
     // Get single order data, todo: check user matches createdBy
-    order: async (parent, { orderId }) => {
+    order: async (_parent, { orderId }) => {
       return await Order.findOne({ orderId }).populate("items.product");
     },
   },
@@ -48,6 +48,7 @@ const resolvers = {
       _parent,
       { username, email, password, likes = [], orderId }
     ) => {
+      // Include previously created order for new account
       const orders = orderId ? [orderId] : [];
       const user = await User.create({
         username,

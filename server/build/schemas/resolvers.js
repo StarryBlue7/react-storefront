@@ -93,7 +93,7 @@ var resolvers = {
             });
         }); },
         // Get single order data, todo: check user matches createdBy
-        order: function (parent, _a) {
+        order: function (_parent, _a) {
             var orderId = _a.orderId;
             return __awaiter(void 0, void 0, void 0, function () {
                 return __generator(this, function (_b) {
