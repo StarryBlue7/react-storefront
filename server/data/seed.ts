@@ -90,7 +90,9 @@ connection.once("open", async () => {
   // Seed orders
   // Replace product & createdBy names with product & user ObjectIds
   const referOrders: any[] = orderData.map((order) => {
-    const refItems: any[] = order.items.map((item) => productIds[item.product]);
+    const refItems: any[] = order.items.map((item) => {
+      return { ...item, product: productIds[item.product] };
+    });
     return { ...order, items: refItems, createdBy: userIds[order.createdBy] };
   });
   const orders = await Order.create(referOrders);
