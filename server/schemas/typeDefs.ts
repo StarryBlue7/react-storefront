@@ -7,8 +7,13 @@ const typeDefs = gql`
     password: String!
   }
 
+  input OrderInput {
+    product: ID!
+    quantity: Int!
+  }
+
   type User {
-    _id: ID!
+    _id: ID
     username: String!
     email: String!
     emailVerified: Boolean
@@ -77,6 +82,7 @@ const typeDefs = gql`
       orderId: ID
     ): Auth
     login(username: String!, password: String!): Auth
+    newOrder(items: [OrderInput]!): Order
   }
 `;
 

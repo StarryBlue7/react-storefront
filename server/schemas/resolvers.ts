@@ -77,6 +77,20 @@ const resolvers = {
 
       return { token, user };
     },
+    newOrder: async (_parent, { items }, context) => {
+      let createdBy;
+      if (context.user) {
+        createdBy = context.user._id;
+      } else {
+        // Assign anonymous user account if order created without login
+        const noAccount = await User.findOne({ username: "NoAccount" });
+        createdBy = noAccount._id;
+      }
+      return (await Order.create({ items, createdBy })).populate({
+        path: "items",
+        populate: { path: "product" },
+      });
+    },
   },
 };
 

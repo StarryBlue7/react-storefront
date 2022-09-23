@@ -153,6 +153,30 @@ var resolvers = {
                 });
             });
         },
+        newOrder: function (_parent, _a, context) {
+            var items = _a.items;
+            return __awaiter(void 0, void 0, void 0, function () {
+                var createdBy, noAccount;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (!context.user) return [3 /*break*/, 1];
+                            createdBy = context.user._id;
+                            return [3 /*break*/, 3];
+                        case 1: return [4 /*yield*/, models_1.User.findOne({ username: "NoAccount" })];
+                        case 2:
+                            noAccount = _b.sent();
+                            createdBy = noAccount._id;
+                            _b.label = 3;
+                        case 3: return [4 /*yield*/, models_1.Order.create({ items: items, createdBy: createdBy })];
+                        case 4: return [2 /*return*/, (_b.sent()).populate({
+                                path: "items",
+                                populate: { path: "product" },
+                            })];
+                    }
+                });
+            });
+        },
     },
 };
 exports.default = resolvers;
