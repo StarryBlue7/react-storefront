@@ -8,6 +8,7 @@ interface IUser {
   password: string;
   orders?: Types.ObjectId[];
   likes?: Types.ObjectId[];
+  isCorrectPassword: Function;
 }
 
 const userSchema = new Schema<IUser>(

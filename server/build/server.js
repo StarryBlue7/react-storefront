@@ -40,12 +40,13 @@ var path = require("path");
 var db = require("./config/connection");
 var ApolloServer = require("apollo-server-express").ApolloServer;
 var _a = require("./schemas"), typeDefs = _a.typeDefs, resolvers = _a.resolvers;
+var authMiddleware = require("./utils/auth").authMiddleware;
 var app = express();
 var PORT = process.env.PORT || 3001;
 var server = new ApolloServer({
     typeDefs: typeDefs,
     resolvers: resolvers,
-    // context: authMiddleware,
+    context: authMiddleware,
 });
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

@@ -7,8 +7,13 @@ const typeDefs = gql`
     password: String!
   }
 
+  input OrderInput {
+    product: ID!
+    quantity: Int!
+  }
+
   type User {
-    _id: ID!
+    _id: ID
     username: String!
     email: String!
     emailVerified: Boolean
@@ -18,7 +23,7 @@ const typeDefs = gql`
 
   type Auth {
     token: ID!
-    username: User
+    user: User
   }
 
   type Item {
@@ -60,7 +65,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    me(username: String!): User
+    me: User
     order(orderId: String!): Order
     products: [Product]
     product(productId: String!): Product
@@ -68,10 +73,17 @@ const typeDefs = gql`
     categories: [Category]
   }
 
-  # type Mutation {
-  #   addUser(username: String!, email: String!, password: String!): Auth
-  #   login(username: String!, password: String!): Auth
-  # }
+  type Mutation {
+    addUser(
+      username: String!
+      email: String!
+      password: String!
+      likes: [ID]
+      orderId: ID
+    ): Auth
+    login(username: String!, password: String!): Auth
+    newOrder(items: [OrderInput]!): Order
+  }
 `;
 
 export default typeDefs;

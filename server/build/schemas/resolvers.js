@@ -36,7 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var apollo_server_express_1 = require("apollo-server-express");
 var models_1 = require("../models");
+var signToken = require("../utils/auth").signToken;
 var resolvers = {
     Query: {
         // Get all products
@@ -46,7 +48,7 @@ var resolvers = {
             });
         }); },
         // Single product
-        product: function (parent, _a) {
+        product: function (_parent, _a) {
             var productId = _a.productId;
             return __awaiter(void 0, void 0, void 0, function () {
                 return __generator(this, function (_b) {
@@ -70,31 +72,107 @@ var resolvers = {
                         .populate("parentCategory")];
             });
         }); },
-        // Current user, todo: get username from context instead of vars
-        me: function (parent, _a) {
-            var username = _a.username;
-            return __awaiter(void 0, void 0, void 0, function () {
-                return __generator(this, function (_b) {
-                    switch (_b.label) {
-                        case 0: return [4 /*yield*/, models_1.User.findOne({ username: username })
+        // Current user
+        me: function (_parent, _args, context) { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!context.user) return [3 /*break*/, 2];
+                        return [4 /*yield*/, models_1.User.findById(context.user._id)
                                 .populate({
                                 path: "orders",
                                 populate: { path: "items.product" },
                             })
                                 .populate("likes")];
-                        case 1: return [2 /*return*/, _b.sent()];
-                    }
-                });
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        new apollo_server_express_1.AuthenticationError("You need to be logged in!");
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
             });
-        },
+        }); },
         // Get single order data, todo: check user matches createdBy
-        order: function (parent, _a) {
+        order: function (_parent, _a) {
             var orderId = _a.orderId;
             return __awaiter(void 0, void 0, void 0, function () {
                 return __generator(this, function (_b) {
                     switch (_b.label) {
                         case 0: return [4 /*yield*/, models_1.Order.findOne({ orderId: orderId }).populate("items.product")];
                         case 1: return [2 /*return*/, _b.sent()];
+                    }
+                });
+            });
+        },
+    },
+    Mutation: {
+        addUser: function (_parent, _a) {
+            var username = _a.username, email = _a.email, password = _a.password, _b = _a.likes, likes = _b === void 0 ? [] : _b, orderId = _a.orderId;
+            return __awaiter(void 0, void 0, void 0, function () {
+                var orders, user, token;
+                return __generator(this, function (_c) {
+                    switch (_c.label) {
+                        case 0:
+                            orders = orderId ? [orderId] : [];
+                            return [4 /*yield*/, models_1.User.create({
+                                    username: username,
+                                    email: email,
+                                    password: password,
+                                    likes: likes,
+                                    orders: orders,
+                                })];
+                        case 1:
+                            user = _c.sent();
+                            token = signToken(user);
+                            return [2 /*return*/, { token: token, user: user }];
+                    }
+                });
+            });
+        },
+        login: function (_parent, _a) {
+            var username = _a.username, password = _a.password;
+            return __awaiter(void 0, void 0, void 0, function () {
+                var user, correctPw, token;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4 /*yield*/, models_1.User.findOne({ username: username })];
+                        case 1:
+                            user = _b.sent();
+                            if (!user) {
+                                throw new apollo_server_express_1.AuthenticationError("User not found!");
+                            }
+                            return [4 /*yield*/, user.isCorrectPassword(password)];
+                        case 2:
+                            correctPw = _b.sent();
+                            if (!correctPw) {
+                                throw new apollo_server_express_1.AuthenticationError("Username or password was incorrect.");
+                            }
+                            token = signToken(user);
+                            return [2 /*return*/, { token: token, user: user }];
+                    }
+                });
+            });
+        },
+        newOrder: function (_parent, _a, context) {
+            var items = _a.items;
+            return __awaiter(void 0, void 0, void 0, function () {
+                var createdBy, noAccount;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (!context.user) return [3 /*break*/, 1];
+                            createdBy = context.user._id;
+                            return [3 /*break*/, 3];
+                        case 1: return [4 /*yield*/, models_1.User.findOne({ username: "NoAccount" })];
+                        case 2:
+                            noAccount = _b.sent();
+                            createdBy = noAccount._id;
+                            _b.label = 3;
+                        case 3: return [4 /*yield*/, models_1.Order.create({ items: items, createdBy: createdBy })];
+                        case 4: return [2 /*return*/, (_b.sent()).populate({
+                                path: "items",
+                                populate: { path: "product" },
+                            })];
                     }
                 });
             });
