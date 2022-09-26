@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/StarryBlue7/react-storefront#readme",
   "dependencies": {
-    "concurrently": "^7.4.0"
+    "@apollo/client": "^3.6.9",
+    "concurrently": "^7.4.0",
+    "graphql": "^16.6.0"
   },
   "devDependencies": {
     "prettier": "^2.7.1"
