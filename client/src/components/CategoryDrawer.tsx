@@ -70,7 +70,7 @@ export default function ResponsiveDrawer(props: any) {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <NavBar />
+        <NavBar handleDrawerToggle={handleDrawerToggle} />
       </AppBar>
       <Box
         component="nav"
