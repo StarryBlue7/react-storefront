@@ -13,7 +13,13 @@ const styles = {
   },
 };
 
+type Drawers = { categories: boolean; cart: boolean };
+
 function Main() {
+  const [drawers, setDrawers] = React.useState<Drawers>({
+    categories: false,
+    cart: false,
+  });
   const [categoryDrawer, setCategoryDrawer] = React.useState<boolean>(false);
   const handleOpenNavMenu = (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
