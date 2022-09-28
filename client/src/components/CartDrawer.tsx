@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
@@ -37,16 +37,25 @@ export default function CartDrawer({ open, handleCloseCart }: any) {
           </List>
           <Divider />
           <List>
-            {["Total", "Checkout"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            <ListItem key={"total"}>
+              <ListItemText primary={"Subtotal: " + 8} />
+            </ListItem>
+            <ListItem key={"checkout"}>
+              <Button variant="contained">
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Checkout"} />
+              </Button>
+            </ListItem>
+            <ListItem key={"clear-cart"}>
+              <Button variant="outlined">
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Empty Cart"} />
+              </Button>
+            </ListItem>
           </List>
         </Box>
       </Drawer>
