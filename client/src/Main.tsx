@@ -13,10 +13,25 @@ const styles = {
 };
 
 function Main() {
+  const [categoryDrawer, setCategoryDrawer] = React.useState<boolean>(false);
+
+  const handleOpenNavMenu = (): void => {
+    console.log("open");
+    setCategoryDrawer(true);
+  };
+  const handleCloseNavMenu = () => {
+    console.log("close");
+    setCategoryDrawer(false);
+  };
+
   return (
     <>
       {/* <Container style={styles.main} fixed> */}
-      <NavBar />
+      <NavBar handleOpenNavMenu={handleOpenNavMenu} />
+      <CategoriesDrawer
+        open={categoryDrawer}
+        handleCloseNavMenu={handleCloseNavMenu}
+      />
       {/* </Container> */}
     </>
   );
