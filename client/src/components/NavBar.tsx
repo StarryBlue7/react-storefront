@@ -28,14 +28,14 @@ function NavBar({ handleDrawerToggle }: any) {
   );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    handleDrawerToggle();
+    setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
-    handleDrawerToggle();
+    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -122,7 +122,7 @@ function NavBar({ handleDrawerToggle }: any) {
               textDecoration: "none",
             }}
           >
-            LOGO
+            QuickShop
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -136,6 +136,17 @@ function NavBar({ handleDrawerToggle }: any) {
             ))}
           </Box>
 
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+            }}
+          >
+            <ShoppingBasketOutlined
+              sx={{ display: { xs: "flex", md: "flex" }, mr: 1 }}
+            />
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
