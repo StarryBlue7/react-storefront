@@ -1,7 +1,8 @@
 import React from "react";
 import { Container } from "@mui/material";
 import NavBar from "./components/NavBar";
-import CategoryDrawer from "./components/CategoryDrawer";
+import ResponsiveSidebar from "./components/ResponsiveSidebar";
+import CategoriesDrawer from "./components/CategoriesDrawer";
 
 const styles = {
   main: {
@@ -13,9 +14,11 @@ const styles = {
 
 function Main() {
   return (
-    <Container style={styles.main} fixed>
-      <CategoryDrawer />
-    </Container>
+    <>
+      {/* <Container style={styles.main} fixed> */}
+      <NavBar />
+      {/* </Container> */}
+    </>
   );
 }
 
