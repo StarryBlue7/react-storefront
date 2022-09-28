@@ -16,7 +16,7 @@ import {
   AccountCircle,
 } from "@mui/icons-material";
 
-function NavBar({ handleOpenNavMenu }: any) {
+function NavBar({ handleOpenNavMenu, handleOpenCart }: any) {
   // Page tabs
   const pages = ["Home", "Categories", "Sale"];
   // Account menu options
@@ -111,9 +111,17 @@ function NavBar({ handleOpenNavMenu }: any) {
                 justifyContent: "flex-end",
               }}
             >
-              <ShoppingBasketOutlined
-                sx={{ display: { xs: "flex", md: "flex" }, mr: 1 }}
-              />
+              <Tooltip title="Open cart">
+                <IconButton onClick={handleOpenCart} sx={{ p: 0 }}>
+                  <ShoppingBasketOutlined
+                    sx={{
+                      display: { xs: "flex", md: "flex" },
+                      mr: 1,
+                      color: "white",
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
             </Box>
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
