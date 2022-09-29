@@ -6,6 +6,8 @@ interface IProduct {
   modelNumber: string;
   price: number;
   imgURL: string;
+  description?: string;
+  popularity: number;
   tags?: Types.ObjectId[];
   categories?: Types.ObjectId[];
 }
@@ -36,6 +38,14 @@ const productSchema = new Schema<IProduct>(
     imgURL: {
       type: String,
       default: "https://via.placeholder.com/200",
+    },
+    description: {
+      type: String,
+      default: "No description.",
+    },
+    popularity: {
+      type: Number,
+      default: 0,
     },
     tags: [
       {

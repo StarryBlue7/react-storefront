@@ -4,9 +4,11 @@ import newOrderId from "../utils/orderNum";
 interface IOrder {
   orderNum: string;
   items: IItem[];
+  subtotal: number;
+  total: number;
   createdBy: Types.ObjectId;
   createdAt: Date;
-  toAddress: String;
+  toAddress: string;
   shippedAt?: Date;
   estimatedArrival?: Date;
 }
@@ -14,6 +16,7 @@ interface IOrder {
 interface IItem {
   product: Types.ObjectId;
   quantity: number;
+  priceAtSale: number;
 }
 
 const itemSchema = new Schema<IItem>({
@@ -30,17 +33,30 @@ const orderSchema = new Schema<IOrder>(
       type: String,
       default: newOrderId,
       unique: true,
+      required: true,
     },
     items: [itemSchema],
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+    total: {
+      type: Number,
+      required: true,
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     createdAt: {
       type: Date,
       default: Date.now,
     },
-    toAddress: String,
+    toAddress: {
+      type: String,
+      required: true,
+    },
     shippedAt: {
       type: Date,
     },

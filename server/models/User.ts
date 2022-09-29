@@ -1,15 +1,29 @@
 import { Schema, model, Types } from "mongoose";
 const bcrypt = require("bcrypt");
 
+interface IItem {
+  product: Types.ObjectId;
+  quantity: number;
+}
+
 interface IUser {
   username: string;
   email: string;
   emailVerified: boolean;
   password: string;
+  cart: [IItem];
   orders?: Types.ObjectId[];
   likes?: Types.ObjectId[];
   isCorrectPassword: Function;
 }
+
+const itemSchema = new Schema<IItem>({
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: "Product",
+  },
+  quantity: Number,
+});
 
 const userSchema = new Schema<IUser>(
   {
@@ -32,6 +46,10 @@ const userSchema = new Schema<IUser>(
     password: {
       type: String,
       required: true,
+    },
+    cart: {
+      type: [itemSchema],
+      default: [],
     },
     orders: [
       {

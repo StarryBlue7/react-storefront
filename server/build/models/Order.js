@@ -17,17 +17,30 @@ var orderSchema = new mongoose_1.Schema({
         type: String,
         default: orderNum_1.default,
         unique: true,
+        required: true,
     },
     items: [itemSchema],
+    subtotal: {
+        type: Number,
+        required: true,
+    },
+    total: {
+        type: Number,
+        required: true,
+    },
     createdBy: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "User",
+        required: true,
     },
     createdAt: {
         type: Date,
         default: Date.now,
     },
-    toAddress: String,
+    toAddress: {
+        type: String,
+        required: true,
+    },
     shippedAt: {
         type: Date,
     },
