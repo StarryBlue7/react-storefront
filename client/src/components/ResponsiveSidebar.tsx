@@ -13,7 +13,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import NavBar from "./NavBar";
+// import NavBar from "./NavBar";
 
 const drawerWidth = 240;
 
