@@ -7,6 +7,7 @@ interface IProduct {
   price: number;
   imgURL: string;
   description?: string;
+  popularity: number;
   tags?: Types.ObjectId[];
   categories?: Types.ObjectId[];
 }
@@ -40,6 +41,10 @@ const productSchema = new Schema<IProduct>(
     },
     description: {
       type: String,
+    },
+    popularity: {
+      type: Number,
+      default: 0,
     },
     tags: [
       {
