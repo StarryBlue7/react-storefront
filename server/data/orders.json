@@ -3,34 +3,44 @@
     "items": [
       {
         "product": "Squirrel Mug",
-        "quantity": 3
+        "quantity": 3,
+        "priceAtSale": 15.99
       },
       {
         "product": "Distressed Jeans",
-        "quantity": 1
+        "quantity": 1,
+        "priceAtSale": 45.99
       }
     ],
     "toAddress": "1234 Tree St.",
-    "createdBy": "squirrel"
+    "createdBy": "squirrel",
+    "subtotal": 93.96,
+    "total": 93.96
   },
   {
     "items": [
       {
         "product": "Tie-Dye T-Shirt",
-        "quantity": 2
+        "quantity": 2,
+        "priceAtSale": 15.99
       }
     ],
     "toAddress": "1234 Tree St.",
-    "createdBy": "giraffe"
+    "createdBy": "giraffe",
+    "subtotal": 31.98,
+    "total": 31.98
   },
   {
     "items": [
       {
         "product": "Distressed Jeans",
-        "quantity": 1
+        "quantity": 1,
+        "priceAtSale": 45.99
       }
     ],
     "toAddress": "567 Forest Ln.",
-    "createdBy": "panda"
+    "createdBy": "panda",
+    "subtotal": 45.99,
+    "total": 45.99
   }
 ]
