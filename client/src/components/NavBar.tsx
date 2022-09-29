@@ -36,7 +36,7 @@ function NavBar({ toggleDrawers }: any) {
   return (
     <>
       <AppBar position="static">
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
           <Toolbar variant="dense" disableGutters>
             <ShoppingCartCheckout
               sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
