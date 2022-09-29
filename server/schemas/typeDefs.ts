@@ -17,6 +17,7 @@ const typeDefs = gql`
     username: String!
     email: String!
     emailVerified: Boolean
+    cart: [Item]
     orders: [Order]
     likes: [Tag]
   }
@@ -29,12 +30,15 @@ const typeDefs = gql`
   type Item {
     product: Product
     quantity: Int
+    priceAtSale: Float
   }
 
   type Order {
     _id: ID!
     orderNum: String!
     items: [Item]
+    subtotal: Float
+    total: Float
     createdAt: String!
     shippedAt: String
     estimatedArrival: String
@@ -48,6 +52,8 @@ const typeDefs = gql`
     modelNumber: String
     price: Float!
     imgURL: String!
+    description: String
+    popularity: Int
     tags: [Tag]
     categories: [Category]
   }
