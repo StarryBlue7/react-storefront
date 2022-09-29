@@ -13,71 +13,37 @@ const styles = {
   },
 };
 
-type Drawers = { categories: boolean; cart: boolean };
+type DrawerState = { categories: boolean; cart: boolean };
+type Drawer = "categories" | "cart";
 
 function Main() {
-  const [drawers, setDrawers] = React.useState<Drawers>({
+  const [drawers, setDrawers] = React.useState<DrawerState>({
     categories: false,
     cart: false,
   });
-  const [categoryDrawer, setCategoryDrawer] = React.useState<boolean>(false);
-  const handleOpenNavMenu = (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
-    setCategoryDrawer(true);
-  };
-  const handleCloseNavMenu = (
-    event: React.KeyboardEvent | React.MouseEvent
-  ) => {
-    if (
-      event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
-    setCategoryDrawer(false);
-  };
 
-  const [cartDrawer, setCartDrawer] = React.useState<boolean>(false);
-  const handleOpenCart = (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
-    setCartDrawer(true);
-  };
-  const handleCloseCart = (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === "keydown" &&
-      ((event as React.KeyboardEvent).key === "Tab" ||
-        (event as React.KeyboardEvent).key === "Shift")
-    ) {
-      return;
-    }
-    setCartDrawer(false);
-  };
+  const toggleDrawers =
+    (drawer: Drawer, open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+      setDrawers({ ...drawers, [drawer]: open });
+    };
 
   return (
     <>
       {/* <Container style={styles.main} fixed> */}
-      <NavBar
-        handleOpenNavMenu={handleOpenNavMenu}
-        handleOpenCart={handleOpenCart}
-      />
+      <NavBar toggleDrawers={toggleDrawers} />
       <CategoriesDrawer
-        open={categoryDrawer}
-        handleCloseNavMenu={handleCloseNavMenu}
+        open={drawers.categories}
+        toggleDrawers={toggleDrawers}
       />
-      <CartDrawer open={cartDrawer} handleCloseCart={handleCloseCart} />
+      <CartDrawer open={drawers.cart} toggleDrawers={toggleDrawers} />
       {/* </Container> */}
     </>
   );

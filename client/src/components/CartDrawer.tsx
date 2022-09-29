@@ -11,17 +11,21 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
-export default function CartDrawer({ open, handleCloseCart }: any) {
+export default function CartDrawer({ open, toggleDrawers }: any) {
   return (
     <>
-      <Drawer anchor={"right"} open={open} onClose={handleCloseCart}>
+      <Drawer
+        anchor={"right"}
+        open={open}
+        onClose={toggleDrawers("cart", false)}
+      >
         <Box
           sx={{
             width: 250,
           }}
           role="presentation"
-          onClick={handleCloseCart}
-          onKeyDown={handleCloseCart}
+          onClick={toggleDrawers("cart", false)}
+          onKeyDown={toggleDrawers("cart", false)}
         >
           <List>
             {["1", "2", "3", "4"].map((text, index) => (

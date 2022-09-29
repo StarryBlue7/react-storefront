@@ -16,7 +16,7 @@ import {
   AccountCircle,
 } from "@mui/icons-material";
 
-function NavBar({ handleOpenNavMenu, handleOpenCart }: any) {
+function NavBar({ toggleDrawers }: any) {
   // Page tabs
   const pages = ["Home", "Categories", "Sale"];
   // Account menu options
@@ -65,7 +65,7 @@ function NavBar({ handleOpenNavMenu, handleOpenCart }: any) {
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleOpenNavMenu}
+                onClick={toggleDrawers("categories", true)}
                 color="inherit"
               >
                 <MenuIcon />
@@ -78,7 +78,7 @@ function NavBar({ handleOpenNavMenu, handleOpenCart }: any) {
               variant="h5"
               noWrap
               component="a"
-              href=""
+              href="/"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -96,7 +96,7 @@ function NavBar({ handleOpenNavMenu, handleOpenCart }: any) {
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleOpenNavMenu}
+                  onClick={toggleDrawers("categories", true)}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page}
@@ -112,7 +112,7 @@ function NavBar({ handleOpenNavMenu, handleOpenCart }: any) {
               }}
             >
               <Tooltip title="Open cart">
-                <IconButton onClick={handleOpenCart} sx={{ p: 0 }}>
+                <IconButton onClick={toggleDrawers("cart", true)} sx={{ p: 0 }}>
                   <ShoppingBasketOutlined
                     sx={{
                       display: { xs: "flex", md: "flex" },

@@ -10,17 +10,21 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
-export default function CategoriesDrawer({ open, handleCloseNavMenu }: any) {
+export default function CategoriesDrawer({ open, toggleDrawers }: any) {
   return (
     <>
-      <Drawer anchor={"left"} open={open} onClose={handleCloseNavMenu}>
+      <Drawer
+        anchor={"left"}
+        open={open}
+        onClose={toggleDrawers("categories", false)}
+      >
         <Box
           sx={{
             width: 250,
           }}
           role="presentation"
-          onClick={handleCloseNavMenu}
-          onKeyDown={handleCloseNavMenu}
+          onClick={toggleDrawers("categories", false)}
+          onKeyDown={toggleDrawers("categories", false)}
         >
           <List>
             {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
