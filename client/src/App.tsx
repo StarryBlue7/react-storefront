@@ -1,7 +1,6 @@
 import React from "react";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import TagList from "./components/tagList";
-import "./App.css";
+import Main from "./Main";
 
 // Connection to GraphQL API
 const client = new ApolloClient({
@@ -12,7 +11,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <TagList />
+      <Main />
     </ApolloProvider>
   );
 }

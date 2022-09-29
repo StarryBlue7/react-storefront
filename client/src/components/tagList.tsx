@@ -1,6 +1,15 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
+import { Chip } from "@mui/material";
 import { QUERY_TAGS } from "../utils/queries";
+
+const styles = {
+  tagContainer: {
+    display: "flex",
+    flexFlow: "wrap",
+    gap: "5px",
+  },
+};
 
 function TagList() {
   const { loading, data } = useQuery(QUERY_TAGS, {
@@ -10,15 +19,15 @@ function TagList() {
   const tags = data?.tags || [];
 
   return (
-    <div>
+    <div style={styles.tagContainer}>
       {loading ? (
-        <div>Loading...</div>
+        <Chip label={"Loading tags..."} />
       ) : (
-        <ul>
+        <>
           {tags.map((tag: any, i: number) => (
-            <li key={i}>{tag.name}</li>
+            <Chip key={i} label={tag.name} onClick={() => {}} />
           ))}
-        </ul>
+        </>
       )}
     </div>
   );
