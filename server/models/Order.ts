@@ -16,6 +16,7 @@ interface IOrder {
 interface IItem {
   product: Types.ObjectId;
   quantity: number;
+  priceAtSale: number;
 }
 
 const itemSchema = new Schema<IItem>({
