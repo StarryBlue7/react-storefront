@@ -38,6 +38,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
 var bcrypt = require("bcrypt");
+var itemSchema = new mongoose_1.Schema({
+    product: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Product",
+    },
+    quantity: Number,
+});
 var userSchema = new mongoose_1.Schema({
     username: {
         type: String,
@@ -58,6 +65,10 @@ var userSchema = new mongoose_1.Schema({
     password: {
         type: String,
         required: true,
+    },
+    cart: {
+        type: [itemSchema],
+        default: [],
     },
     orders: [
         {

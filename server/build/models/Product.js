@@ -27,6 +27,14 @@ var productSchema = new mongoose_1.Schema({
         type: String,
         default: "https://via.placeholder.com/200",
     },
+    description: {
+        type: String,
+        default: "No description.",
+    },
+    popularity: {
+        type: Number,
+        default: 0,
+    },
     tags: [
         {
             type: mongoose_1.Schema.Types.ObjectId,
