@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import ResponsiveSidebar from "./components/ResponsiveSidebar";
 import CategoriesDrawer from "./components/CategoriesDrawer";
 import CartDrawer from "./components/CartDrawer";
+import ProductsResults from "./components/ProductsResults";
 
 const styles = {
   main: {
@@ -44,6 +45,7 @@ function Main() {
         toggleDrawers={toggleDrawers}
       />
       <CartDrawer open={drawers.cart} toggleDrawers={toggleDrawers} />
+      <ProductsResults products={[1, 2, 3]} />
       {/* </Container> */}
     </>
   );
