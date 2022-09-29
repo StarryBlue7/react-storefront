@@ -41,6 +41,7 @@ const productSchema = new Schema<IProduct>(
     },
     description: {
       type: String,
+      default: "No description.",
     },
     popularity: {
       type: Number,
