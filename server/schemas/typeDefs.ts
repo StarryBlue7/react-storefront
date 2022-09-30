@@ -28,8 +28,8 @@ const typeDefs = gql`
   }
 
   type Item {
-    product: Product
-    quantity: Int
+    product: Product!
+    quantity: Int!
     priceAtSale: Float
   }
 
@@ -89,6 +89,7 @@ const typeDefs = gql`
     ): Auth
     login(username: String!, password: String!): Auth
     newOrder(items: [OrderInput]!): Order
+    updateCart(cart: [OrderInput]!): User
   }
 `;
 

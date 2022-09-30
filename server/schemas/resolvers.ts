@@ -95,6 +95,20 @@ const resolvers = {
         populate: { path: "product" },
       });
     },
+    updateCart: async (_parent, { cart }, context) => {
+      let user;
+      if (context.user) {
+        user = context.user._id;
+      } else {
+        // Assign anonymous user account if cart created without login
+        const noAccount = await User.findOne({ username: "NoAccount" });
+        user = noAccount._id;
+      }
+      return (await User.findByIdAndUpdate(user, { cart })).populate({
+        path: "items",
+        populate: { path: "product" },
+      });
+    },
   },
 };
 

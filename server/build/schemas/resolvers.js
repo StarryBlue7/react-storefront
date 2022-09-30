@@ -181,6 +181,30 @@ var resolvers = {
                 });
             });
         },
+        updateCart: function (_parent, _a, context) {
+            var cart = _a.cart;
+            return __awaiter(void 0, void 0, void 0, function () {
+                var user, noAccount;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (!context.user) return [3 /*break*/, 1];
+                            user = context.user._id;
+                            return [3 /*break*/, 3];
+                        case 1: return [4 /*yield*/, models_1.User.findOne({ username: "NoAccount" })];
+                        case 2:
+                            noAccount = _b.sent();
+                            user = noAccount._id;
+                            _b.label = 3;
+                        case 3: return [4 /*yield*/, models_1.User.findByIdAndUpdate(user, { cart: cart })];
+                        case 4: return [2 /*return*/, (_b.sent()).populate({
+                                path: "items",
+                                populate: { path: "product" },
+                            })];
+                    }
+                });
+            });
+        },
     },
 };
 exports.default = resolvers;
