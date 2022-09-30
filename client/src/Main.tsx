@@ -1,18 +1,19 @@
 import React from "react";
-// import { Container } from "@mui/material";
+import { Container } from "@mui/material";
 import NavBar from "./components/NavBar";
 // import ResponsiveSidebar from "./components/ResponsiveSidebar";
 import CategoriesDrawer from "./components/CategoriesDrawer";
 import CartDrawer from "./components/CartDrawer";
 import ProductsResults from "./components/ProductsResults";
+import TagList from "./components/tagList";
 
-// const styles = {
-//   main: {
-//     display: "flex",
-//     flexFlow: "column",
-//     gap: 10,
-//   },
-// };
+const styles = {
+  main: {
+    display: "flex",
+    flexFlow: "column",
+    gap: 10,
+  },
+};
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
@@ -38,15 +39,16 @@ function Main() {
 
   return (
     <>
-      {/* <Container style={styles.main} fixed> */}
       <NavBar toggleDrawers={toggleDrawers} />
       <CategoriesDrawer
         open={drawers.categories}
         toggleDrawers={toggleDrawers}
       />
       <CartDrawer open={drawers.cart} toggleDrawers={toggleDrawers} />
-      <ProductsResults products={[1, 2, 3]} />
-      {/* </Container> */}
+      <Container style={styles.main} fixed>
+        <TagList />
+        <ProductsResults products={[1, 2, 3]} />
+      </Container>
     </>
   );
 }
