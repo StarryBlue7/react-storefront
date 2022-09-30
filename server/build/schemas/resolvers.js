@@ -83,6 +83,10 @@ var resolvers = {
                                 path: "orders",
                                 populate: { path: "items.product" },
                             })
+                                .populate({
+                                path: "cart",
+                                populate: { path: "product" },
+                            })
                                 .populate("likes")];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:

@@ -33,6 +33,10 @@ const resolvers = {
             path: "orders",
             populate: { path: "items.product" },
           })
+          .populate({
+            path: "cart",
+            populate: { path: "product" },
+          })
           .populate("likes");
       } else {
         new AuthenticationError("You need to be logged in!");
