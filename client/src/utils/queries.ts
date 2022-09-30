@@ -98,18 +98,18 @@ export const QUERY_ME = gql`
         name
         _id
       }
-      # cart {
-      #   product {
-      #     imgURL
-      #     fullName
-      #     shortName
-      #     price
-      #     modelNumber
-      #     description
-      #     _id
-      #   }
-      #   quantity
-      # }
+      cart {
+        product {
+          imgURL
+          fullName
+          shortName
+          price
+          modelNumber
+          description
+          _id
+        }
+        quantity
+      }
     }
   }
 `;
