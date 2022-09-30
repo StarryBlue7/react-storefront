@@ -25,6 +25,7 @@ const itemSchema = new Schema<IItem>({
     ref: "Product",
   },
   quantity: Number,
+  priceAtSale: Number,
 });
 
 const orderSchema = new Schema<IOrder>(
