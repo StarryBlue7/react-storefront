@@ -11,6 +11,7 @@ var itemSchema = new mongoose_1.Schema({
         ref: "Product",
     },
     quantity: Number,
+    priceAtSale: Number,
 });
 var orderSchema = new mongoose_1.Schema({
     orderNum: {
