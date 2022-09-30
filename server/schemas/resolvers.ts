@@ -33,6 +33,10 @@ const resolvers = {
             path: "orders",
             populate: { path: "items.product" },
           })
+          .populate({
+            path: "cart",
+            populate: { path: "product" },
+          })
           .populate("likes");
       } else {
         new AuthenticationError("You need to be logged in!");
@@ -87,6 +91,20 @@ const resolvers = {
         createdBy = noAccount._id;
       }
       return (await Order.create({ items, createdBy })).populate({
+        path: "items",
+        populate: { path: "product" },
+      });
+    },
+    updateCart: async (_parent, { cart }, context) => {
+      let user;
+      if (context.user) {
+        user = context.user._id;
+      } else {
+        // Assign anonymous user account if cart created without login
+        const noAccount = await User.findOne({ username: "NoAccount" });
+        user = noAccount._id;
+      }
+      return (await User.findByIdAndUpdate(user, { cart })).populate({
         path: "items",
         populate: { path: "product" },
       });
