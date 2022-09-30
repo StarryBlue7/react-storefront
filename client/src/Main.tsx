@@ -46,7 +46,7 @@ function Main() {
         toggleDrawers={toggleDrawers}
       />
       <CartDrawer open={drawers.cart} toggleDrawers={toggleDrawers} />
-      <Container style={styles.main} fixed>
+      <Container style={styles.main}>
         <PromoCarousel />
         <TagList />
         <ProductsResults products={[1, 2, 3]} />
