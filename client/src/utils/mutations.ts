@@ -33,3 +33,16 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const UPDATE_CART = gql`
+  mutation updateCart($cart: [OrderInput]!) {
+    updateCart(cart: $cart) {
+      cart {
+        product {
+          _id
+        }
+        quantity
+      }
+    }
+  }
+`;
