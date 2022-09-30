@@ -6,6 +6,7 @@ import CategoriesDrawer from "./components/CategoriesDrawer";
 import CartDrawer from "./components/CartDrawer";
 import ProductsResults from "./components/ProductsResults";
 import TagList from "./components/tagList";
+import PromoCarousel from "./components/PromoCarousel";
 
 const styles = {
   main: {
@@ -46,6 +47,7 @@ function Main() {
       />
       <CartDrawer open={drawers.cart} toggleDrawers={toggleDrawers} />
       <Container style={styles.main} fixed>
+        <PromoCarousel />
         <TagList />
         <ProductsResults products={[1, 2, 3]} />
       </Container>
