@@ -10,7 +10,23 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
+import { useQuery } from "@apollo/client";
+import { QUERY_CATEGORIES } from "../utils/queries";
+
+interface Category {
+  _id: string;
+  name: string;
+  parentCategory?: string;
+  subCategories?: string;
+}
+
 export default function CategoriesDrawer({ open, toggleDrawers }: any) {
+  const { loading, data } = useQuery(QUERY_CATEGORIES, {
+    fetchPolicy: "no-cache",
+  });
+
+  const categories = data?.categories || [];
+
   return (
     <>
       <Drawer
@@ -27,7 +43,7 @@ export default function CategoriesDrawer({ open, toggleDrawers }: any) {
           onKeyDown={toggleDrawers("categories", false)}
         >
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+            {["Home", "Sale"].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -40,13 +56,13 @@ export default function CategoriesDrawer({ open, toggleDrawers }: any) {
           </List>
           <Divider />
           <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
-              <ListItem key={text} disablePadding>
+            {categories.map((category: Category) => (
+              <ListItem key={category.name} disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    <InboxIcon />
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={category.name} />
                 </ListItemButton>
               </ListItem>
             ))}
