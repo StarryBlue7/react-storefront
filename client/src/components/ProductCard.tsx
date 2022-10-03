@@ -3,11 +3,11 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions, Chip } from "@mui/material";
+import { Button, CardActionArea, CardActions, Chip, Box } from "@mui/material";
 
 export default function ProductCard({ product }: any) {
   return (
-    <Card sx={{ height: 450 }}>
+    <Card sx={{ height: "100%", display: "flex", flexFlow: "column" }}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -40,14 +40,20 @@ export default function ProductCard({ product }: any) {
           </Typography>
           <Typography
             variant="body2"
-            textOverflow={"ellipsis"}
-            noWrap
             color="text.secondary"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: "2",
+              WebkitBoxOrient: "vertical",
+            }}
           >
             {product.description}
           </Typography>
         </CardContent>
       </CardActionArea>
+      <Box sx={{ flexGrow: 1 }} />
       <CardActions>
         <Button size="small" color="primary">
           Add to Cart
