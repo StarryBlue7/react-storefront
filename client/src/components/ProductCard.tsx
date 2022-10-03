@@ -7,20 +7,25 @@ import { Button, CardActionArea, CardActions } from "@mui/material";
 
 export default function ProductCard({ product }: any) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ height: 450 }}>
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          alt="green iguana"
+          height="300"
+          image={product.imgURL}
+          alt={product.fullName}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Cool T-shirt
+            {product.shortName}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            This T-shirt is pretty cool.
+          <Typography
+            variant="body2"
+            textOverflow={"ellipsis"}
+            noWrap
+            color="text.secondary"
+          >
+            {product.description}
           </Typography>
         </CardContent>
       </CardActionArea>
