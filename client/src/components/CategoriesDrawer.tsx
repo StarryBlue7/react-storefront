@@ -21,7 +21,7 @@ interface Category {
 }
 
 export default function CategoriesDrawer({ open, toggleDrawers }: any) {
-  const { loading, data } = useQuery(QUERY_CATEGORIES, {
+  const { data } = useQuery(QUERY_CATEGORIES, {
     fetchPolicy: "no-cache",
   });
 
