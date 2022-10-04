@@ -1,15 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { Chip } from "@mui/material";
+import { Typography, Chip } from "@mui/material";
 import { QUERY_TAGS } from "../utils/queries";
-
-const styles = {
-  tagContainer: {
-    display: "flex",
-    flexFlow: "wrap",
-    gap: "5px",
-  },
-};
 
 function TagList() {
   const { loading, data } = useQuery(QUERY_TAGS, {
@@ -19,17 +11,33 @@ function TagList() {
   const tags = data?.tags || [];
 
   return (
-    <div style={styles.tagContainer}>
+    <Typography
+      sx={{
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        display: "-webkit-box",
+        WebkitLineClamp: "1",
+        WebkitBoxOrient: "vertical",
+      }}
+    >
+      {`Popular Tags: `}
       {loading ? (
         <Chip label={"Loading tags..."} />
       ) : (
         <>
-          {tags.map((tag: any, i: number) => (
-            <Chip key={i} label={tag.name} onClick={() => {}} />
+          {tags.map((tag: any) => (
+            <>
+              <Chip
+                color="primary"
+                label={tag.name}
+                onClick={() => {}}
+                key={tag.name}
+              />{" "}
+            </>
           ))}
         </>
       )}
-    </div>
+    </Typography>
   );
 }
 
