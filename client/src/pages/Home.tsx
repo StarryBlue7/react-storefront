@@ -1,7 +1,7 @@
 import React from "react";
 import ProductsResults from "../components/ProductsResults";
 import PromoCarousel from "../components/PromoCarousel";
-import TagList from "../components/tagList";
+import TagList from "../components/TagList";
 
 /**
  * Homepage component
