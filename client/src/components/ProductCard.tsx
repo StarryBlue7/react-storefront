@@ -19,25 +19,27 @@ export default function ProductCard({ product }: any) {
           <Typography gutterBottom variant="h5" component="div">
             {product.shortName}
           </Typography>
-          <Typography
-            variant="body2"
-            textOverflow={"ellipsis"}
-            noWrap
-            color="text.secondary"
-            gutterBottom
+          <Box
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: "1",
+              WebkitBoxOrient: "vertical",
+              mb: 1,
+            }}
           >
             {product.tags.map((tag: any, i: number) => (
-              <>
-                <Chip
-                  key={i}
-                  label={tag.name}
-                  variant="outlined"
-                  size="small"
-                  onClick={() => {}}
-                />{" "}
-              </>
+              <Chip
+                key={i}
+                label={tag.name}
+                variant="outlined"
+                size="small"
+                onClick={() => {}}
+                sx={{ mr: 0.5 }}
+              />
             ))}
-          </Typography>
+          </Box>
           <Typography
             variant="body2"
             color="text.secondary"
