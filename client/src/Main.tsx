@@ -6,6 +6,7 @@ import CategoriesDrawer from "./components/CategoriesDrawer";
 import CartDrawer from "./components/CartDrawer";
 
 import Home from "./pages/Home";
+import CartButton from "./components/CartButton";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
@@ -46,6 +47,7 @@ function Main() {
         }}
       >
         <Home />
+        <CartButton toggleDrawers={toggleDrawers} />
       </Container>
     </>
   );
