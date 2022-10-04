@@ -41,8 +41,8 @@ function PromoCarousel() {
         className="mySwiper"
         style={styles.carousel}
       >
-        {promos.map((image) => (
-          <SwiperSlide>
+        {promos.map((image: string, i: number) => (
+          <SwiperSlide key={i}>
             <img alt={"product promo"} style={styles.images} src={image} />
           </SwiperSlide>
         ))}
