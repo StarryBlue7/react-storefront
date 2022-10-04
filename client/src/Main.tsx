@@ -1,12 +1,11 @@
 import React from "react";
-import { Container, Grid } from "@mui/material";
+import { Container } from "@mui/material";
 import NavBar from "./components/NavBar";
 // import ResponsiveSidebar from "./components/ResponsiveSidebar";
 import CategoriesDrawer from "./components/CategoriesDrawer";
 import CartDrawer from "./components/CartDrawer";
-import ProductsResults from "./components/ProductsResults";
-import TagList from "./components/tagList";
-import PromoCarousel from "./components/PromoCarousel";
+
+import Home from "./pages/Home";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
@@ -46,9 +45,7 @@ function Main() {
           gap: 1,
         }}
       >
-        <PromoCarousel />
-        <TagList />
-        <ProductsResults />
+        <Home />
       </Container>
     </>
   );
