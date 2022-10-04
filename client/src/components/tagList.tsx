@@ -1,7 +1,12 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { Typography, Chip } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import { QUERY_TAGS } from "../utils/queries";
+
+type Tag = {
+  _id: string;
+  name: string;
+};
 
 function TagList() {
   const { loading, data } = useQuery(QUERY_TAGS, {
@@ -11,7 +16,7 @@ function TagList() {
   const tags = data?.tags || [];
 
   return (
-    <Typography
+    <Box
       sx={{
         overflow: "hidden",
         textOverflow: "ellipsis",
@@ -24,20 +29,17 @@ function TagList() {
       {loading ? (
         <Chip label={"Loading tags..."} />
       ) : (
-        <>
-          {tags.map((tag: any) => (
-            <>
-              <Chip
-                color="primary"
-                label={tag.name}
-                onClick={() => {}}
-                key={tag.name}
-              />{" "}
-            </>
-          ))}
-        </>
+        tags.map((tag: Tag) => (
+          <Chip
+            color="primary"
+            label={tag.name}
+            onClick={() => {}}
+            key={tag._id}
+            sx={{ mr: 0.5 }}
+          />
+        ))
       )}
-    </Typography>
+    </Box>
   );
 }
 
