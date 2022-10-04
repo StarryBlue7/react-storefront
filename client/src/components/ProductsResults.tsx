@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import ProductCard from "./ProductCard";
 
 import { useQuery } from "@apollo/client";
@@ -22,11 +22,15 @@ export default function ProductsResults({ products: prop }: any) {
 
   return (
     <Grid container spacing={2}>
-      {products.map((product: Product) => (
-        <Grid item xs={12} sm={6} md={4} lg={3} m={0}>
-          <ProductCard product={product} key={product._id} m={0} />
-        </Grid>
-      ))}
+      {loading ? (
+        <Typography align="center">Loading results...</Typography>
+      ) : (
+        products.map((product: Product, i: number) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} m={0} key={i}>
+            <ProductCard product={product} key={product._id} m={0} />
+          </Grid>
+        ))
+      )}
     </Grid>
   );
 }
