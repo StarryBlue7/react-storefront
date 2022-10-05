@@ -8,7 +8,7 @@ type Tag = {
   name: string;
 };
 
-function TagList() {
+function TagList({ tagStates }: any) {
   const { loading, data } = useQuery(QUERY_TAGS, {
     fetchPolicy: "no-cache",
   });
@@ -29,15 +29,18 @@ function TagList() {
       {loading ? (
         <Chip label={"Loading tags..."} />
       ) : (
-        tags.map((tag: Tag) => (
-          <Chip
-            color="primary"
-            label={tag.name}
-            onClick={() => {}}
-            key={tag._id}
-            sx={{ mr: 0.5 }}
-          />
-        ))
+        tags.map((tag: Tag) => {
+          const selected: boolean = tagStates.selectedTags.has(tag._id);
+          return (
+            <Chip
+              color={selected ? "primary" : undefined}
+              label={tag.name}
+              onClick={tagStates.toggleTag(tag._id)}
+              key={tag._id}
+              sx={{ mr: 0.5 }}
+            />
+          );
+        })
       )}
     </Box>
   );
