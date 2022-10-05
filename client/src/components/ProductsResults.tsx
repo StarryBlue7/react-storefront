@@ -13,8 +13,13 @@ interface Product {
   description: string;
 }
 
-export default function ProductsResults({ products: prop }: any) {
+export default function ProductsResults({ tagStates }: any) {
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
+    variables: {
+      tags: tagStates.selectedTags.size
+        ? Array.from(tagStates.selectedTags)
+        : null,
+    },
     fetchPolicy: "no-cache",
   });
 
@@ -23,7 +28,7 @@ export default function ProductsResults({ products: prop }: any) {
   return (
     <Grid container spacing={2}>
       {loading ? (
-        <Typography align="center">Loading results...</Typography>
+        <Typography>Loading results...</Typography>
       ) : (
         products.map((product: Product, i: number) => (
           <Grid item xs={12} sm={6} md={4} lg={3} m={0} key={i}>
