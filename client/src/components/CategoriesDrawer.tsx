@@ -20,7 +20,11 @@ interface Category {
   subCategories?: string;
 }
 
-export default function CategoriesDrawer({ open, toggleDrawers }: any) {
+export default function CategoriesDrawer({
+  open,
+  toggleDrawers,
+  categoryStates,
+}: any) {
   const { data } = useQuery(QUERY_CATEGORIES, {
     fetchPolicy: "no-cache",
   });
@@ -44,7 +48,11 @@ export default function CategoriesDrawer({ open, toggleDrawers }: any) {
         >
           <List>
             {["Home", "Sale"].map((text, index) => (
-              <ListItem key={text} disablePadding>
+              <ListItem
+                key={text}
+                onClick={categoryStates.selectCategory("")}
+                disablePadding
+              >
                 <ListItemButton>
                   <ListItemIcon>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -57,7 +65,11 @@ export default function CategoriesDrawer({ open, toggleDrawers }: any) {
           <Divider />
           <List>
             {categories.map((category: Category) => (
-              <ListItem key={category.name} disablePadding>
+              <ListItem
+                key={category.name}
+                onClick={categoryStates.selectCategory(category._id)}
+                disablePadding
+              >
                 <ListItemButton>
                   <ListItemIcon>
                     <InboxIcon />
