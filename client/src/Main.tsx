@@ -1,12 +1,14 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Container } from "@mui/material";
 import NavBar from "./components/NavBar";
 // import ResponsiveSidebar from "./components/ResponsiveSidebar";
 import CategoriesDrawer from "./components/CategoriesDrawer";
 import CartDrawer from "./components/CartDrawer";
+import CartButton from "./components/CartButton";
 
 import Home from "./pages/Home";
-import CartButton from "./components/CartButton";
+import ProductPage from "./pages/ProductPage";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
@@ -59,7 +61,7 @@ function Main() {
   };
 
   return (
-    <>
+    <Router>
       <NavBar toggleDrawers={toggleDrawers} />
       <CategoriesDrawer
         open={drawers.categories}
@@ -75,10 +77,19 @@ function Main() {
           gap: 1,
         }}
       >
-        <Home tagStates={tagStates} categoryStates={categoryStates} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home tagStates={tagStates} categoryStates={categoryStates} />
+            }
+          />
+          <Route path="/products/:productId" element={<ProductPage />} />
+          <Route path="*" element={<h1>Page not found!</h1>} />
+        </Routes>
         <CartButton toggleDrawers={toggleDrawers} />
       </Container>
-    </>
+    </Router>
   );
 }
 
