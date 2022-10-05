@@ -10,8 +10,10 @@ import CartButton from "./components/CartButton";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
+type SelectedTags = Set<string>;
 
 function Main() {
+  // Category & cart drawer display control
   const [drawers, setDrawers] = React.useState<DrawerState>({
     categories: false,
     cart: false,
@@ -30,6 +32,24 @@ function Main() {
       setDrawers({ ...drawers, [drawer]: open });
     };
 
+  // Product tags selection
+  const [selectedTags, setSelectedTags] = React.useState<SelectedTags>(
+    new Set()
+  );
+  const tagStates = {
+    selectedTags,
+    toggleTag: (tag: string) => () => {
+      let newTags = new Set(selectedTags);
+      if (selectedTags.has(tag)) {
+        newTags.delete(tag);
+        setSelectedTags(newTags);
+      } else {
+        newTags.add(tag);
+        setSelectedTags(newTags);
+      }
+    },
+  };
+
   return (
     <>
       <NavBar toggleDrawers={toggleDrawers} />
@@ -46,7 +66,7 @@ function Main() {
           gap: 1,
         }}
       >
-        <Home />
+        <Home tagStates={tagStates} />
         <CartButton toggleDrawers={toggleDrawers} />
       </Container>
     </>
