@@ -11,6 +11,7 @@ import CartButton from "./components/CartButton";
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
 type SelectedTags = Set<string>;
+type SelectedCategory = string;
 
 function Main() {
   // Category & cart drawer display control
@@ -18,7 +19,6 @@ function Main() {
     categories: false,
     cart: false,
   });
-
   const toggleDrawers =
     (drawer: Drawer, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -50,12 +50,21 @@ function Main() {
     },
   };
 
+  // Category selection
+  const [selectedCategory, setSelectedCategory] =
+    React.useState<SelectedCategory>("");
+  const categoryStates = {
+    selectedCategory,
+    selectCategory: (category: string) => () => setSelectedCategory(category),
+  };
+
   return (
     <>
       <NavBar toggleDrawers={toggleDrawers} />
       <CategoriesDrawer
         open={drawers.categories}
         toggleDrawers={toggleDrawers}
+        categoryStates={categoryStates}
       />
       <CartDrawer open={drawers.cart} toggleDrawers={toggleDrawers} />
       <Container
@@ -66,7 +75,7 @@ function Main() {
           gap: 1,
         }}
       >
-        <Home tagStates={tagStates} />
+        <Home tagStates={tagStates} categoryStates={categoryStates} />
         <CartButton toggleDrawers={toggleDrawers} />
       </Container>
     </>
