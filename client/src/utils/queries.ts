@@ -27,8 +27,8 @@ export const QUERY_CATEGORIES = gql`
 `;
 
 export const QUERY_PRODUCTS = gql`
-  query products {
-    products {
+  query products($tags: [ID], $category: ID) {
+    products(tags: $tags, category: $category) {
       _id
       fullName
       shortName

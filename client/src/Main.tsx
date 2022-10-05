@@ -10,13 +10,15 @@ import CartButton from "./components/CartButton";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
+type SelectedTags = Set<string>;
+type SelectedCategory = string;
 
 function Main() {
+  // Category & cart drawer display control
   const [drawers, setDrawers] = React.useState<DrawerState>({
     categories: false,
     cart: false,
   });
-
   const toggleDrawers =
     (drawer: Drawer, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -30,12 +32,39 @@ function Main() {
       setDrawers({ ...drawers, [drawer]: open });
     };
 
+  // Product tags selection
+  const [selectedTags, setSelectedTags] = React.useState<SelectedTags>(
+    new Set()
+  );
+  const tagStates = {
+    selectedTags,
+    toggleTag: (tag: string) => () => {
+      let newTags = new Set(selectedTags);
+      if (selectedTags.has(tag)) {
+        newTags.delete(tag);
+        setSelectedTags(newTags);
+      } else {
+        newTags.add(tag);
+        setSelectedTags(newTags);
+      }
+    },
+  };
+
+  // Category selection
+  const [selectedCategory, setSelectedCategory] =
+    React.useState<SelectedCategory>("");
+  const categoryStates = {
+    selectedCategory,
+    selectCategory: (category: string) => () => setSelectedCategory(category),
+  };
+
   return (
     <>
       <NavBar toggleDrawers={toggleDrawers} />
       <CategoriesDrawer
         open={drawers.categories}
         toggleDrawers={toggleDrawers}
+        categoryStates={categoryStates}
       />
       <CartDrawer open={drawers.cart} toggleDrawers={toggleDrawers} />
       <Container
@@ -46,7 +75,7 @@ function Main() {
           gap: 1,
         }}
       >
-        <Home />
+        <Home tagStates={tagStates} categoryStates={categoryStates} />
         <CartButton toggleDrawers={toggleDrawers} />
       </Container>
     </>
