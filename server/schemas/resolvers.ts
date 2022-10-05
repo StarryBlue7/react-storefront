@@ -3,11 +3,21 @@ import { User, Product, Category, Tag, Order } from "../models";
 
 const { signToken } = require("../utils/auth");
 
+type ProductFilter = {
+  tags?: any;
+  categories?: any;
+};
+
 const resolvers = {
   Query: {
-    // Get all products
-    products: async () => {
-      return Product.find().populate("tags").populate("categories");
+    /**
+     * Get all products with optional tags & category filters
+     */
+    products: async (_parent, { tags, category }) => {
+      const filter: ProductFilter = {};
+      tags && (filter.tags = { $in: tags });
+      category && (filter.categories = category);
+      return Product.find(filter).populate("tags").populate("categories");
     },
     // Single product
     product: async (_parent, { productId }) => {
