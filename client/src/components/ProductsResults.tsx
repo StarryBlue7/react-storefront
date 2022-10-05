@@ -13,12 +13,13 @@ interface Product {
   description: string;
 }
 
-export default function ProductsResults({ tagStates }: any) {
+export default function ProductsResults({ tagStates, categoryStates }: any) {
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
     variables: {
       tags: tagStates.selectedTags.size
         ? Array.from(tagStates.selectedTags)
         : null,
+      category: categoryStates.selectedCategory || null,
     },
     fetchPolicy: "no-cache",
   });
