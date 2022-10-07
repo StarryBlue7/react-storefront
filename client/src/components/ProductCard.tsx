@@ -25,8 +25,9 @@ export default function ProductCard({ product, compact }: any) {
   return (
     <Card
       sx={{
-        height: "100%",
+        height: "99%",
         width: "100%",
+        borderRadius: 4,
         display: "flex",
         flexFlow: "column",
       }}

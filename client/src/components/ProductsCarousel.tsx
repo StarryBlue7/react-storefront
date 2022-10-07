@@ -31,10 +31,8 @@ type Props = {
 
 const styles = {
   slide: {
-    width: "20%",
-  },
-  card: {
-    marginBottom: 30,
+    height: "auto",
+    overflow: "visible",
   },
 };
 
@@ -102,7 +100,6 @@ export default function ProductsCarousel({ title, tags, exclude }: Props) {
                         compact
                         product={product}
                         key={product._id}
-                        style={styles.card}
                       />
                     </SwiperSlide>
                   )
