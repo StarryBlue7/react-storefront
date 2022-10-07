@@ -15,7 +15,7 @@ const StyledRating = styled(Rating)({
 /**
  * Heart icon rating out of 5
  */
-export default function HeartRating({ value, readOnly }: any) {
+export default function HeartRating({ value, readOnly, size }: any) {
   return (
     <StyledRating
       name="customized-color"
@@ -27,6 +27,7 @@ export default function HeartRating({ value, readOnly }: any) {
       icon={<Favorite fontSize="inherit" />}
       emptyIcon={<FavoriteBorder fontSize="inherit" />}
       readOnly={readOnly}
+      size={size || "large"}
     />
   );
 }
