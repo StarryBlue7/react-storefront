@@ -6,6 +6,9 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+
+import "./App.css";
+
 import Main from "./Main";
 
 // JWT request middleware for requests with `authorization` header
