@@ -43,12 +43,19 @@ export default function ProductCard({ product, compact }: any) {
           <CardContent>
             <Typography
               color="primary"
-              gutterBottom={!compact}
               align={"left"}
               variant="h5"
               component="div"
             >
               {product.shortName}
+            </Typography>
+            <Typography
+              color="primary"
+              align={"left"}
+              variant={compact ? "subtitle2" : "body1"}
+              component="div"
+            >
+              {"$" + product.price}
             </Typography>
             {!compact && (
               <>

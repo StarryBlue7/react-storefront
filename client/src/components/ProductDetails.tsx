@@ -1,16 +1,6 @@
 import React from "react";
-import { Grid, Typography, Card, Rating, Button } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
-
-const StyledRating = styled(Rating)({
-  "& .MuiRating-iconFilled": {
-    color: "#ff6d75",
-  },
-  "& .MuiRating-iconHover": {
-    color: "#ff3d47",
-  },
-});
+import { Grid, Typography, Card, Button } from "@mui/material";
+import HeartRating from "./HeartRating";
 
 /**
  * Individual product info
@@ -31,20 +21,22 @@ export default function ProductDetails({ product }: any) {
             style={{ maxWidth: "100%", maxHeight: "50vh" }}
           />
         </Grid>
-        <Grid item xs={12} sm={5} sx={{}}>
+        <Grid
+          item
+          xs={12}
+          sm={5}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "left",
+          }}
+        >
           <Typography variant="h4">{product.fullName}</Typography>
-          <StyledRating
-            name="customized-color"
-            defaultValue={4.5}
-            getLabelText={(value: number) =>
-              `${value} Heart${value !== 1 ? "s" : ""}`
-            }
-            precision={0.5}
-            icon={<Favorite fontSize="inherit" />}
-            emptyIcon={<FavoriteBorder fontSize="inherit" />}
-          />
+          <Typography variant="caption">{product.modelNumber}</Typography>
+          <HeartRating value={product.rating || 4.5} />
+          <Typography variant="h4">{"$" + product.price}</Typography>
+          <Button variant="contained">Add to Cart</Button>
           <Typography sx={{ mt: 5 }}>{product.description}</Typography>
-          <Button>Add to Cart</Button>
         </Grid>
       </Grid>
     </Card>
