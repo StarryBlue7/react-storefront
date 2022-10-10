@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Container } from "@mui/material";
 import NavBar from "./components/NavBar";
-// import ResponsiveSidebar from "./components/ResponsiveSidebar";
+import AuthModal from "./components/AuthModal";
 import CategoriesDrawer from "./components/CategoriesDrawer";
 import CartDrawer from "./components/CartDrawer";
 import CartButton from "./components/CartButton";
@@ -10,12 +10,26 @@ import CartButton from "./components/CartButton";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 
+import Auth from "./utils/auth";
+
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
 type SelectedTags = Set<string>;
 type SelectedCategory = string;
 
 function Main() {
+  // Login/signup modal control
+  const [authOpen, setAuthOpen] = React.useState<boolean>(false);
+  const modalStates = {
+    authOpen,
+    openAuth: () => {
+      setAuthOpen(true);
+    },
+    closeAuth: () => {
+      setAuthOpen(false);
+    },
+  };
+
   // Category & cart drawer display control
   const [drawers, setDrawers] = React.useState<DrawerState>({
     categories: false,
@@ -62,7 +76,8 @@ function Main() {
 
   return (
     <Router>
-      <NavBar toggleDrawers={toggleDrawers} />
+      <NavBar toggleDrawers={toggleDrawers} modalStates={modalStates} />
+      <AuthModal modalStates={modalStates} />
       <CategoriesDrawer
         open={drawers.categories}
         toggleDrawers={toggleDrawers}
