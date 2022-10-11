@@ -17,6 +17,7 @@ type LoginValidation = {
   usernameHelper: string;
   passwordError: boolean;
   passwordHelper: string;
+  preventSubmit: boolean;
 };
 
 export default function LoginForm({ modalStates }: any) {
@@ -39,19 +40,24 @@ export default function LoginForm({ modalStates }: any) {
     usernameHelper: " ",
     passwordError: false,
     passwordHelper: " ",
+    preventSubmit: true,
   });
 
   React.useEffect(() => {
-    setFormValidate((prev: LoginValidation) => {
-      return {
-        ...prev,
-        ...Validate.username(formState.username),
-      };
-    });
+    if (formState.username.length > 0 && formState.password.length > 0) {
+      setFormValidate((prev: LoginValidation) => {
+        return {
+          ...prev,
+          ...Validate.username(formState.username),
+          preventSubmit: Validate.username(formState.username).usernameError,
+        };
+      });
+    }
   }, [formState]);
 
   const [login] = useMutation(LOGIN);
 
+  // Submit login to server
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -64,6 +70,10 @@ export default function LoginForm({ modalStates }: any) {
       console.error(e);
     }
   };
+
+  // Submit form with Enter key
+  const submitOnEnter = (e: React.KeyboardEvent) =>
+    e.key === "Enter" && handleLogin(e);
 
   return (
     <>
@@ -92,12 +102,17 @@ export default function LoginForm({ modalStates }: any) {
         helperText={formValidate.passwordHelper}
         value={formState.password}
         onChange={updateForm}
+        onKeyDown={submitOnEnter}
       />
       <DialogActions>
         <Button variant="outlined" onClick={modalStates.closeAuth}>
           Cancel
         </Button>
-        <Button variant="contained" onClick={handleLogin}>
+        <Button
+          variant="contained"
+          onClick={handleLogin}
+          disabled={formValidate.preventSubmit}
+        >
           Login
         </Button>
       </DialogActions>
