@@ -7,6 +7,14 @@ import { LOGIN } from "../utils/mutations";
 import Auth from "../utils/auth";
 import Validate from "../utils/formValidations";
 
+type LoginFormProps = {
+  modalStates: {
+    authOpen: boolean;
+    openAuth: () => void;
+    closeAuth: () => void;
+  };
+};
+
 type LoginState = {
   username: string;
   password: string;
@@ -20,7 +28,7 @@ type LoginValidation = {
   preventSubmit: boolean;
 };
 
-export default function LoginForm({ modalStates }: any) {
+export default function LoginForm({ modalStates }: LoginFormProps) {
   // Form control
   const [formState, setFormState] = React.useState<LoginState>({
     username: "",
