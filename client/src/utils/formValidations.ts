@@ -1,7 +1,9 @@
 const alphanumeric = new RegExp(/^\w+$/);
+const emailPattern = new RegExp(/.+@.+\..+/);
 
 type UsernameValidation = { usernameError: boolean; usernameHelper: string };
 type PasswordValidation = { passwordError: boolean; passwordHelper: string };
+type EmailValidation = { emailError: boolean; emailHelper: string };
 
 class FormValidation {
   username(username: string): UsernameValidation {
@@ -37,6 +39,12 @@ class FormValidation {
     }
 
     return { passwordError, passwordHelper };
+  }
+
+  email(email: string): EmailValidation {
+    const emailError = !emailPattern.test(email);
+    const emailHelper: string = emailError ? "Must be valid email." : " ";
+    return { emailError, emailHelper };
   }
 }
 
