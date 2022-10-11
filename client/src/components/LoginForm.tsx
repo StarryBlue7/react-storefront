@@ -5,17 +5,50 @@ import { useMutation } from "@apollo/client";
 import { LOGIN } from "../utils/mutations";
 
 import Auth from "../utils/auth";
+import Validate from "../utils/formValidations";
+
+type LoginState = {
+  username: string;
+  password: string;
+};
+
+type LoginValidation = {
+  usernameError: boolean;
+  usernameHelper: string;
+  passwordError: boolean;
+  passwordHelper: string;
+};
 
 export default function LoginForm({ modalStates }: any) {
-  const [formState, setFormState] = React.useState<any>({
+  // Form control
+  const [formState, setFormState] = React.useState<LoginState>({
     username: "",
     password: "",
   });
   const updateForm = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const field = e.target.id;
     const value = e.target.value;
-    setFormState({ ...formState, [field]: value });
+    setFormState((prev: LoginState) => {
+      return { ...prev, [field]: value };
+    });
   };
+
+  // Validation & helper messages
+  const [formValidate, setFormValidate] = React.useState<LoginValidation>({
+    usernameError: false,
+    usernameHelper: " ",
+    passwordError: false,
+    passwordHelper: " ",
+  });
+
+  React.useEffect(() => {
+    setFormValidate((prev: LoginValidation) => {
+      return {
+        ...prev,
+        ...Validate.username(formState.username),
+      };
+    });
+  }, [formState]);
 
   const [login] = useMutation(LOGIN);
 
@@ -42,6 +75,8 @@ export default function LoginForm({ modalStates }: any) {
         type="text"
         fullWidth
         variant="standard"
+        error={formValidate.usernameError}
+        helperText={formValidate.usernameHelper}
         value={formState.username}
         onChange={updateForm}
       />
@@ -53,6 +88,8 @@ export default function LoginForm({ modalStates }: any) {
         type="password"
         fullWidth
         variant="standard"
+        error={formValidate.passwordError}
+        helperText={formValidate.passwordHelper}
         value={formState.password}
         onChange={updateForm}
       />
