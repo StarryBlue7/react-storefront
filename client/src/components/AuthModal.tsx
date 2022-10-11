@@ -1,5 +1,7 @@
 import React from "react";
-import { Dialog, Tabs, Tab } from "@mui/material";
+import { Dialog, Tabs, Tab, Container } from "@mui/material";
+
+import LoginForm from "./LoginForm";
 
 /**
  * Modal dialog for login/signup
@@ -21,7 +23,9 @@ export default function AuthModal({ modalStates }: any) {
         <Tab label="Login" />
         <Tab label="Sign Up" />
       </Tabs>
-      {authTab ? <>Login</> : <>Signup</>}
+      <Container sx={{ pb: 1 }}>
+        {authTab === 0 ? <LoginForm modalStates={modalStates} /> : <>Signup</>}
+      </Container>
     </Dialog>
   );
 }
