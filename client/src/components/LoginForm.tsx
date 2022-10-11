@@ -1,18 +1,36 @@
 import React from "react";
 import { Button, DialogActions, TextField } from "@mui/material";
 
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../utils/mutations";
+
+import Auth from "../utils/auth";
+
 export default function LoginForm({ modalStates }: any) {
   const [formState, setFormState] = React.useState<any>({
     username: "",
     password: "",
   });
-  const updateForm = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const field = event.target.id;
-    const value = event.target.value;
+  const updateForm = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const field = e.target.id;
+    const value = e.target.value;
     setFormState({ ...formState, [field]: value });
   };
 
-  const handleLogin = (): void => {};
+  const [login] = useMutation(LOGIN);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await login({
+        variables: { ...formState, username: formState.username.toLowerCase() },
+      });
+      Auth.login(data.login.token);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <>
