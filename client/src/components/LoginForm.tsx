@@ -99,7 +99,6 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
         onChange={updateForm}
       />
       <TextField
-        autoFocus
         margin="dense"
         id="password"
         label="Password"
