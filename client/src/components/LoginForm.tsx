@@ -53,11 +53,12 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
 
   React.useEffect(() => {
     if (formState.username.length > 0 && formState.password.length > 0) {
+      const validated = Validate.username(formState.username);
       setFormValidate((prev: LoginValidation) => {
         return {
           ...prev,
-          ...Validate.username(formState.username),
-          preventSubmit: Validate.username(formState.username).usernameError,
+          ...validated,
+          preventSubmit: validated.usernameError,
         };
       });
     }
