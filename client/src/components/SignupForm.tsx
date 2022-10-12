@@ -1,11 +1,19 @@
 import React from "react";
-import { Button, DialogActions, TextField } from "@mui/material";
+import {
+  Button,
+  DialogActions,
+  TextField,
+  Stepper,
+  Step,
+  StepLabel,
+} from "@mui/material";
 
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../utils/mutations";
 
 import Auth from "../utils/auth";
 import Validate from "../utils/formValidations";
+import TagList from "./TagList";
 
 type SignupFormProps = {
   modalStates: {
@@ -31,6 +39,8 @@ type LoginValidation = {
   passwordHelper: string;
   preventSubmit: boolean;
 };
+
+type SelectedTags = Set<string>;
 
 type Field = "username" | "email" | "password" | "all";
 
@@ -108,15 +118,42 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
     });
   };
 
-  const [signup] = useMutation(ADD_USER);
+  // Signup steps
+  const steps = ["Account Info", "Personalize"];
+  const [activeStep, setActiveStep] = React.useState<number>(0);
+  const nextStep = () => {
+    setActiveStep(activeStep + 1);
+  };
+
+  const [selectedTags, setSelectedTags] = React.useState<SelectedTags>(
+    new Set()
+  );
+  const tagStates = {
+    selectedTags,
+    toggleTag: (tag: string) => () => {
+      let newTags = new Set(selectedTags);
+      if (selectedTags.has(tag)) {
+        newTags.delete(tag);
+        setSelectedTags(newTags);
+      } else {
+        newTags.add(tag);
+        setSelectedTags(newTags);
+      }
+    },
+  };
 
   // Submit login to server
+  const [signup] = useMutation(ADD_USER);
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const { data } = await signup({
-        variables: { ...formState, username: formState.username.toLowerCase() },
+        variables: {
+          ...formState,
+          username: formState.username.toLowerCase(),
+          likes: Array.from(selectedTags),
+        },
       });
       Auth.login(data.addUser.token);
     } catch (e) {
@@ -126,67 +163,93 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
 
   return (
     <>
-      <TextField
-        margin="dense"
-        id="username"
-        label="Username"
-        type="text"
-        fullWidth
-        variant="standard"
-        error={formValidate.usernameError}
-        helperText={formValidate.usernameHelper}
-        value={formState.username}
-        onChange={updateForm}
-        onBlur={validateField("username")}
-      />
-      <TextField
-        margin="dense"
-        id="email"
-        label="Email"
-        type="email"
-        fullWidth
-        variant="standard"
-        error={formValidate.emailError}
-        helperText={formValidate.emailHelper}
-        value={formState.email}
-        onChange={updateForm}
-        onBlur={validateField("email")}
-      />
-      <TextField
-        margin="dense"
-        id="password"
-        label="Password"
-        type="password"
-        fullWidth
-        variant="standard"
-        error={formValidate.passwordError}
-        value={formState.password}
-        onChange={updateForm}
-      />
-      <TextField
-        margin="dense"
-        id="passwordConfirm"
-        label="Confirm Password"
-        type="password"
-        fullWidth
-        variant="standard"
-        error={formValidate.passwordError}
-        helperText={formValidate.passwordHelper}
-        value={formState.passwordConfirm}
-        onChange={updateForm}
-        onBlur={validateField("password")}
-      />
+      <Stepper activeStep={activeStep} alternativeLabel>
+        {steps.map((step, i) => (
+          <Step key={i}>
+            <StepLabel>{step}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      {activeStep === 0 && (
+        <>
+          <TextField
+            margin="dense"
+            id="username"
+            label="Username"
+            type="text"
+            fullWidth
+            variant="standard"
+            error={formValidate.usernameError}
+            helperText={formValidate.usernameHelper}
+            value={formState.username}
+            onChange={updateForm}
+            onBlur={validateField("username")}
+          />
+          <TextField
+            margin="dense"
+            id="email"
+            label="Email"
+            type="email"
+            fullWidth
+            variant="standard"
+            error={formValidate.emailError}
+            helperText={formValidate.emailHelper}
+            value={formState.email}
+            onChange={updateForm}
+            onBlur={validateField("email")}
+          />
+          <TextField
+            margin="dense"
+            id="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="standard"
+            error={formValidate.passwordError}
+            value={formState.password}
+            onChange={updateForm}
+          />
+          <TextField
+            margin="dense"
+            id="passwordConfirm"
+            label="Confirm Password"
+            type="password"
+            fullWidth
+            variant="standard"
+            error={formValidate.passwordError}
+            helperText={formValidate.passwordHelper}
+            value={formState.passwordConfirm}
+            onChange={updateForm}
+            onBlur={validateField("password")}
+          />
+        </>
+      )}
+      {activeStep === 1 && (
+        <>
+          <TagList label={""} tagStates={tagStates} rows={5} />
+        </>
+      )}
       <DialogActions>
         <Button variant="outlined" onClick={modalStates.closeAuth}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleSignup}
-          disabled={formValidate.preventSubmit}
-        >
-          Sign Up
-        </Button>
+        {activeStep === steps.length - 1 ? (
+          <Button
+            variant="contained"
+            onClick={handleSignup}
+            disabled={formValidate.preventSubmit}
+          >
+            Sign Up
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            onClick={nextStep}
+            disabled={formValidate.preventSubmit}
+          >
+            Next
+          </Button>
+        )}
       </DialogActions>
     </>
   );
