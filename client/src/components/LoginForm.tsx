@@ -64,9 +64,8 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
     }
   }, [formState]);
 
-  const [login] = useMutation(LOGIN);
-
   // Submit login to server
+  const [login] = useMutation(LOGIN);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -75,6 +74,7 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
         variables: { ...formState, username: formState.username.toLowerCase() },
       });
       Auth.login(data.login.token);
+      modalStates.closeAuth();
     } catch (e) {
       console.error(e);
     }
