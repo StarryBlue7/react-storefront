@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { Grid, Typography } from "@mui/material";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -90,19 +90,31 @@ export default function ProductsCarousel({ title, tags, exclude }: Props) {
                 modules={[Navigation]}
                 className="mySwiper"
               >
-                {products.map((product: Product, i: number) =>
-                  // Exclude products with id(s) given as exclude value or exclude array
-                  product._id === exclude || exclude?.includes(product._id) ? (
-                    <></>
-                  ) : (
-                    <SwiperSlide style={styles.slide} key={i}>
-                      <ProductCard
-                        compact
-                        product={product}
-                        key={product._id}
-                      />
-                    </SwiperSlide>
-                  )
+                {products.reduce(
+                  (
+                    filteredProducts: Array<ReactElement>,
+                    product: Product,
+                    i: number
+                  ) => {
+                    // Exclude products with id(s) given as exclude value or exclude array
+                    if (
+                      product._id === exclude ||
+                      exclude?.includes(product._id)
+                    ) {
+                      return filteredProducts;
+                    }
+                    filteredProducts.push(
+                      <SwiperSlide style={styles.slide} key={i}>
+                        <ProductCard
+                          compact
+                          product={product}
+                          key={product._id}
+                        />
+                      </SwiperSlide>
+                    );
+                    return filteredProducts;
+                  },
+                  []
                 )}
               </Swiper>
             </Grid>
