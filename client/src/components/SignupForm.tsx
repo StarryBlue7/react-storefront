@@ -118,7 +118,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
       const { data } = await signup({
         variables: { ...formState, username: formState.username.toLowerCase() },
       });
-      Auth.login(data.login.token);
+      Auth.login(data.addUser.token);
     } catch (e) {
       console.error(e);
     }
