@@ -163,6 +163,9 @@ function NavBar({ toggleDrawers, modalStates }: any) {
                         <Typography textAlign="center">{setting}</Typography>
                       </MenuItem>
                     ))}
+                    <MenuItem onClick={Auth.logout}>
+                      <Typography textAlign="center">Logout</Typography>
+                    </MenuItem>
                   </Menu>
                 </>
               ) : (
