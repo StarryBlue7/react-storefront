@@ -30,7 +30,7 @@ type SignupState = {
   passwordConfirm: string;
 };
 
-type LoginValidation = {
+type SignupValidation = {
   usernameError: boolean;
   usernameHelper: string;
   emailError: boolean;
@@ -68,7 +68,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
   };
 
   // Validations & helper messages
-  const [formValidate, setFormValidate] = React.useState<LoginValidation>({
+  const [formValidate, setFormValidate] = React.useState<SignupValidation>({
     usernameError: false,
     usernameHelper: " ",
     emailError: false,
@@ -83,7 +83,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
    * @returns Validation function
    */
   const validateField = (field: Field) => () => {
-    setFormValidate((prev: LoginValidation) => {
+    setFormValidate((prev: SignupValidation) => {
       const usernameValidation =
         field === "username" || field === "all"
           ? Validate.username(formState.username)
@@ -158,6 +158,9 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
   const [signup] = useMutation(ADD_USER);
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormValidate((prev: SignupValidation) => {
+      return { ...prev, preventSubmit: true };
+    });
 
     try {
       const { data } = await signup({
@@ -168,8 +171,10 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
         },
       });
       Auth.login(data.addUser.token);
+      modalStates.closeAuth();
     } catch (e) {
       console.error(e);
+      // TODO: Add feedback for signup error
     }
   };
 
