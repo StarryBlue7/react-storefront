@@ -67,7 +67,12 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
   // Submit login to server
   const [login] = useMutation(LOGIN);
   const handleLogin = async (e: React.FormEvent) => {
+    // Prevent default form behavior
     e.preventDefault();
+    // Prevent multiple submits
+    setFormValidate((prev: LoginValidation) => {
+      return { ...prev, preventSubmit: true };
+    });
 
     try {
       const { data } = await login({
@@ -75,8 +80,16 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
       });
       Auth.login(data.login.token);
       modalStates.closeAuth();
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      setFormValidate((prev: LoginValidation) => {
+        return {
+          ...prev,
+          usernameError: true,
+          passwordError: true,
+          passwordHelper: e.message,
+        };
+      });
     }
   };
 
