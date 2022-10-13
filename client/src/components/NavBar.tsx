@@ -1,34 +1,39 @@
 import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Button,
+  Tooltip,
+  MenuItem,
+} from "@mui/material";
 import {
   ShoppingCartCheckout,
   ShoppingBasketOutlined,
   AccountCircle,
+  Menu as MenuIcon,
+  Login,
 } from "@mui/icons-material";
 
-function NavBar({ toggleDrawers }: any) {
+import Auth from "../utils/auth";
+
+function NavBar({ toggleDrawers, modalStates }: any) {
   // Page tabs
   const pages = ["Home", "Categories", "Sale"];
   // Account menu options
   const settings = ["Account", "Orders", "Wishlist"];
 
+  // Account menu control
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -124,39 +129,60 @@ function NavBar({ toggleDrawers }: any) {
               </Tooltip>
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <AccountCircle
-                    sx={{
-                      display: { xs: "flex", md: "flex" },
-                      mr: 1,
-                      color: "white",
+              {Auth.loggedIn() ? (
+                <>
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <AccountCircle
+                        sx={{
+                          display: { xs: "flex", md: "flex" },
+                          mr: 1,
+                          color: "white",
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
                     }}
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    {settings.map((setting) => (
+                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    ))}
+                    <MenuItem onClick={Auth.logout}>
+                      <Typography textAlign="center">Logout</Typography>
+                    </MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <>
+                  <Tooltip title="Login or signup">
+                    <IconButton onClick={modalStates.openAuth}>
+                      <Login
+                        sx={{
+                          display: { xs: "flex", md: "flex" },
+                          mr: 1,
+                          color: "white",
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              )}
             </Box>
           </Toolbar>
         </Container>

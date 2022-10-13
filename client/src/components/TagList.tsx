@@ -8,7 +8,22 @@ type Tag = {
   name: string;
 };
 
-function TagList({ tagStates }: any) {
+type TagStates = {
+  selectedTags: Set<string>;
+  toggleTag: Function;
+};
+
+type TagListProps = {
+  label?: string;
+  rows?: number;
+  tagStates: TagStates;
+};
+
+function TagList({
+  label = `Popular Tags: `,
+  tagStates,
+  rows = 1,
+}: TagListProps) {
   const { loading, data } = useQuery(QUERY_TAGS, {
     fetchPolicy: "no-cache",
   });
@@ -21,11 +36,11 @@ function TagList({ tagStates }: any) {
         overflow: "hidden",
         textOverflow: "ellipsis",
         display: "-webkit-box",
-        WebkitLineClamp: "1",
+        WebkitLineClamp: rows,
         WebkitBoxOrient: "vertical",
       }}
     >
-      {`Popular Tags: `}
+      {label}
       {loading ? (
         <Chip label={"Loading tags..."} />
       ) : (
