@@ -60,9 +60,8 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
     });
 
     if (
-      formValidate.usernameError ||
-      formValidate.emailError ||
-      formValidate.passwordError
+      field === "passwordConfirm" &&
+      value.length === formState.password.length
     ) {
       validateField("all")();
     }
@@ -118,6 +117,18 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
     });
   };
 
+  // Revalidate errored fields on form update
+  React.useEffect(() => {
+    if (
+      formValidate.usernameError ||
+      formValidate.emailError ||
+      formValidate.passwordError
+    ) {
+      validateField("all")();
+    }
+    // Prevent eslint warning enforcing cyclical useEffect setting
+  }, [formState]); // eslint-disable-line
+
   // Signup steps
   const steps = ["Account Info", "Personalize"];
   const [activeStep, setActiveStep] = React.useState<number>(0);
@@ -125,6 +136,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
     setActiveStep(activeStep + 1);
   };
 
+  // Tag selection for user likes
   const [selectedTags, setSelectedTags] = React.useState<SelectedTags>(
     new Set()
   );
