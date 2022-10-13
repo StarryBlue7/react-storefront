@@ -21,7 +21,18 @@ import {
 
 import Auth from "../utils/auth";
 
-function NavBar({ toggleDrawers, modalStates }: any) {
+type ModalStates = {
+  authOpen: boolean;
+  openAuth: () => void;
+  closeAuth: () => void;
+};
+
+type NavBarProps = {
+  toggleDrawers: Function;
+  modalStates: ModalStates;
+};
+
+function NavBar({ toggleDrawers, modalStates }: NavBarProps) {
   // Page tabs
   const pages = ["Home", "Categories", "Sale"];
   // Account menu options
