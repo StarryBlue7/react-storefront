@@ -92,6 +92,7 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
         id="username"
         label="Username"
         type="text"
+        autoComplete="username"
         fullWidth
         variant="standard"
         error={formValidate.usernameError}
@@ -104,6 +105,7 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
         id="password"
         label="Password"
         type="password"
+        autoComplete="current-password"
         fullWidth
         variant="standard"
         error={formValidate.passwordError}

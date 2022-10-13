@@ -189,6 +189,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
             id="username"
             label="Username"
             type="text"
+            autoComplete="username"
             fullWidth
             variant="standard"
             error={formValidate.usernameError}
@@ -202,6 +203,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
             id="email"
             label="Email"
             type="email"
+            autoComplete="email"
             fullWidth
             variant="standard"
             error={formValidate.emailError}
@@ -215,6 +217,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
             id="password"
             label="Password"
             type="password"
+            autoComplete="new-password"
             fullWidth
             variant="standard"
             error={formValidate.passwordError}
@@ -226,6 +229,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
             id="passwordConfirm"
             label="Confirm Password"
             type="password"
+            autoComplete="new-password"
             fullWidth
             variant="standard"
             error={formValidate.passwordError}
