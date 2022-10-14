@@ -6,15 +6,7 @@ import {
   ListItemText,
   Collapse,
 } from "@mui/material";
-
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-
-import { useQuery } from "@apollo/client";
-import { QUERY_CATEGORIES } from "../utils/queries";
-import { NavLink } from "react-router-dom";
 
 type Category = {
   _id: string;
@@ -35,16 +27,19 @@ type Props = {
   layer?: number;
 };
 
+/**
+ * Recursively generates collapsible lists of subcategories from parent
+ */
 export default function CategoryTree({
   categoryStates,
   category,
   autoOpen = 1,
   layer = 1,
 }: Props) {
-  const [open, setOpen] = React.useState<boolean>(autoOpen >= layer);
-
-  const handleClick = () => {
-    setOpen(!open);
+  // Sublist collapsing state, initially set dependent on autoOpen value and current layer
+  const [subList, setSubList] = React.useState<boolean>(autoOpen >= layer);
+  const toggleSubList = () => {
+    setSubList(!subList);
   };
 
   return (
@@ -56,17 +51,17 @@ export default function CategoryTree({
         >
           <ListItemText primary={category.name} />
         </ListItemButton>
-        {category?.subCategories && category?.subCategories.length > 0 && (
-          <ListItemButton onClick={handleClick} sx={{ flexGrow: 0 }}>
-            {open ? <ExpandLess /> : <ExpandMore />}
+        {category?.subCategories && category.subCategories.length > 0 && (
+          <ListItemButton onClick={toggleSubList} sx={{ flexGrow: 0 }}>
+            {subList ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         )}
       </ListItem>
-      {category?.subCategories && category?.subCategories.length > 0 && (
-        <Collapse in={open}>
+      {category?.subCategories && category.subCategories.length > 0 && (
+        <Collapse in={subList}>
           <List sx={{ pl: 2 }}>
             {category?.subCategories &&
-              category?.subCategories.map((subcategory: any) => (
+              category.subCategories.map((subcategory: any) => (
                 <CategoryTree
                   category={subcategory}
                   categoryStates={categoryStates}
