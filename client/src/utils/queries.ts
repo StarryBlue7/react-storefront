@@ -14,13 +14,17 @@ export const QUERY_CATEGORIES = gql`
     categories {
       _id
       name
-      parentCategory {
-        _id
-        name
-      }
       subCategories {
         name
         _id
+        subCategories {
+          _id
+          name
+          subCategories {
+            _id
+            name
+          }
+        }
       }
     }
   }
