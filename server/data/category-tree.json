@@ -12,7 +12,10 @@
       },
       {
         "name": "Bottoms",
-        "subCategories": [{ "name": "Pants" }, { "name": "Shorts" }]
+        "subCategories": [
+          { "name": "Pants", "subCategories": [{ "name": "Jeans" }] },
+          { "name": "Shorts" }
+        ]
       },
       {
         "name": "Hats"
