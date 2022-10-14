@@ -96,6 +96,7 @@ function Main() {
       />
       <AuthModal modalStates={modalStates} />
       <CategoriesDrawer
+        mainPages={mainPages}
         open={drawers.categories}
         toggleDrawers={toggleDrawers}
         categoryStates={categoryStates}
