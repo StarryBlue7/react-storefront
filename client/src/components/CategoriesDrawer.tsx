@@ -16,12 +16,13 @@ import MailIcon from "@mui/icons-material/Mail";
 import { useQuery } from "@apollo/client";
 import { QUERY_CATEGORIES } from "../utils/queries";
 import { NavLink } from "react-router-dom";
+import CategoryTree from "./CategoryTree";
 
 type Category = {
   _id: string;
   name: string;
   parentCategory?: string;
-  subCategories?: string;
+  subCategories?: Array<Category>;
 };
 
 type CategoryStates = {
@@ -65,10 +66,10 @@ export default function CategoriesDrawer({
             width: 250,
           }}
           role="presentation"
-          onClick={toggleDrawers("categories", false)}
-          onKeyDown={toggleDrawers("categories", false)}
+          // onKeyDown={toggleDrawers("categories", false)}
         >
           <List
+            onClick={toggleDrawers("categories", false)}
             sx={{
               display: { sm: "flex", md: "none" },
               flexDirection: "column",
@@ -110,18 +111,10 @@ export default function CategoriesDrawer({
           <Divider />
           <List>
             {categories.map((category: Category) => (
-              <ListItem
-                key={category.name}
-                onClick={categoryStates.selectCategory(category._id)}
-                disablePadding
-              >
-                <ListItemButton>
-                  <ListItemIcon>
-                    <InboxIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={category.name} />
-                </ListItemButton>
-              </ListItem>
+              <CategoryTree
+                category={category}
+                categoryStates={categoryStates}
+              />
             ))}
           </List>
         </Box>
