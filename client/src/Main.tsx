@@ -10,12 +10,24 @@ import CartButton from "./components/CartButton";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 
-import Auth from "./utils/auth";
+// import Auth from "./utils/auth";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
 type SelectedTags = Set<string>;
 type SelectedCategory = string;
+
+// Page tabs
+const mainPages = [
+  { label: "Sale", path: "/sale" },
+  { label: "New", path: "/new" },
+];
+// Account menu options
+const accountPages = [
+  { label: "Account", path: "/account" },
+  { label: "Orders", path: "/account/orders" },
+  { label: "Wishlist", path: "/account/wishlist" },
+];
 
 function Main() {
   // Login/signup modal control
@@ -76,7 +88,12 @@ function Main() {
 
   return (
     <Router>
-      <NavBar toggleDrawers={toggleDrawers} modalStates={modalStates} />
+      <NavBar
+        mainPages={mainPages}
+        accountPages={accountPages}
+        toggleDrawers={toggleDrawers}
+        modalStates={modalStates}
+      />
       <AuthModal modalStates={modalStates} />
       <CategoriesDrawer
         open={drawers.categories}
