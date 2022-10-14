@@ -31,10 +31,17 @@ type CategoryStates = {
 type Props = {
   categoryStates: CategoryStates;
   category: Category;
+  autoOpen?: number;
+  layer?: number;
 };
 
-export default function CategoryTree({ categoryStates, category }: Props) {
-  const [open, setOpen] = React.useState<boolean>(true);
+export default function CategoryTree({
+  categoryStates,
+  category,
+  autoOpen = 1,
+  layer = 1,
+}: Props) {
+  const [open, setOpen] = React.useState<boolean>(autoOpen >= layer);
 
   const handleClick = () => {
     setOpen(!open);
@@ -63,6 +70,8 @@ export default function CategoryTree({ categoryStates, category }: Props) {
                 <CategoryTree
                   category={subcategory}
                   categoryStates={categoryStates}
+                  autoOpen={autoOpen}
+                  layer={layer + 1}
                 />
               ))}
           </List>
