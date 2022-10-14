@@ -22,6 +22,7 @@ const categorySchema = new Schema<ICategory>(
       {
         type: Schema.Types.ObjectId,
         ref: "Category",
+        autopopulate: true,
       },
     ],
   },
@@ -31,6 +32,8 @@ const categorySchema = new Schema<ICategory>(
     },
   }
 );
+
+categorySchema.plugin(require("mongoose-autopopulate"));
 
 const Category = model("Category", categorySchema);
 
