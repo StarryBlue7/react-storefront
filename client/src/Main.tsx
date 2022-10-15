@@ -57,7 +57,9 @@ function Main() {
       ) {
         return;
       }
-      setDrawers({ ...drawers, [drawer]: open });
+      setDrawers((prev) => {
+        return { ...prev, [drawer]: open };
+      });
     };
 
   // Product tags selection
@@ -85,6 +87,14 @@ function Main() {
     selectedCategory,
     selectCategory: (category: string) => () => setSelectedCategory(category),
   };
+
+  // Close drawers on category change
+  React.useEffect(() => {
+    setDrawers({
+      categories: false,
+      cart: false,
+    });
+  }, [selectedCategory]);
 
   return (
     <Router>
