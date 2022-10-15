@@ -48,7 +48,7 @@ export default function CategoryTree({
       <ListItem key={category.name} disablePadding>
         <Link to="/" style={{ flexGrow: 1, textDecoration: "none" }}>
           <ListItemButton onClick={categoryStates.selectCategory(category._id)}>
-            <ListItemText primary={category.name} />
+            <ListItemText sx={{ color: "black" }} primary={category.name} />
           </ListItemButton>
         </Link>
         {category?.subCategories && category.subCategories.length > 0 && (
