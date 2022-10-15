@@ -7,6 +7,7 @@ import {
   Collapse,
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 type Category = {
   _id: string;
@@ -45,12 +46,11 @@ export default function CategoryTree({
   return (
     <>
       <ListItem key={category.name} disablePadding>
-        <ListItemButton
-          sx={{ flexGrow: 1 }}
-          onClick={categoryStates.selectCategory(category._id)}
-        >
-          <ListItemText primary={category.name} />
-        </ListItemButton>
+        <Link to="/" style={{ flexGrow: 1, textDecoration: "none" }}>
+          <ListItemButton onClick={categoryStates.selectCategory(category._id)}>
+            <ListItemText primary={category.name} />
+          </ListItemButton>
+        </Link>
         {category?.subCategories && category.subCategories.length > 0 && (
           <ListItemButton onClick={toggleSubList} sx={{ flexGrow: 0 }}>
             {subList ? <ExpandLess /> : <ExpandMore />}
