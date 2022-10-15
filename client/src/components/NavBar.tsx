@@ -12,7 +12,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import {
-  ShoppingCartCheckout,
   ShoppingBasketOutlined,
   AccountCircle,
   Menu as MenuIcon,
@@ -20,13 +19,33 @@ import {
 } from "@mui/icons-material";
 
 import Auth from "../utils/auth";
+import NavLogo from "./NavLogo";
+import { NavLink } from "react-router-dom";
 
-function NavBar({ toggleDrawers, modalStates }: any) {
-  // Page tabs
-  const pages = ["Home", "Categories", "Sale"];
-  // Account menu options
-  const settings = ["Account", "Orders", "Wishlist"];
+type Page = {
+  label: string;
+  path: string;
+};
 
+type ModalStates = {
+  authOpen: boolean;
+  openAuth: () => void;
+  closeAuth: () => void;
+};
+
+type NavBarProps = {
+  mainPages: Page[];
+  accountPages: Page[];
+  toggleDrawers: Function;
+  modalStates: ModalStates;
+};
+
+function NavBar({
+  mainPages,
+  accountPages,
+  toggleDrawers,
+  modalStates,
+}: NavBarProps) {
   // Account menu control
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -43,31 +62,11 @@ function NavBar({ toggleDrawers, modalStates }: any) {
       <AppBar position="static">
         <Container sx={{ maxWidth: { xl: "xl", lg: "lg" } }}>
           <Toolbar variant="dense" disableGutters>
-            <ShoppingCartCheckout
-              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              QuickShop
-            </Typography>
-
+            {/* Hamburger menu for mobile/tablet */}
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
-                aria-label="account of current user"
+                aria-label="main menu"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={toggleDrawers("categories", true)}
@@ -76,36 +75,43 @@ function NavBar({ toggleDrawers, modalStates }: any) {
                 <MenuIcon />
               </IconButton>
             </Box>
-            <ShoppingCartCheckout
-              sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
-            />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              QuickShop
-            </Typography>
+
+            {/* Logo */}
+            <NavLogo />
+
+            {/* Page tabs */}
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
+              <NavLink to="/" style={{ textDecoration: "none" }}>
                 <Button
-                  key={page}
-                  onClick={toggleDrawers("categories", true)}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                  }}
                 >
-                  {page}
+                  Home
                 </Button>
+              </NavLink>
+              <Button
+                onClick={toggleDrawers("categories", true)}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                }}
+              >
+                Categories
+              </Button>
+              {mainPages.map((page) => (
+                <NavLink
+                  key={page.label}
+                  to={page.path}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button sx={{ my: 2, color: "white", display: "block" }}>
+                    {page.label}
+                  </Button>
+                </NavLink>
               ))}
             </Box>
 
@@ -158,13 +164,23 @@ function NavBar({ toggleDrawers, modalStates }: any) {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                   >
-                    {settings.map((setting) => (
-                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography textAlign="center">{setting}</Typography>
-                      </MenuItem>
+                    {accountPages.map((option) => (
+                      <NavLink
+                        to={option.path}
+                        style={{ textDecoration: "none" }}
+                        key={option.label}
+                      >
+                        <MenuItem onClick={handleCloseUserMenu}>
+                          <Typography textAlign="center" color="primary">
+                            {option.label}
+                          </Typography>
+                        </MenuItem>
+                      </NavLink>
                     ))}
                     <MenuItem onClick={Auth.logout}>
-                      <Typography textAlign="center">Logout</Typography>
+                      <Typography textAlign="center" color="primary">
+                        Logout
+                      </Typography>
                     </MenuItem>
                   </Menu>
                 </>
