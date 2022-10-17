@@ -8,15 +8,15 @@ import {
   ListItemText,
   ListItemIcon,
   Divider,
+  Typography,
 } from "@mui/material";
-
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_CATEGORIES } from "../utils/queries";
 import { NavLink } from "react-router-dom";
 import CategoryTree from "./CategoryTree";
+import { Home } from "@mui/icons-material";
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 
 type Category = {
   _id: string;
@@ -33,6 +33,7 @@ type CategoryStates = {
 type Page = {
   label: string;
   path: string;
+  icon: ReactJSXElement;
 };
 
 type Props = {
@@ -42,12 +43,23 @@ type Props = {
   categoryStates: CategoryStates;
 };
 
+const styles = {
+  pageIcon: {
+    pr: 2,
+    minWidth: 0,
+  },
+};
+
+/**
+ * Sidebar listing category trees, also lists shop pages in mobile/tablet view
+ */
 export default function CategoriesDrawer({
   mainPages,
   open,
   toggleDrawers,
   categoryStates,
 }: Props) {
+  // Retrieve category root nodes with populated child nodes
   const { data } = useQuery(QUERY_CATEGORIES, {
     fetchPolicy: "no-cache",
   });
@@ -66,7 +78,6 @@ export default function CategoriesDrawer({
             width: 250,
           }}
           role="presentation"
-          // onKeyDown={toggleDrawers("categories", false)}
         >
           <List
             onClick={toggleDrawers("categories", false)}
@@ -81,14 +92,14 @@ export default function CategoriesDrawer({
                 disablePadding
               >
                 <ListItemButton>
-                  <ListItemIcon>
-                    <MailIcon />
+                  <ListItemIcon sx={styles.pageIcon}>
+                    <Home />
                   </ListItemIcon>
                   <ListItemText primary={"Home"} />
                 </ListItemButton>
               </ListItem>
             </NavLink>
-            {mainPages.map((page, index) => (
+            {mainPages.map((page) => (
               <NavLink
                 to={page.path}
                 style={{ textDecoration: "none" }}
@@ -99,8 +110,8 @@ export default function CategoriesDrawer({
                   disablePadding
                 >
                   <ListItemButton>
-                    <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    <ListItemIcon sx={styles.pageIcon}>
+                      {page.icon}
                     </ListItemIcon>
                     <ListItemText primary={page.label} />
                   </ListItemButton>
@@ -109,6 +120,9 @@ export default function CategoriesDrawer({
             ))}
           </List>
           <Divider />
+          <Typography variant="h5" sx={{ px: 2, pt: 2 }}>
+            Shop Categories
+          </Typography>
           <List>
             {categories.map((category: Category) => (
               <CategoryTree
