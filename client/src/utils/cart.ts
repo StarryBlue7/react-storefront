@@ -7,13 +7,15 @@ type Product = {
 
 type Cart = Product[];
 
+const CART_KEY = "user_cart";
+
 class CartService {
   /**
    * Get cart array of product objects from local storage
    * @return {Cart}
    */
   getLocal(): Cart {
-    const cart = localStorage.getItem("user_cart") || "[]";
+    const cart = localStorage.getItem(CART_KEY) || "[]";
     return JSON.parse(cart);
   }
 
@@ -22,7 +24,7 @@ class CartService {
    * @param {Cart} cart Updated cart
    */
   setLocal(cart: Cart): void {
-    localStorage.setItem("user_cart", JSON.stringify(cart));
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
   }
 
   /**
@@ -46,6 +48,25 @@ class CartService {
       this.setLocal(cart);
     }
     return this.getLocal();
+  }
+
+  /**
+   * Remove total qty of single product by ID
+   * @param {string} productId ID of product to remove
+   * @returns {Cart} Updated cart
+   */
+  deleteItem(productId: string): Cart {
+    const cart = this.getLocal();
+    cart.filter((item) => item.product._id !== productId);
+    this.setLocal(cart);
+    return this.getLocal();
+  }
+
+  /**
+   * Clear cart in local storage
+   */
+  clearAll(): void {
+    localStorage.removeItem(CART_KEY);
   }
 }
 
