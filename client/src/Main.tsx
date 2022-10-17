@@ -9,6 +9,7 @@ import CartButton from "./components/CartButton";
 
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
+import { Discount, NewReleases } from "@mui/icons-material";
 
 // import Auth from "./utils/auth";
 
@@ -19,8 +20,8 @@ type SelectedCategory = string;
 
 // Page tabs
 const mainPages = [
-  { label: "Sale", path: "/sale" },
-  { label: "New", path: "/new" },
+  { label: "Sale", path: "/sale", icon: <Discount /> },
+  { label: "New", path: "/new", icon: <NewReleases /> },
 ];
 // Account menu options
 const accountPages = [
