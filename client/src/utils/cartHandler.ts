@@ -1,15 +1,21 @@
 type Product = {
-  product: {
-    _id: string;
-  };
+  _id: string;
+  imgURL: string;
+  fullName: string;
+  shortName: string;
+  price: number;
+};
+
+type Item = {
+  product: Product;
   quantity: number;
 };
 
-type Cart = Product[];
+type Cart = Item[];
 
 const CART_KEY = "user_cart";
 
-class CartService {
+class CartHandler {
   /**
    * Get cart array of product objects from local storage
    * @return {Cart}
@@ -29,25 +35,24 @@ class CartService {
 
   /**
    * Add to or increment product quantity in cart
-   * @param {Product} newItem Product to be added/incremented
+   * @param {Product} product Product to be added/incremented
+   * @param {number} quantity Optional quantity to add if greater than 1
    * @returns {Cart} Updated cart
    */
-  addItem(newItem: Product): Cart {
-    const cart = this.getLocal();
+  addItem(prev: Cart, product: Product, quantity: number = 1): Cart {
     let added = false;
-    for (let cartItem of cart) {
-      if (cartItem.product._id === newItem.product._id) {
-        cartItem.quantity += newItem.quantity;
-        this.setLocal(cart);
+    const cart = prev.map((item: Item) => {
+      if (item.product._id === product._id) {
         added = true;
-        break;
+        const newQty = item.quantity + quantity;
+        return { ...item, quantity: newQty };
       }
-    }
+      return item;
+    });
     if (!added) {
-      cart.push(newItem);
-      this.setLocal(cart);
+      cart.push({ product, quantity });
     }
-    return this.getLocal();
+    return cart;
   }
 
   /**
@@ -55,19 +60,18 @@ class CartService {
    * @param {string} productId ID of product to remove
    * @returns {Cart} Updated cart
    */
-  deleteItem(productId: string): Cart {
-    const cart = this.getLocal();
+  deleteItem(prev: Cart, productId: string): Cart {
+    const cart = [...prev];
     cart.filter((item) => item.product._id !== productId);
-    this.setLocal(cart);
-    return this.getLocal();
+    return cart;
   }
 
   /**
-   * Clear cart in local storage
+   * Clear cart
    */
-  clearAll(): void {
-    localStorage.removeItem(CART_KEY);
+  clearAll(): Cart {
+    return [];
   }
 }
 
-export default new CartService();
+export default new CartHandler();
