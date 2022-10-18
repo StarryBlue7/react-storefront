@@ -21,7 +21,7 @@ const styles = {
   },
 };
 
-export default function ProductCard({ product, compact }: any) {
+export default function ProductCard({ product, compact, cartHandler }: any) {
   return (
     <Card
       sx={{
@@ -100,7 +100,11 @@ export default function ProductCard({ product, compact }: any) {
       </Link>
       <Box sx={{ flexGrow: 1 }} />
       <CardActions>
-        <Button size="small" color="primary">
+        <Button
+          size="small"
+          color="primary"
+          onClick={cartHandler.addToCart(product)}
+        >
           Add to Cart
         </Button>
       </CardActions>
