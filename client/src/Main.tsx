@@ -11,12 +11,31 @@ import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 import { Discount, NewReleases } from "@mui/icons-material";
 
-// import Auth from "./utils/auth";
+import Auth from "./utils/auth";
+// import Cart from "./utils/cart";
+import Cart from "./utils/cartHandler";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { QUERY_CART } from "./utils/queries";
+import { UPDATE_CART } from "./utils/mutations";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
+
 type SelectedTags = Set<string>;
 type SelectedCategory = string;
+
+type Product = {
+  _id: string;
+  imgURL: string;
+  fullName: string;
+  shortName: string;
+  price: number;
+};
+type Item = {
+  product: Product;
+  quantity: number;
+};
+type CartState = Item[];
 
 // Page tabs
 const mainPages = [
@@ -62,6 +81,61 @@ function Main() {
         return { ...prev, [drawer]: open };
       });
     };
+
+  // User account cart data retrieval
+  const [fetchCart, { loading: cartLoading, data: cartData }] =
+    useLazyQuery(QUERY_CART);
+  // const { loading: cartLoading, data: cartData, refetch: fetchCart } =
+  // useQuery(QUERY_CART);
+  const [updateAccountCart] = useMutation(UPDATE_CART);
+
+  const loggedIn = Auth.loggedIn();
+  const accountCart = React.useMemo(() => cartData?.me?.cart || [], [cartData]);
+
+  const [cart, setCart] = React.useState<CartState>(Cart.getLocal());
+
+  React.useEffect(() => {
+    async function retrieveCart() {
+      if (loggedIn) {
+        await fetchCart();
+        setCart(accountCart);
+      }
+    }
+    retrieveCart();
+  }, [loggedIn, fetchCart, accountCart]);
+
+  // Keep local & account carts updated to app cart state
+  React.useEffect(() => {
+    console.log("cart change", cart);
+    async function refreshAccountCart() {
+      if (loggedIn) {
+        // If local cart is populated, update account version
+        if (cart.length > 0) {
+          const newCart = cart.map((item: Item) => {
+            return { product: item.product._id, quantity: item.quantity };
+          });
+          await updateAccountCart({ variables: { cart: newCart } });
+          await fetchCart();
+          console.log("refreshed", cart);
+        } else {
+          // If local cart is empty, use account data
+          setCart(accountCart);
+        }
+      }
+    }
+    refreshAccountCart();
+    // Update local storage cart
+    cart.length && Cart.setLocal(cart);
+  }, [cart, loggedIn, fetchCart, updateAccountCart, accountCart]);
+
+  const cartHandler = {
+    cartLoading,
+    accountCart,
+    cart,
+    addToCart: (product: Product, quantity?: number) => () => {
+      setCart((prev: CartState) => Cart.addItem(prev, product, quantity));
+    },
+  };
 
   // Product tags selection
   const [selectedTags, setSelectedTags] = React.useState<SelectedTags>(
@@ -112,7 +186,11 @@ function Main() {
         toggleDrawers={toggleDrawers}
         categoryStates={categoryStates}
       />
-      <CartDrawer open={drawers.cart} toggleDrawers={toggleDrawers} />
+      <CartDrawer
+        open={drawers.cart}
+        toggleDrawers={toggleDrawers}
+        cartHandler={cartHandler}
+      />
       <Container
         sx={{
           maxWidth: { xl: "xl", lg: "lg" },
@@ -125,7 +203,11 @@ function Main() {
           <Route
             path="/"
             element={
-              <Home tagStates={tagStates} categoryStates={categoryStates} />
+              <Home
+                tagStates={tagStates}
+                categoryStates={categoryStates}
+                cartHandler={cartHandler}
+              />
             }
           />
           <Route path="/products/:productId" element={<ProductPage />} />
