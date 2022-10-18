@@ -117,3 +117,23 @@ export const QUERY_ME = gql`
     }
   }
 `;
+
+export const QUERY_CART = gql`
+  query cart {
+    me {
+      _id
+      cart {
+        product {
+          _id
+          imgURL
+          fullName
+          shortName
+          price
+          modelNumber
+          description
+        }
+        quantity
+      }
+    }
+  }
+`;
