@@ -6,12 +6,16 @@ import TagList from "../components/TagList";
 /**
  * Homepage component
  */
-export default function Home({ tagStates, categoryStates }: any) {
+export default function Home({ tagStates, categoryStates, cartHandler }: any) {
   return (
     <>
       <PromoCarousel />
       <TagList tagStates={tagStates} />
-      <ProductsResults tagStates={tagStates} categoryStates={categoryStates} />
+      <ProductsResults
+        tagStates={tagStates}
+        categoryStates={categoryStates}
+        cartHandler={cartHandler}
+      />
     </>
   );
 }

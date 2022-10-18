@@ -13,7 +13,11 @@ interface Product {
   description: string;
 }
 
-export default function ProductsResults({ tagStates, categoryStates }: any) {
+export default function ProductsResults({
+  tagStates,
+  categoryStates,
+  cartHandler,
+}: any) {
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
     variables: {
       tags:
@@ -34,7 +38,12 @@ export default function ProductsResults({ tagStates, categoryStates }: any) {
       ) : (
         products.map((product: Product, i: number) => (
           <Grid item xs={12} sm={6} md={4} lg={3} m={0} key={i}>
-            <ProductCard product={product} key={product._id} m={0} />
+            <ProductCard
+              product={product}
+              key={product._id}
+              m={0}
+              cartHandler={cartHandler}
+            />
           </Grid>
         ))
       )}
