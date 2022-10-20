@@ -19,6 +19,8 @@ import CartItem from "./CartItem";
 
 const styles = {
   totals: { textAlign: "right", width: "50%" },
+  cartButton: { flexGrow: 1 },
+  cartButtonIcon: { minWidth: 0, mr: 1 },
 };
 
 export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
@@ -66,15 +68,22 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
                 sx={styles.totals}
               />
             </ListItem>
-            <ListItem key={"cart-options"}>
-              <Button onClick={cartHandler.clearAll()} variant="outlined">
-                <ListItemIcon sx={{ minWidth: 0, mr: 1 }}>
+            <ListItem
+              key={"cart-options"}
+              sx={{ display: "flex", flexFlow: "row wrap", gap: 1 }}
+            >
+              <Button
+                onClick={cartHandler.clearAll()}
+                variant="outlined"
+                sx={styles.cartButton}
+              >
+                <ListItemIcon sx={styles.cartButtonIcon}>
                   <RemoveShoppingCartOutlined />
                 </ListItemIcon>
                 <ListItemText primary={"Empty Cart"} />
               </Button>
-              <Button variant="contained">
-                <ListItemIcon sx={{ minWidth: 0, mr: 1 }}>
+              <Button variant="contained" sx={styles.cartButton}>
+                <ListItemIcon sx={styles.cartButtonIcon}>
                   <ShoppingCartCheckout />
                 </ListItemIcon>
                 <ListItemText primary={"Checkout"} />
