@@ -61,12 +61,13 @@ export default function CategoryTree({
         <Collapse in={subList}>
           <List sx={{ pl: 2 }}>
             {category?.subCategories &&
-              category.subCategories.map((subcategory: any) => (
+              category.subCategories.map((subcategory: Category) => (
                 <CategoryTree
                   category={subcategory}
                   categoryStates={categoryStates}
                   autoOpen={autoOpen}
                   layer={layer + 1}
+                  key={subcategory.name}
                 />
               ))}
           </List>
