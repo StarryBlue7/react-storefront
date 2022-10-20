@@ -114,7 +114,7 @@ const resolvers = {
         user = noAccount._id;
       }
       return (await User.findByIdAndUpdate(user, { cart })).populate({
-        path: "items",
+        path: "cart",
         populate: { path: "product" },
       });
     },

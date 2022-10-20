@@ -1,17 +1,29 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import {
+  Box,
+  Drawer,
+  Button,
+  List,
+  Divider,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import {
+  ShoppingCartCheckout,
+  RemoveShoppingCartOutlined,
+} from "@mui/icons-material";
 
-export default function CartDrawer({ open, toggleDrawers }: any) {
+import CartItem from "./CartItem";
+
+const styles = {
+  totals: { textAlign: "right", width: "50%" },
+  cartButton: { flexGrow: 1 },
+  cartButtonIcon: { minWidth: 0, mr: 1 },
+};
+
+export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
   return (
     <>
       <Drawer
@@ -21,43 +33,60 @@ export default function CartDrawer({ open, toggleDrawers }: any) {
       >
         <Box
           sx={{
-            width: 250,
+            width: { xs: 300, sm: 350, md: 400 },
           }}
           role="presentation"
-          onClick={toggleDrawers("cart", false)}
-          onKeyDown={toggleDrawers("cart", false)}
         >
-          <List>
-            {["1", "2", "3", "4"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={"Item " + text} />
-                </ListItemButton>
-              </ListItem>
+          <Typography variant="h5" sx={{ px: 2, pt: 2 }}>
+            Shopping Cart
+            {cartHandler.cart.length > 0
+              ? ` (${cartHandler.totals.totalQty})`
+              : ""}
+          </Typography>
+          <List sx={{ minHeight: "40vh" }}>
+            {cartHandler.cart.map((item: any) => (
+              <CartItem
+                item={item}
+                cartHandler={cartHandler}
+                key={item.product._id}
+              />
             ))}
           </List>
           <Divider />
           <List>
-            <ListItem key={"total"}>
-              <ListItemText primary={"Subtotal: " + 8} />
+            <ListItem key={"total-items"}>
+              <ListItemText primary={"Items:"} sx={styles.totals} />
+              <ListItemText
+                primary={cartHandler.totals.totalQty}
+                sx={styles.totals}
+              />
             </ListItem>
-            <ListItem key={"checkout"}>
-              <Button variant="contained">
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Checkout"} />
-              </Button>
+            <ListItem key={"subtotal"}>
+              <ListItemText primary={"Subtotal:"} sx={styles.totals} />
+              <ListItemText
+                primary={"$" + cartHandler.totals.totalPrice}
+                sx={styles.totals}
+              />
             </ListItem>
-            <ListItem key={"clear-cart"}>
-              <Button variant="outlined">
-                <ListItemIcon>
-                  <InboxIcon />
+            <ListItem
+              key={"cart-options"}
+              sx={{ display: "flex", flexFlow: "row wrap", gap: 1 }}
+            >
+              <Button
+                onClick={cartHandler.clearAll()}
+                variant="outlined"
+                sx={styles.cartButton}
+              >
+                <ListItemIcon sx={styles.cartButtonIcon}>
+                  <RemoveShoppingCartOutlined />
                 </ListItemIcon>
                 <ListItemText primary={"Empty Cart"} />
+              </Button>
+              <Button variant="contained" sx={styles.cartButton}>
+                <ListItemIcon sx={styles.cartButtonIcon}>
+                  <ShoppingCartCheckout />
+                </ListItemIcon>
+                <ListItemText primary={"Checkout"} />
               </Button>
             </ListItem>
           </List>

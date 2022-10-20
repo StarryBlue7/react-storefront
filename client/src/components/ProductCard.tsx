@@ -12,6 +12,22 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  imgURL: string;
+  description: string;
+  tags: string[];
+  price: number;
+};
+
+type ProductCardProps = {
+  product: Product;
+  compact?: boolean;
+  cartHandler?: any;
+};
+
 const styles = {
   compactImg: {
     height: 200,
@@ -21,7 +37,11 @@ const styles = {
   },
 };
 
-export default function ProductCard({ product, compact }: any) {
+export default function ProductCard({
+  product,
+  compact,
+  cartHandler,
+}: ProductCardProps) {
   return (
     <Card
       sx={{
@@ -99,11 +119,17 @@ export default function ProductCard({ product, compact }: any) {
         </CardActionArea>
       </Link>
       <Box sx={{ flexGrow: 1 }} />
-      <CardActions>
-        <Button size="small" color="primary">
-          Add to Cart
-        </Button>
-      </CardActions>
+      {cartHandler && (
+        <CardActions>
+          <Button
+            size="small"
+            color="primary"
+            onClick={cartHandler.addToCart(product)}
+          >
+            Add to Cart
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 }

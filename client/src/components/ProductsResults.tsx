@@ -5,15 +5,21 @@ import ProductCard from "./ProductCard";
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../utils/queries";
 
-interface Product {
+type Product = {
   _id: string;
   fullName: string;
   shortName: string;
   imgURL: string;
   description: string;
-}
+  tags: string[];
+  price: number;
+};
 
-export default function ProductsResults({ tagStates, categoryStates }: any) {
+export default function ProductsResults({
+  tagStates,
+  categoryStates,
+  cartHandler,
+}: any) {
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
     variables: {
       tags:
@@ -34,7 +40,11 @@ export default function ProductsResults({ tagStates, categoryStates }: any) {
       ) : (
         products.map((product: Product, i: number) => (
           <Grid item xs={12} sm={6} md={4} lg={3} m={0} key={i}>
-            <ProductCard product={product} key={product._id} m={0} />
+            <ProductCard
+              product={product}
+              key={product._id}
+              cartHandler={cartHandler}
+            />
           </Grid>
         ))
       )}

@@ -21,9 +21,11 @@ type Product = {
   shortName: string;
   imgURL: string;
   description: string;
+  tags: string[];
+  price: number;
 };
 
-type Props = {
+type CarouselProps = {
   title?: string;
   tags?: string[];
   exclude?: string | string[];
@@ -39,7 +41,11 @@ const styles = {
 /**
  * Carousel of products
  */
-export default function ProductsCarousel({ title, tags, exclude }: Props) {
+export default function ProductsCarousel({
+  title,
+  tags,
+  exclude,
+}: CarouselProps) {
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
     variables: {
       tags: tags || null,
