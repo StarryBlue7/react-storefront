@@ -128,6 +128,7 @@ export default function CategoriesDrawer({
               <CategoryTree
                 category={category}
                 categoryStates={categoryStates}
+                key={category.name}
               />
             ))}
           </List>
