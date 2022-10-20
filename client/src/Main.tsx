@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Container } from "@mui/material";
+import { Discount, NewReleases } from "@mui/icons-material";
+
 import NavBar from "./components/NavBar";
 import AuthModal from "./components/AuthModal";
 import CategoriesDrawer from "./components/CategoriesDrawer";
@@ -9,11 +11,10 @@ import CartButton from "./components/CartButton";
 
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
-import { Discount, NewReleases } from "@mui/icons-material";
 
 import Auth from "./utils/auth";
-// import Cart from "./utils/cart";
 import Cart from "./utils/cartHandler";
+
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { QUERY_CART } from "./utils/queries";
 import { UPDATE_CART } from "./utils/mutations";
@@ -85,8 +86,6 @@ function Main() {
   // User account cart data retrieval
   const [fetchCart, { loading: cartLoading, data: cartData }] =
     useLazyQuery(QUERY_CART);
-  // const { loading: cartLoading, data: cartData, refetch: fetchCart } =
-  // useQuery(QUERY_CART);
   const [updateAccountCart] = useMutation(UPDATE_CART);
 
   const loggedIn = Auth.loggedIn();
@@ -94,46 +93,55 @@ function Main() {
 
   const [cart, setCart] = React.useState<CartState>(Cart.getLocal());
 
+  // Use account cart if local cart empty
   React.useEffect(() => {
     async function retrieveCart() {
       if (loggedIn) {
         await fetchCart();
-        setCart(accountCart);
-      }
-    }
-    retrieveCart();
-  }, [loggedIn, fetchCart, accountCart]);
-
-  // Keep local & account carts updated to app cart state
-  React.useEffect(() => {
-    console.log("cart change", cart);
-    async function refreshAccountCart() {
-      if (loggedIn) {
-        // If local cart is populated, update account version
-        if (cart.length > 0) {
-          const newCart = cart.map((item: Item) => {
-            return { product: item.product._id, quantity: item.quantity };
-          });
-          await updateAccountCart({ variables: { cart: newCart } });
-          await fetchCart();
-          console.log("refreshed", cart);
-        } else {
-          // If local cart is empty, use account data
+        if (Cart.getLocal().length === 0) {
           setCart(accountCart);
         }
       }
     }
+    retrieveCart();
+  }, [loggedIn, accountCart, fetchCart]);
+
+  // Keep local & account carts updated to app cart state
+  React.useEffect(() => {
+    console.log("cart state", cart);
+    // Update account cart in db if logged in
+    async function refreshAccountCart() {
+      if (loggedIn) {
+        const newCart = cart.map((item: Item) => {
+          return { product: item.product._id, quantity: item.quantity };
+        });
+        await updateAccountCart({ variables: { cart: newCart } });
+        await fetchCart();
+      }
+    }
     refreshAccountCart();
     // Update local storage cart
-    cart.length && Cart.setLocal(cart);
-  }, [cart, loggedIn, fetchCart, updateAccountCart, accountCart]);
+    Cart.setLocal(cart);
+  }, [cart, loggedIn, fetchCart, updateAccountCart]);
 
+  // Cart handling functions & states for passing as props
   const cartHandler = {
     cartLoading,
-    accountCart,
     cart,
     addToCart: (product: Product, quantity?: number) => () => {
       setCart((prev: CartState) => Cart.addItem(prev, product, quantity));
+    },
+    updateQty: (productId: string, quantity: number) => () => {
+      setCart((prev: CartState) => Cart.updateQty(prev, productId, quantity));
+    },
+    deleteItem: (productId: string) => () => {
+      setCart((prev: CartState) => Cart.deleteItem(prev, productId));
+    },
+    clearAll: () => () => {
+      setCart(Cart.clearAll);
+    },
+    updateCart: (cart: CartState) => () => {
+      setCart(cart);
     },
   };
 
