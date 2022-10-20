@@ -31,12 +31,15 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
       >
         <Box
           sx={{
-            width: { xs: 275, sm: 350, md: 400 },
+            width: { xs: 300, sm: 350, md: 400 },
           }}
           role="presentation"
         >
           <Typography variant="h5" sx={{ px: 2, pt: 2 }}>
             Shopping Cart
+            {cartHandler.cart.length > 0
+              ? ` (${cartHandler.totals.totalQty})`
+              : ""}
           </Typography>
           <List sx={{ minHeight: "40vh" }}>
             {cartHandler.cart.map((item: any) => (
@@ -50,14 +53,14 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
           <Divider />
           <List>
             <ListItem key={"total-items"}>
-              <ListItemText primary={"Items: "} sx={styles.totals} />
+              <ListItemText primary={"Items:"} sx={styles.totals} />
               <ListItemText
                 primary={cartHandler.totals.totalQty}
                 sx={styles.totals}
               />
             </ListItem>
             <ListItem key={"subtotal"}>
-              <ListItemText primary={"Subtotal: "} sx={styles.totals} />
+              <ListItemText primary={"Subtotal:"} sx={styles.totals} />
               <ListItemText
                 primary={"$" + cartHandler.totals.totalPrice}
                 sx={styles.totals}
