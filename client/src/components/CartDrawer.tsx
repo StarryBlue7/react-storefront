@@ -78,7 +78,7 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
                 sx={styles.cartButton}
               >
                 <ListItemIcon sx={styles.cartButtonIcon}>
-                  <RemoveShoppingCartOutlined />
+                  <RemoveShoppingCartOutlined color="primary" />
                 </ListItemIcon>
                 <ListItemText primary={"Empty Cart"} />
               </Button>
