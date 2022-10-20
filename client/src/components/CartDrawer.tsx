@@ -17,6 +17,10 @@ import {
 
 import CartItem from "./CartItem";
 
+const styles = {
+  totals: { textAlign: "right", width: "50%" },
+};
+
 export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
   return (
     <>
@@ -45,8 +49,19 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
           </List>
           <Divider />
           <List>
-            <ListItem key={"total"}>
-              <ListItemText primary={"Subtotal: " + 8} />
+            <ListItem key={"total-items"}>
+              <ListItemText primary={"Items: "} sx={styles.totals} />
+              <ListItemText
+                primary={cartHandler.totals.totalQty}
+                sx={styles.totals}
+              />
+            </ListItem>
+            <ListItem key={"subtotal"}>
+              <ListItemText primary={"Subtotal: "} sx={styles.totals} />
+              <ListItemText
+                primary={"$" + cartHandler.totals.totalPrice}
+                sx={styles.totals}
+              />
             </ListItem>
             <ListItem key={"cart-options"}>
               <Button onClick={cartHandler.clearAll()} variant="outlined">
