@@ -116,7 +116,10 @@ export default function CartItem({
             sx={{
               overflow: "hidden",
               textOverflow: "ellipsis",
-              display: "-webkit-box",
+              display: {
+                sm: "-webkit-box",
+                xs: options ? "none" : "-webkit-box",
+              },
               WebkitLineClamp: "1",
               WebkitBoxOrient: "vertical",
               flexGrow: 0,
