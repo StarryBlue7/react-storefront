@@ -55,14 +55,24 @@ class CartHandler {
     return cart;
   }
 
+  updateQty(prev: Cart, productId: string, quantity: number): Cart {
+    console.log("handling update");
+    const cart =
+      quantity <= 0
+        ? [...prev].filter((item) => item.product._id !== productId)
+        : prev.map((item: Item) =>
+            item.product._id === productId ? { ...item, quantity } : item
+          );
+    return cart;
+  }
+
   /**
    * Remove total qty of single product by ID
    * @param {string} productId ID of product to remove
    * @returns {Cart} Updated cart
    */
   deleteItem(prev: Cart, productId: string): Cart {
-    const cart = [...prev];
-    cart.filter((item) => item.product._id !== productId);
+    const cart = [...prev].filter((item) => item.product._id !== productId);
     return cart;
   }
 
