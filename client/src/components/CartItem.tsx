@@ -56,6 +56,7 @@ export default function CartItem({
 }: CartItemProps) {
   const handleChange = (event: SelectChangeEvent): void => {
     cartHandler.updateQty(item.product._id, parseInt(event.target.value))();
+    setOptions(false);
   };
 
   const [options, setOptions] = React.useState<boolean>(false);
