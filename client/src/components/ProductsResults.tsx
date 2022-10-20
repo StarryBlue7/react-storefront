@@ -5,13 +5,15 @@ import ProductCard from "./ProductCard";
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../utils/queries";
 
-interface Product {
+type Product = {
   _id: string;
   fullName: string;
   shortName: string;
   imgURL: string;
   description: string;
-}
+  tags: string[];
+  price: number;
+};
 
 export default function ProductsResults({
   tagStates,
@@ -41,7 +43,6 @@ export default function ProductsResults({
             <ProductCard
               product={product}
               key={product._id}
-              m={0}
               cartHandler={cartHandler}
             />
           </Grid>
