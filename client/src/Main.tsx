@@ -128,6 +128,7 @@ function Main() {
   const cartHandler = {
     cartLoading,
     cart,
+    totals: React.useMemo(() => Cart.getTotals(cart), [cart]),
     addToCart: (product: Product, quantity?: number) => () => {
       setCart((prev: CartState) => Cart.addItem(prev, product, quantity));
     },
@@ -137,11 +138,11 @@ function Main() {
     deleteItem: (productId: string) => () => {
       setCart((prev: CartState) => Cart.deleteItem(prev, productId));
     },
-    clearAll: () => () => {
-      setCart(Cart.clearAll);
-    },
     updateCart: (cart: CartState) => () => {
       setCart(cart);
+    },
+    clearAll: () => () => {
+      setCart(Cart.clearAll);
     },
   };
 
