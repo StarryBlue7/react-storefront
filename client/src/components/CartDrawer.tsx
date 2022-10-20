@@ -84,7 +84,7 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
               </Button>
               <Button variant="contained" sx={styles.cartButton}>
                 <ListItemIcon sx={styles.cartButtonIcon}>
-                  <ShoppingCartCheckout />
+                  <ShoppingCartCheckout sx={{ color: "white" }} />
                 </ListItemIcon>
                 <ListItemText primary={"Checkout"} />
               </Button>
