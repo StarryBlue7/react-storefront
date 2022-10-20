@@ -7,10 +7,11 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
 
@@ -54,20 +55,28 @@ export default function CartItem({
   cartHandler,
   maxQty = 9,
 }: CartItemProps) {
-  const handleChange = (event: SelectChangeEvent): void => {
+  // Show/hide cart item options
+  const [options, setOptions] = React.useState<boolean>(false);
+  const showOptions = () => setOptions(true);
+  const hideOptions = () => {
+    if (qtyInput !== item.quantity) {
+      handleUpdate();
+    }
+    setOptions(false);
+  };
+
+  // On selection change, update quantity & hide options
+  const handleSelect = (event: SelectChangeEvent): void => {
     cartHandler.updateQty(item.product._id, parseInt(event.target.value))();
     setOptions(false);
   };
 
-  const [options, setOptions] = React.useState<boolean>(false);
-  const showOptions = () => setOptions(true);
-  const hideOptions = () => setOptions(false);
-
+  // List of possible quantities
   const qtyOptions = React.useMemo(() => {
     const options = [];
     for (let i = 0; i <= maxQty; i++) {
       options.push(i);
-      // Limit quantity to stock attribute to be added
+      // Limit quantity to stock attribute to be added (TODO)
       // if (i === item.product?.stock) {
       //   break;
       // }
@@ -75,9 +84,25 @@ export default function CartItem({
     return options;
   }, [maxQty]);
 
+  const [qtyInput, setQtyInput] = React.useState<number>(item.quantity);
+  React.useEffect(() => {
+    setQtyInput(item.quantity);
+  }, [item.quantity]);
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const quantity = parseInt(event.target.value);
+    // Update qty input only if input is a number
+    if (!Number.isNaN(quantity)) {
+      setQtyInput(quantity);
+    }
+  };
+  const handleUpdate = (): void => {
+    cartHandler.updateQty(item.product._id, qtyInput)();
+  };
+
   return (
     <>
       <ListItem key={item.product._id} disablePadding>
+        {/* Show quantity select, delete button on mouseover */}
         <ListItemButton onMouseOver={showOptions} onMouseOut={hideOptions}>
           <ListItemIcon>
             <img
@@ -107,6 +132,7 @@ export default function CartItem({
               justifyContent: "flex-end",
             }}
           />
+          {/* Display quantity or quantity select/delete on mouseover */}
           {options ? (
             <>
               <Box
@@ -116,21 +142,39 @@ export default function CartItem({
                   gap: 1,
                 }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <InputLabel htmlFor="select">Qty.</InputLabel>
-                  <Select
-                    value={item.quantity.toString()}
-                    onChange={handleChange}
-                    id="select"
+                {item.quantity < maxQty ? (
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Select
+                      value={item.quantity.toString()}
+                      onChange={handleSelect}
+                      id="select"
+                      size="small"
+                      startAdornment={
+                        <InputAdornment position="start">Qty.</InputAdornment>
+                      }
+                    >
+                      {qtyOptions.map((option: number) => (
+                        <MenuItem value={option} key={option.toString()}>
+                          {option === maxQty ? option + "+" : option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Box>
+                ) : (
+                  <TextField
+                    value={qtyInput}
+                    onChange={handleInput}
+                    onBlur={handleUpdate}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">Qty.</InputAdornment>
+                      ),
+                    }}
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     size="small"
-                  >
-                    {qtyOptions.map((option: number) => (
-                      <MenuItem value={option} key={option.toString()}>
-                        {option === maxQty ? option + "+" : option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Box>
+                    sx={{ width: 90 }}
+                  />
+                )}
                 <Button
                   onClick={cartHandler.deleteItem(item.product._id)}
                   variant="outlined"
@@ -143,15 +187,17 @@ export default function CartItem({
               </Box>
             </>
           ) : (
-            <ListItemText
-              primary={"x" + item.quantity}
-              sx={{
-                mx: 1,
-                flexGrow: 0,
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            />
+            <>
+              <ListItemText
+                primary={"x" + item.quantity}
+                sx={{
+                  mx: 1,
+                  flexGrow: 0,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              />
+            </>
           )}
         </ListItemButton>
       </ListItem>
