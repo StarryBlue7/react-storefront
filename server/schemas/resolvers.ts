@@ -1,5 +1,6 @@
 import { AuthenticationError } from "apollo-server-express";
 import { User, Product, Category, Tag, Order } from "../models";
+import { stripe } from "../utils/stripe";
 
 const { signToken } = require("../utils/auth");
 
@@ -96,8 +97,8 @@ const resolvers = {
         createdBy = context.user._id;
       } else {
         // Assign anonymous user account if order created without login
-        const noAccount = await User.findOne({ username: "NoAccount" });
-        createdBy = noAccount._id;
+        const account = await User.findOne({ username: "NoAccount" });
+        createdBy = account._id;
       }
       return (await Order.create({ items, createdBy })).populate({
         path: "items",
@@ -105,15 +106,12 @@ const resolvers = {
       });
     },
     updateCart: async (_parent, { cart }, context) => {
-      let user;
-      if (context.user) {
-        user = context.user._id;
-      } else {
-        // Assign anonymous user account if cart created without login
-        const noAccount = await User.findOne({ username: "NoAccount" });
-        user = noAccount._id;
+      if (!context.user) {
+        throw new AuthenticationError("Not logged in!");
       }
-      return (await User.findByIdAndUpdate(user, { cart })).populate({
+      return (
+        await User.findByIdAndUpdate(context.user._id, { cart })
+      ).populate({
         path: "cart",
         populate: { path: "product" },
       });
