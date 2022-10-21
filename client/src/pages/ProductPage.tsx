@@ -22,7 +22,7 @@ export default function ProductPage() {
   return loading ? (
     <Typography variant="h3">Loading...</Typography>
   ) : (
-    <Grid container spacing={2} rowGap={2}>
+    <Grid container width="100%" rowGap={2}>
       <ProductDetails product={product} />
       <ProductsCarousel
         title="Similar items: "

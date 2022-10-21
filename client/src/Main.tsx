@@ -205,6 +205,7 @@ function Main() {
           maxWidth: { xl: "xl", lg: "lg" },
           display: "flex",
           flexFlow: "column",
+          alignItems: "center",
           gap: 1,
         }}
       >
