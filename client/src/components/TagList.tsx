@@ -38,6 +38,7 @@ function TagList({
         display: "-webkit-box",
         WebkitLineClamp: rows,
         WebkitBoxOrient: "vertical",
+        width: "100%",
       }}
     >
       {label}
