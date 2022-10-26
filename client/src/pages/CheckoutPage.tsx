@@ -1,12 +1,12 @@
-import { Button } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
 import CartItem from "../components/CartItem";
+import CheckoutForm from "../components/CheckoutForm";
+import StripeWrapper from "../components/StripeWrapper";
 
 /**
  * Cart page
  */
-export default function CartPage({ cartHandler }: any) {
+export default function CheckoutPage({ cartHandler }: any) {
   return (
     <>
       {cartHandler.cart.map((item: any) => (
@@ -16,9 +16,9 @@ export default function CartPage({ cartHandler }: any) {
           key={item.product._id}
         />
       ))}
-      <Link to="checkout">
-        <Button variant="contained">Proceed to Checkout</Button>
-      </Link>
+      <StripeWrapper>
+        <CheckoutForm />
+      </StripeWrapper>
     </>
   );
 }
