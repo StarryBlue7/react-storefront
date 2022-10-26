@@ -1,6 +1,6 @@
-import { AuthenticationError } from "apollo-server-express";
+import { AuthenticationError, UserInputError } from "apollo-server-express";
 import { User, Product, Category, Tag, Order } from "../models";
-import { stripe } from "../utils/stripe";
+import { stripe, dollarsToCents } from "../utils/stripe";
 
 const { signToken } = require("../utils/auth");
 
@@ -56,6 +56,7 @@ const resolvers = {
     order: async (_parent, { orderId }) => {
       return await Order.findOne({ orderId }).populate("items.product");
     },
+    // getClientSecret: async (_parent) => {},
   },
   Mutation: {
     addUser: async (
@@ -91,19 +92,136 @@ const resolvers = {
 
       return { token, user };
     },
-    newOrder: async (_parent, { items }, context) => {
-      let createdBy;
+    // getVerificationSession: async (
+    //   _parent,
+    //   { source, items, email },
+    //   context
+    // ) => {
+    //   // let createdBy,
+    //   //   stripeId = "";
+    //   // let order;
+
+    //   // if (context.user) {
+    //   //   const account = await User.findById(context.user._id);
+    //   //   createdBy = context.user._id;
+
+    //   //   if (account.stripeId) {
+    //   //     stripeId = account.stripeId;
+    //   //   } else {
+    //   //     const customer = await stripe.customers.create({
+    //   //       email: context.user.email,
+    //   //       source,
+    //   //     });
+    //   //     stripeId = customer.id;
+    //   //     await User.findByIdAndUpdate(context.user._id, { stripeId });
+    //   //   }
+
+    //   //   await stripe.customers.update(stripeId, {
+    //   //     source,
+    //   //   });
+    //   //   order = await stripe.orders.create({
+    //   //     customer: stripeId,
+    //   //     items,
+    //   //   });
+    //   // } else if (email) {
+    //   //   order = await stripe.orders.create({
+    //   //     email,
+    //   //     source,
+    //   //     items,
+    //   //   });
+    //   // } else {
+    //   //   throw new AuthenticationError("No user or email found.");
+    //   // }
+
+    //   try {
+    //     const verificationSession =
+    //       await stripe.identity.verificationSessions.create({
+    //         type: "document",
+    //         metadata: {
+    //           user_id: context?.user._id,
+    //         },
+    //         // Additional options for configuring the verification session:
+    //         // options: {
+    //         //   document: {
+    //         //     # Array of strings of allowed identity document types.
+    //         //     allowed_types: ['driving_license'], # passport | id_card
+    //         //
+    //         //     # Collect an ID number and perform an ID number check with the
+    //         //     # document’s extracted name and date of birth.
+    //         //     require_id_number: true,
+    //         //
+    //         //     # Disable image uploads, identity document images have to be captured
+    //         //     # using the device’s camera.
+    //         //     require_live_capture: true,
+    //         //
+    //         //     # Capture a face image and perform a selfie check comparing a photo
+    //         //     # ID and a picture of your user’s face.
+    //         //     require_matching_selfie: true,
+    //         //   }
+    //         // },
+    //       });
+
+    //     // Send publishable key and PaymentIntent details to client
+    //     return {
+    //       client_secret: verificationSession.client_secret,
+    //     };
+    //   } catch (e) {
+    //     console.log(e);
+    //     return new Error(e);
+    //   }
+    // },
+    // paymentIntent: async (_parent) => {},
+
+    newOrder: async (_parent, { source, items, email }, context) => {
+      let createdBy,
+        stripeId = "";
+      let order;
+
       if (context.user) {
+        const account = await User.findById(context.user._id);
         createdBy = context.user._id;
+
+        if (account.stripeId) {
+          stripeId = account.stripeId;
+        } else {
+          const customer = await stripe.customers.create({
+            email: context.user.email,
+            source,
+          });
+          stripeId = customer.id;
+          await User.findByIdAndUpdate(context.user._id, { stripeId });
+        }
+
+        await stripe.customers.update(stripeId, {
+          source,
+        });
+        order = await stripe.orders.create({
+          customer: stripeId,
+          items,
+        });
+      } else if (email) {
+        order = await stripe.orders.create({
+          email,
+          source,
+          items,
+        });
       } else {
-        // Assign anonymous user account if order created without login
-        const account = await User.findOne({ username: "NoAccount" });
-        createdBy = account._id;
+        throw new AuthenticationError("No user or email found.");
       }
-      return (await Order.create({ items, createdBy })).populate({
+
+      console.log(order);
+
+      const newOrder = (
+        await Order.create({ items, createdBy, stripeId })
+      ).populate({
         path: "items",
         populate: { path: "product" },
       });
+
+      if (context.user) {
+      }
+
+      return newOrder;
     },
     updateCart: async (_parent, { cart }, context) => {
       if (!context.user) {

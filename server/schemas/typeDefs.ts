@@ -88,6 +88,7 @@ const typeDefs = gql`
       orderId: ID
     ): Auth
     login(username: String!, password: String!): Auth
+    # getVerificationSession(items: [OrderInput]!): Order
     newOrder(items: [OrderInput]!): Order
     updateCart(cart: [OrderInput]!): User
   }

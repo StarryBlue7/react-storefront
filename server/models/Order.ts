@@ -7,6 +7,7 @@ interface IOrder {
   subtotal: number;
   total: number;
   createdBy: Types.ObjectId;
+  stripeId: string;
   createdAt: Date;
   toAddress: string;
   shippedAt?: Date;
@@ -16,7 +17,7 @@ interface IOrder {
 interface IItem {
   product: Types.ObjectId;
   quantity: number;
-  priceAtSale: number;
+  price: number;
 }
 
 const itemSchema = new Schema<IItem>({
@@ -25,7 +26,7 @@ const itemSchema = new Schema<IItem>({
     ref: "Product",
   },
   quantity: Number,
-  priceAtSale: Number,
+  price: Number,
 });
 
 const orderSchema = new Schema<IOrder>(
@@ -48,7 +49,9 @@ const orderSchema = new Schema<IOrder>(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+    },
+    stripeId: {
+      type: String,
     },
     createdAt: {
       type: Date,
