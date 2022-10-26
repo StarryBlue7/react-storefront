@@ -13,11 +13,21 @@ const stripePromise = loadStripe(
   "pk_test_51LvOubG2F40Ds514YpCJ5gAxc7FQTNhWdNcP3xy2GZT7hdMRGoDeReL2ww5cBpLWnFC88LZlN4QLCLhTUQcoHEoN00Z3hNZh3s"
 );
 
-export default function StripeWrapper({ children }: any) {
+export default function StripeWrapper({ cart, children }: any) {
   const [clientSecret, setClientSecret] = React.useState<string>("");
 
-  const [getClientSecret, { data: newClientSecret }] =
-    useLazyQuery(QUERY_PAYMENT_INTENT);
+  const order = React.useMemo(() => {
+    return cart.map((item: any) => {
+      return { product: item.product._id, quantity: item.quantity };
+    });
+  }, [cart]);
+
+  const [getClientSecret, { data: newClientSecret }] = useLazyQuery(
+    QUERY_PAYMENT_INTENT,
+    {
+      variables: { order },
+    }
+  );
 
   // Get client secret on component render
   React.useEffect(() => {

@@ -58,8 +58,8 @@ const resolvers = {
     order: async (_parent, { orderId }) => {
       return await Order.findOne({ orderId }).populate("items.product");
     },
-    paymentIntent: async (_parent) => {
-      console.log("payment intent");
+    paymentIntent: async (_parent, { order }) => {
+      console.log("payment intent", order);
       const params: Stripe.PaymentIntentCreateParams = {
         amount: 1999,
         currency: "USD",
@@ -73,7 +73,7 @@ const resolvers = {
           await stripe.paymentIntents.create(params);
 
         // Send publishable key and PaymentIntent client_secret to client.
-        console.log("intent created: ", paymentIntent);
+        // console.log("intent created: ", paymentIntent);
         return {
           clientSecret: paymentIntent.client_secret,
         };

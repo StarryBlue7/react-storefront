@@ -16,7 +16,7 @@ export default function CheckoutPage({ cartHandler }: any) {
           key={item.product._id}
         />
       ))}
-      <StripeWrapper>
+      <StripeWrapper cart={cartHandler.cart}>
         <CheckoutForm />
       </StripeWrapper>
     </>
