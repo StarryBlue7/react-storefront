@@ -137,3 +137,11 @@ export const QUERY_CART = gql`
     }
   }
 `;
+
+export const QUERY_PAYMENT_INTENT = gql`
+  query paymentIntent {
+    paymentIntent {
+      clientSecret
+    }
+  }
+`;
