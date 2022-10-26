@@ -11,6 +11,7 @@ import CartButton from "./components/CartButton";
 
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
+import CartPage from "./pages/CartPage";
 
 import Auth from "./utils/auth";
 import Cart from "./utils/cartHandler";
@@ -18,7 +19,9 @@ import Cart from "./utils/cartHandler";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { QUERY_CART } from "./utils/queries";
 import { UPDATE_CART } from "./utils/mutations";
-import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+
+// import { loadStripe } from "@stripe/stripe-js";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
@@ -181,6 +184,18 @@ function Main() {
     });
   }, [selectedCategory]);
 
+  // const [stripePromise, setStripePromise] = React.useState<any>(null);
+  // const [getStripeKey, { data: publicStripeKey }] = useLazyQuery(QUERY_STRIPE);
+
+  // React.useEffect(() => {
+  //   async function initStripe() {
+  //     await getStripeKey();
+  //     setStripePromise(loadStripe(publicStripeKey));
+  //   }
+
+  //   initStripe();
+  // }, []);
+
   return (
     <Router>
       <NavBar
@@ -225,6 +240,10 @@ function Main() {
           <Route
             path="/cart"
             element={<CartPage cartHandler={cartHandler} />}
+          />
+          <Route
+            path="/cart/checkout"
+            element={<CheckoutPage cartHandler={cartHandler} />}
           />
           <Route path="*" element={<h1>Page not found!</h1>} />
         </Routes>
