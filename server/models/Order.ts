@@ -4,9 +4,11 @@ import newOrderId from "../utils/orderNum";
 interface IOrder {
   orderNum: string;
   items: IItem[];
-  subtotal: number;
-  total: number;
   createdBy: Types.ObjectId;
+  subtotal: number;
+  paymentComplete: boolean;
+  paidOn: Date;
+  stripeId: string;
   createdAt: Date;
   toAddress: string;
   shippedAt?: Date;
@@ -14,7 +16,7 @@ interface IOrder {
 }
 
 interface IItem {
-  product: Types.ObjectId;
+  product: Types.ObjectId | any;
   quantity: number;
   priceAtSale: number;
 }
@@ -37,18 +39,17 @@ const orderSchema = new Schema<IOrder>(
       required: true,
     },
     items: [itemSchema],
-    subtotal: {
-      type: Number,
-      required: true,
-    },
-    total: {
-      type: Number,
-      required: true,
-    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+    },
+    paymentComplete: {
+      type: Boolean,
+      default: false,
+    },
+    paidOn: Date,
+    stripeId: {
+      type: String,
     },
     createdAt: {
       type: Date,
@@ -56,7 +57,7 @@ const orderSchema = new Schema<IOrder>(
     },
     toAddress: {
       type: String,
-      required: true,
+      // required: true,
     },
     shippedAt: {
       type: Date,
@@ -75,9 +76,26 @@ const orderSchema = new Schema<IOrder>(
 
 orderSchema.virtual("itemCount").get(function () {
   let itemCount = 0;
-  this.items.forEach((item) => (itemCount += item.quantity));
+  this.items.forEach((item) => {
+    itemCount += item.quantity;
+  });
   return itemCount;
 });
+
+orderSchema
+  .virtual("subtotal", {
+    ref: "Product",
+    localField: "items.product",
+    foreignField: "_id",
+    justOne: true,
+  })
+  .get(function () {
+    let subtotal = 0;
+    this.items.forEach((item) => {
+      subtotal += item.product.price * item.quantity;
+    });
+    return new Number(subtotal.toFixed(2));
+  });
 
 const Order = model("Order", orderSchema);
 

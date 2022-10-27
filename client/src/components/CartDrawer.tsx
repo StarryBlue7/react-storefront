@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 
 import CartItem from "./CartItem";
+import { Link } from "react-router-dom";
 
 const styles = {
   totals: { textAlign: "right", width: "50%" },
@@ -72,22 +73,22 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
               key={"cart-options"}
               sx={{ display: "flex", flexFlow: "row wrap", gap: 1 }}
             >
-              <Button
-                onClick={cartHandler.clearAll()}
-                variant="outlined"
-                sx={styles.cartButton}
-              >
-                <ListItemIcon sx={styles.cartButtonIcon}>
-                  <RemoveShoppingCartOutlined color="primary" />
-                </ListItemIcon>
-                <ListItemText primary={"Empty Cart"} />
-              </Button>
-              <Button variant="contained" sx={styles.cartButton}>
-                <ListItemIcon sx={styles.cartButtonIcon}>
-                  <ShoppingCartCheckout sx={{ color: "white" }} />
-                </ListItemIcon>
-                <ListItemText primary={"Checkout"} />
-              </Button>
+              <Link to="/cart" style={styles.cartButton}>
+                <Button variant="outlined">
+                  <ListItemIcon sx={styles.cartButtonIcon}>
+                    <RemoveShoppingCartOutlined color="primary" />
+                  </ListItemIcon>
+                  <ListItemText primary={"View Cart"} />
+                </Button>
+              </Link>
+              <Link to="/cart/checkout">
+                <Button variant="contained" sx={styles.cartButton}>
+                  <ListItemIcon sx={styles.cartButtonIcon}>
+                    <ShoppingCartCheckout sx={{ color: "white" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"Checkout"} />
+                </Button>
+              </Link>
             </ListItem>
           </List>
         </Box>

@@ -12,6 +12,7 @@ interface IUser {
   emailVerified: boolean;
   password: string;
   cart: [IItem];
+  stripeId?: string;
   orders?: Types.ObjectId[];
   likes?: Types.ObjectId[];
   isCorrectPassword: Function;
@@ -50,6 +51,9 @@ const userSchema = new Schema<IUser>(
     cart: {
       type: [itemSchema],
       default: [],
+    },
+    stripeId: {
+      type: String,
     },
     orders: [
       {

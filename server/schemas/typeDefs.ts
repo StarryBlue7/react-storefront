@@ -70,6 +70,14 @@ const typeDefs = gql`
     subCategories: [Category]
   }
 
+  type Checkout {
+    session: ID
+  }
+
+  type ClientSecret {
+    clientSecret: String
+  }
+
   type Query {
     me: User
     order(orderId: String!): Order
@@ -77,6 +85,7 @@ const typeDefs = gql`
     product(productId: String!): Product
     tags: [Tag]
     categories: [Category]
+    paymentIntent(items: [OrderInput]): ClientSecret
   }
 
   type Mutation {
@@ -88,6 +97,7 @@ const typeDefs = gql`
       orderId: ID
     ): Auth
     login(username: String!, password: String!): Auth
+    checkout(items: [OrderInput]!): Checkout
     newOrder(items: [OrderInput]!): Order
     updateCart(cart: [OrderInput]!): User
   }

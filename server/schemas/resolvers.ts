@@ -1,6 +1,9 @@
 import { AuthenticationError } from "apollo-server-express";
 import { User, Product, Category, Tag, Order } from "../models";
 
+import Stripe from "stripe";
+import { stripe, dollarsToCents } from "../utils/stripe";
+
 const { signToken } = require("../utils/auth");
 
 type ProductFilter = {
@@ -55,6 +58,39 @@ const resolvers = {
     order: async (_parent, { orderId }) => {
       return await Order.findOne({ orderId }).populate("items.product");
     },
+    paymentIntent: async (_parent, { items }, context) => {
+      console.log("payment intent", items);
+      console.log("context", context.user);
+      const createdBy = context.user ? context.user._id : null;
+      const newOrder = await Order.create({
+        items: items,
+        createdBy,
+      });
+      await newOrder.populate("items.product");
+      console.log("order created", newOrder.toObject({ virtuals: true }));
+      const params: Stripe.PaymentIntentCreateParams = {
+        amount: dollarsToCents(newOrder.subtotal),
+        currency: "USD",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      };
+
+      try {
+        const paymentIntent: Stripe.PaymentIntent =
+          await stripe.paymentIntents.create(params);
+
+        newOrder.stripeId = paymentIntent.id;
+        await newOrder.save();
+        // Send publishable key and PaymentIntent client_secret to client.
+        // console.log("intent created: ", paymentIntent);
+        return {
+          clientSecret: paymentIntent.client_secret,
+        };
+      } catch (e) {
+        throw new Error(e.message);
+      }
+    },
   },
   Mutation: {
     addUser: async (
@@ -90,30 +126,65 @@ const resolvers = {
 
       return { token, user };
     },
-    newOrder: async (_parent, { items }, context) => {
-      let createdBy;
+
+    newOrder: async (_parent, { source, items, email }, context) => {
+      let createdBy,
+        stripeId = "";
+      let order;
+
       if (context.user) {
+        const account = await User.findById(context.user._id);
         createdBy = context.user._id;
+
+        if (account.stripeId) {
+          stripeId = account.stripeId;
+        } else {
+          const customer = await stripe.customers.create({
+            email: context.user.email,
+            source,
+          });
+          stripeId = customer.id;
+          await User.findByIdAndUpdate(context.user._id, { stripeId });
+        }
+
+        await stripe.customers.update(stripeId, {
+          source,
+        });
+        order = await stripe.orders.create({
+          customer: stripeId,
+          items,
+        });
+      } else if (email) {
+        order = await stripe.orders.create({
+          email,
+          source,
+          items,
+        });
       } else {
-        // Assign anonymous user account if order created without login
-        const noAccount = await User.findOne({ username: "NoAccount" });
-        createdBy = noAccount._id;
+        throw new AuthenticationError("No user or email found.");
       }
-      return (await Order.create({ items, createdBy })).populate({
+
+      console.log(order);
+
+      const newOrder = (
+        await Order.create({ items, createdBy, stripeId })
+      ).populate({
         path: "items",
         populate: { path: "product" },
       });
+
+      if (context.user) {
+      }
+
+      return newOrder;
     },
     updateCart: async (_parent, { cart }, context) => {
-      let user;
-      if (context.user) {
-        user = context.user._id;
-      } else {
-        // Assign anonymous user account if cart created without login
-        const noAccount = await User.findOne({ username: "NoAccount" });
-        user = noAccount._id;
+      if (!context.user) {
+        throw new AuthenticationError("Not logged in!");
       }
-      return (await User.findByIdAndUpdate(user, { cart })).populate({
+      return (
+        await User.findByIdAndUpdate(context.user._id, { cart })
+      ).populate({
         path: "cart",
         populate: { path: "product" },
       });
