@@ -58,10 +58,18 @@ const resolvers = {
     order: async (_parent, { orderId }) => {
       return await Order.findOne({ orderId }).populate("items.product");
     },
-    paymentIntent: async (_parent, { order }) => {
+    paymentIntent: async (_parent, { order }, context) => {
       console.log("payment intent", order);
+      console.log("context", context.user);
+      const createdBy = context.user ? context.user._id : null;
+      const newOrder = await Order.create({
+        items: order,
+        createdBy,
+      });
+      await newOrder.populate("items.product");
+      console.log("order created", newOrder.toObject({ virtuals: true }));
       const params: Stripe.PaymentIntentCreateParams = {
-        amount: 1999,
+        amount: dollarsToCents(newOrder.subtotal),
         currency: "USD",
         automatic_payment_methods: {
           enabled: true,
@@ -72,6 +80,8 @@ const resolvers = {
         const paymentIntent: Stripe.PaymentIntent =
           await stripe.paymentIntents.create(params);
 
+        newOrder.stripeId = paymentIntent.id;
+        await newOrder.save();
         // Send publishable key and PaymentIntent client_secret to client.
         // console.log("intent created: ", paymentIntent);
         return {
