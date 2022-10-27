@@ -15,9 +15,9 @@ interface IOrder {
 }
 
 interface IItem {
-  product: Types.ObjectId;
+  product: Types.ObjectId | any;
   quantity: number;
-  price: number;
+  priceAtSale: number;
 }
 
 const itemSchema = new Schema<IItem>({
@@ -26,7 +26,7 @@ const itemSchema = new Schema<IItem>({
     ref: "Product",
   },
   quantity: Number,
-  price: Number,
+  priceAtSale: Number,
 });
 
 const orderSchema = new Schema<IOrder>(
@@ -38,13 +38,9 @@ const orderSchema = new Schema<IOrder>(
       required: true,
     },
     items: [itemSchema],
-    subtotal: {
-      type: Number,
-      required: true,
-    },
     total: {
       type: Number,
-      required: true,
+      // required: true,
     },
     createdBy: {
       type: Schema.Types.ObjectId,
@@ -59,7 +55,7 @@ const orderSchema = new Schema<IOrder>(
     },
     toAddress: {
       type: String,
-      required: true,
+      // required: true,
     },
     shippedAt: {
       type: Date,
@@ -78,9 +74,26 @@ const orderSchema = new Schema<IOrder>(
 
 orderSchema.virtual("itemCount").get(function () {
   let itemCount = 0;
-  this.items.forEach((item) => (itemCount += item.quantity));
+  this.items.forEach((item) => {
+    itemCount += item.quantity;
+  });
   return itemCount;
 });
+
+orderSchema
+  .virtual("subtotal", {
+    ref: "Product",
+    localField: "items.product",
+    foreignField: "_id",
+    justOne: true,
+  })
+  .get(function () {
+    let subtotal = 0;
+    this.items.forEach((item) => {
+      subtotal += item.product.price * item.quantity;
+    });
+    return new Number(subtotal.toFixed(2));
+  });
 
 const Order = model("Order", orderSchema);
 
