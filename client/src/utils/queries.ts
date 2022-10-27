@@ -139,8 +139,8 @@ export const QUERY_CART = gql`
 `;
 
 export const QUERY_PAYMENT_INTENT = gql`
-  query paymentIntent($order: [OrderInput]) {
-    paymentIntent(order: $order) {
+  query paymentIntent($items: [OrderInput]) {
+    paymentIntent(items: $items) {
       clientSecret
     }
   }

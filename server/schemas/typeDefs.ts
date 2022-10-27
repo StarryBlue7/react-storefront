@@ -85,7 +85,7 @@ const typeDefs = gql`
     product(productId: String!): Product
     tags: [Tag]
     categories: [Category]
-    paymentIntent(order: [OrderInput]): ClientSecret
+    paymentIntent(items: [OrderInput]): ClientSecret
   }
 
   type Mutation {

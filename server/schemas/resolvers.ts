@@ -58,12 +58,12 @@ const resolvers = {
     order: async (_parent, { orderId }) => {
       return await Order.findOne({ orderId }).populate("items.product");
     },
-    paymentIntent: async (_parent, { order }, context) => {
-      console.log("payment intent", order);
+    paymentIntent: async (_parent, { items }, context) => {
+      console.log("payment intent", items);
       console.log("context", context.user);
       const createdBy = context.user ? context.user._id : null;
       const newOrder = await Order.create({
-        items: order,
+        items: items,
         createdBy,
       });
       await newOrder.populate("items.product");

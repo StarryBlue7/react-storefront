@@ -16,7 +16,7 @@ const stripePromise = loadStripe(
 export default function StripeWrapper({ cart, children }: any) {
   const [clientSecret, setClientSecret] = React.useState<string>("");
 
-  const order = React.useMemo(() => {
+  const items = React.useMemo(() => {
     return cart.map((item: any) => {
       return { product: item.product._id, quantity: item.quantity };
     });
@@ -25,7 +25,7 @@ export default function StripeWrapper({ cart, children }: any) {
   const [getClientSecret, { data: newClientSecret }] = useLazyQuery(
     QUERY_PAYMENT_INTENT,
     {
-      variables: { order },
+      variables: { items },
     }
   );
 
