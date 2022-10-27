@@ -14,7 +14,7 @@ import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 
 import Auth from "./utils/auth";
-import Cart from "./utils/cartHandler";
+import CartHandler from "./utils/cartHandler";
 
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { QUERY_CART } from "./utils/queries";
@@ -93,14 +93,14 @@ function Main() {
   const loggedIn = Auth.loggedIn();
   const accountCart = React.useMemo(() => cartData?.me?.cart || [], [cartData]);
 
-  const [cart, setCart] = React.useState<CartState>(Cart.getLocal());
+  const [cart, setCart] = React.useState<CartState>(CartHandler.getLocal());
 
   // Use account cart if local cart empty
   React.useEffect(() => {
     async function retrieveCart() {
       if (loggedIn) {
         await fetchCart();
-        if (Cart.getLocal().length === 0) {
+        if (CartHandler.getLocal().length === 0) {
           setCart(accountCart);
         }
       }
@@ -123,28 +123,32 @@ function Main() {
     }
     refreshAccountCart();
     // Update local storage cart
-    Cart.setLocal(cart);
+    CartHandler.setLocal(cart);
   }, [cart, loggedIn, fetchCart, updateAccountCart]);
 
   // Cart handling functions & states for passing as props
   const cartHandler = {
     cartLoading,
     cart,
-    totals: React.useMemo(() => Cart.getTotals(cart), [cart]),
+    totals: React.useMemo(() => CartHandler.getTotals(cart), [cart]),
     addToCart: (product: Product, quantity?: number) => () => {
-      setCart((prev: CartState) => Cart.addItem(prev, product, quantity));
+      setCart((prev: CartState) =>
+        CartHandler.addItem(prev, product, quantity)
+      );
     },
     updateQty: (productId: string, quantity: number) => () => {
-      setCart((prev: CartState) => Cart.updateQty(prev, productId, quantity));
+      setCart((prev: CartState) =>
+        CartHandler.updateQty(prev, productId, quantity)
+      );
     },
     deleteItem: (productId: string) => () => {
-      setCart((prev: CartState) => Cart.deleteItem(prev, productId));
+      setCart((prev: CartState) => CartHandler.deleteItem(prev, productId));
     },
     updateCart: (cart: CartState) => () => {
       setCart(cart);
     },
     clearAll: () => () => {
-      setCart(Cart.clearAll);
+      setCart(CartHandler.clearAll);
     },
   };
 
