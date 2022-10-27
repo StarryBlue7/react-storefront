@@ -4,9 +4,10 @@ import newOrderId from "../utils/orderNum";
 interface IOrder {
   orderNum: string;
   items: IItem[];
-  subtotal: number;
-  total: number;
   createdBy: Types.ObjectId;
+  subtotal: number;
+  paymentComplete: boolean;
+  paidOn: Date;
   stripeId: string;
   createdAt: Date;
   toAddress: string;
@@ -38,14 +39,15 @@ const orderSchema = new Schema<IOrder>(
       required: true,
     },
     items: [itemSchema],
-    total: {
-      type: Number,
-      // required: true,
-    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    paymentComplete: {
+      type: Boolean,
+      default: false,
+    },
+    paidOn: Date,
     stripeId: {
       type: String,
     },
