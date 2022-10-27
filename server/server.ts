@@ -8,8 +8,6 @@ const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 const { authMiddleware } = require("./utils/auth");
 
-const stripe = require("stripe");
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
@@ -18,35 +16,9 @@ const server = new ApolloServer({
   context: authMiddleware,
 });
 
-// Stripe webhook
-app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
-  const sig = req.headers["stripe-signature"];
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(
-      req.body,
-      sig,
-      process.env.WEBHOOK_SECRET
-    );
-  } catch (err) {
-    res.status(400).send(`Webhook Error: ${err.message}`);
-    return;
-  }
-
-  // Handle the event
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      const paymentIntent = event.data.object;
-      console.log("pay success: ", paymentIntent?.id);
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
-
-  // Acknowledge receipt of the event
-  res.send();
-});
+// Stripe webhook (must remain above express.json() middleware)
+import stripeWebhook from "./utils/stripeWebhook";
+app.use("/webhook", stripeWebhook);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
