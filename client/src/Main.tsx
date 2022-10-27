@@ -21,8 +21,6 @@ import { QUERY_CART } from "./utils/queries";
 import { UPDATE_CART } from "./utils/mutations";
 import CheckoutPage from "./pages/CheckoutPage";
 
-// import { loadStripe } from "@stripe/stripe-js";
-
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
 
@@ -183,18 +181,6 @@ function Main() {
       cart: false,
     });
   }, [selectedCategory]);
-
-  // const [stripePromise, setStripePromise] = React.useState<any>(null);
-  // const [getStripeKey, { data: publicStripeKey }] = useLazyQuery(QUERY_STRIPE);
-
-  // React.useEffect(() => {
-  //   async function initStripe() {
-  //     await getStripeKey();
-  //     setStripePromise(loadStripe(publicStripeKey));
-  //   }
-
-  //   initStripe();
-  // }, []);
 
   return (
     <Router>
