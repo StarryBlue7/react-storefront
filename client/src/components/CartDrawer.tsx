@@ -20,7 +20,8 @@ import { Link } from "react-router-dom";
 
 const styles = {
   totals: { textAlign: "right", width: "50%" },
-  cartButton: { flexGrow: 1 },
+  links: { textDecoration: "none", flexGrow: 1 },
+  cartButton: { width: "100%" },
   cartButtonIcon: { minWidth: 0, mr: 1 },
 };
 
@@ -73,15 +74,15 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
               key={"cart-options"}
               sx={{ display: "flex", flexFlow: "row wrap", gap: 1 }}
             >
-              <Link to="/cart" style={styles.cartButton}>
-                <Button variant="outlined">
+              <Link to="/cart" style={styles.links}>
+                <Button variant="outlined" sx={styles.cartButton}>
                   <ListItemIcon sx={styles.cartButtonIcon}>
                     <RemoveShoppingCartOutlined color="primary" />
                   </ListItemIcon>
                   <ListItemText primary={"View Cart"} />
                 </Button>
               </Link>
-              <Link to="/cart/checkout">
+              <Link to="/cart/checkout" style={styles.links}>
                 <Button variant="contained" sx={styles.cartButton}>
                   <ListItemIcon sx={styles.cartButtonIcon}>
                     <ShoppingCartCheckout sx={{ color: "white" }} />
