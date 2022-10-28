@@ -16,7 +16,6 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
       label: "View Cart",
       path: "/cart",
       disabled: cartHandler.cart.length < 1,
-      function: toggleDrawers("cart", false),
       variant: "outlined",
     },
     {
@@ -26,9 +25,8 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
         />
       ),
       label: "Checkout",
-      path: "/cart",
+      path: "/cart/checkout",
       disabled: cartHandler.cart.length < 1,
-      function: toggleDrawers("cart", false),
       variant: "contained",
     },
   ];
