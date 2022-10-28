@@ -16,11 +16,15 @@ const styles = {
   cartButtonIcon: { minWidth: 0, mr: 1 },
 };
 
-export default function Cart({ cartHandler }: any) {
+export default function Cart({
+  cartHandler,
+  disable = false,
+  label = "Shopping Cart",
+}: any) {
   return (
     <>
       <Typography variant="h5" sx={{ px: 2, pt: 2 }}>
-        Shopping Cart
+        {label}
         {cartHandler.cart.length > 0 ? ` (${cartHandler.totals.totalQty})` : ""}
       </Typography>
       <List sx={{ minHeight: "40vh" }}>
@@ -29,6 +33,7 @@ export default function Cart({ cartHandler }: any) {
             item={item}
             cartHandler={cartHandler}
             key={item.product._id}
+            disable={disable}
           />
         ))}
       </List>
