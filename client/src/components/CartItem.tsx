@@ -14,6 +14,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 type Product = {
   _id: string;
@@ -104,33 +105,46 @@ export default function CartItem({
       <ListItem key={item.product._id} disablePadding>
         {/* Show quantity select, delete button on mouseover */}
         <ListItemButton onMouseOver={showOptions} onMouseOut={hideOptions}>
-          <ListItemIcon>
-            <img
-              src={item.product.imgURL}
-              alt={item.product.shortName}
-              style={styles.cartImg}
-            />
-          </ListItemIcon>
-          <ListItemText
-            primary={item.product.shortName}
-            sx={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: {
-                sm: "-webkit-box",
-                xs: options ? "none" : "-webkit-box",
-              },
-              WebkitLineClamp: "1",
-              WebkitBoxOrient: "vertical",
-              flexGrow: 0,
-              pl: 1,
+          <Link
+            to={`/products/${item.product._id}`}
+            style={{
+              display: "flex",
+              flexFlow: "row",
+              flexGrow: 1,
+              justifyContent: "flex-end",
+              alignItems: "center",
+              textDecoration: "none",
+              color: "black",
             }}
-          />
+          >
+            <ListItemIcon>
+              <img
+                src={item.product.imgURL}
+                alt={item.product.shortName}
+                style={styles.cartImg}
+              />
+            </ListItemIcon>
+            <ListItemText
+              primary={item.product.shortName}
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: {
+                  sm: "-webkit-box",
+                  xs: options ? "none" : "-webkit-box",
+                },
+                WebkitLineClamp: "1",
+                WebkitBoxOrient: "vertical",
+                flexGrow: 1,
+                pl: 1,
+              }}
+            />
+          </Link>
           <ListItemText
             primary={"$" + item.product.price}
             sx={{
               mx: 1,
-              flexGrow: 1,
+              flexGrow: 0,
               display: "flex",
               justifyContent: "flex-end",
             }}
