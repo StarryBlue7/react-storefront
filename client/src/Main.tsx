@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Container } from "@mui/material";
 import { Discount, NewReleases } from "@mui/icons-material";
 
@@ -178,16 +178,17 @@ function Main() {
     selectCategory: (category: string) => () => setSelectedCategory(category),
   };
 
-  // Close drawers on category change
+  // Close drawers on category or page change
+  const location = useLocation();
   React.useEffect(() => {
     setDrawers({
       categories: false,
       cart: false,
     });
-  }, [selectedCategory]);
+  }, [selectedCategory, location]);
 
   return (
-    <Router>
+    <>
       <NavBar
         mainPages={mainPages}
         accountPages={accountPages}
@@ -239,7 +240,7 @@ function Main() {
         </Routes>
         <CartButton toggleDrawers={toggleDrawers} />
       </Container>
-    </Router>
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import {
   InMemoryCache,
   createHttpLink,
 } from "@apollo/client";
+import { BrowserRouter as Router } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
 
 import "./App.css";
@@ -38,7 +39,9 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Main />
+      <Router>
+        <Main />
+      </Router>
     </ApolloProvider>
   );
 }
