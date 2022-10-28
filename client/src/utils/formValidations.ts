@@ -1,9 +1,13 @@
 const alphanumeric = new RegExp(/^\w+$/);
 const emailPattern = new RegExp(/.+@.+\..+/);
+const phonePattern = new RegExp(
+  /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
+);
 
 type UsernameValidation = { usernameError: boolean; usernameHelper: string };
 type PasswordValidation = { passwordError: boolean; passwordHelper: string };
 type EmailValidation = { emailError: boolean; emailHelper: string };
+type PhoneValidation = { phoneError: boolean; phoneHelper: string };
 
 class FormValidation {
   username(username: string): UsernameValidation {
@@ -45,6 +49,14 @@ class FormValidation {
     const emailError = !emailPattern.test(email);
     const emailHelper: string = emailError ? "Must be valid email." : " ";
     return { emailError, emailHelper };
+  }
+
+  phone(phone: string): PhoneValidation {
+    const phoneError = !phonePattern.test(phone);
+    const phoneHelper: string = phoneError
+      ? "Must be valid phone number."
+      : " ";
+    return { phoneError, phoneHelper };
   }
 }
 
