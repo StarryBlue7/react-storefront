@@ -3,11 +3,15 @@ const emailPattern = new RegExp(/.+@.+\..+/);
 const phonePattern = new RegExp(
   /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 );
+const addressPattern = new RegExp(
+  /^(\\d{1,}) [a-zA-Z0-9\\s]+(\\,)? [a-zA-Z]+(\\,)? [A-Z]{2} [0-9]{5,6}$/
+);
 
 type UsernameValidation = { usernameError: boolean; usernameHelper: string };
 type PasswordValidation = { passwordError: boolean; passwordHelper: string };
 type EmailValidation = { emailError: boolean; emailHelper: string };
 type PhoneValidation = { phoneError: boolean; phoneHelper: string };
+type AddressValidation = { addressError: boolean; addressHelper: string };
 
 class FormValidation {
   username(username: string): UsernameValidation {
@@ -57,6 +61,14 @@ class FormValidation {
       ? "Must be valid phone number."
       : " ";
     return { phoneError, phoneHelper };
+  }
+
+  address(line1: string, line2: string): AddressValidation {
+    const addressError = !addressPattern.test(line1 + " " + line2);
+    const addressHelper: string = addressError
+      ? "Must be valid shipping address."
+      : " ";
+    return { addressError, addressHelper };
   }
 }
 
