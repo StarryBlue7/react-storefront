@@ -16,7 +16,7 @@ import Validate from "../utils/formValidations";
 import TagList from "./TagList";
 
 type SignupFormProps = {
-  modalStates: {
+  modalStates?: {
     authOpen: boolean;
     openAuth: () => void;
     closeAuth: () => void;
@@ -157,7 +157,17 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
   // Submit login to server
   const [signup] = useMutation(ADD_USER);
   const handleSignup = async (e: React.FormEvent) => {
+    // Prevent default form behavior
     e.preventDefault();
+    console.log("submitted");
+
+    // Prevent invalid submits
+    if (formValidate.preventSubmit || activeStep < steps.length - 1) {
+      console.log("submit invalid");
+      return;
+    }
+
+    // Prevent multiple submits
     setFormValidate((prev: SignupValidation) => {
       return { ...prev, preventSubmit: true };
     });
@@ -171,12 +181,17 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
         },
       });
       Auth.login(data.addUser.token);
-      modalStates.closeAuth();
+      // Close modal if given in props
+      modalStates && modalStates.closeAuth();
     } catch (e) {
       console.error(e);
       // TODO: Add feedback for signup error
     }
   };
+
+  // Advance form with Enter key
+  const nextOnEnter = (e: React.KeyboardEvent) =>
+    e.key === "Enter" && !formValidate.preventSubmit && nextStep();
 
   return (
     <>
@@ -242,6 +257,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
             value={formState.passwordConfirm}
             onChange={updateForm}
             onBlur={validateField("password")}
+            onKeyDown={nextOnEnter}
           />
         </>
       )}
@@ -251,11 +267,14 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
         </>
       )}
       <DialogActions>
-        <Button variant="outlined" onClick={modalStates.closeAuth}>
-          Cancel
-        </Button>
+        {modalStates && (
+          <Button variant="outlined" onClick={modalStates.closeAuth}>
+            Cancel
+          </Button>
+        )}
         {activeStep === steps.length - 1 ? (
           <Button
+            type="submit"
             variant="contained"
             onClick={handleSignup}
             disabled={formValidate.preventSubmit}
