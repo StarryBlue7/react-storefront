@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Dialog, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import {
   useStripe,
   useElements,
@@ -45,18 +45,21 @@ export default function CheckoutForm() {
   };
 
   return (
-    <Dialog open={true}>
-      <form style={{ padding: 20 }} onSubmit={handleSubmit}>
-        <PaymentElement />
-        {errorMessage && <Typography>{errorMessage}</Typography>}
-        <Button
-          type="submit"
-          id="submit"
-          disabled={!stripe || !elements || submitted}
-        >
-          Submit
-        </Button>
-      </form>
-    </Dialog>
+    <form
+      style={{ padding: 20, display: "flex", flexFlow: "column" }}
+      onSubmit={handleSubmit}
+    >
+      <PaymentElement />
+      {errorMessage && <Typography>{errorMessage}</Typography>}
+      <Button
+        type="submit"
+        variant="contained"
+        id="submit"
+        disabled={!stripe || !elements || submitted}
+        sx={{ alignSelf: "flex-end", flexGrow: 0 }}
+      >
+        Submit
+      </Button>
+    </form>
   );
 }
