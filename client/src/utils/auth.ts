@@ -34,6 +34,7 @@ class AuthService {
 
   login(idToken: string): void {
     localStorage.setItem("id_token", idToken);
+    window.location.reload();
   }
 
   logout(): void {
