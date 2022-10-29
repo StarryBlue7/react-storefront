@@ -4,7 +4,7 @@ import { Tabs, Tab, Container } from "@mui/material";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import Auth from "../utils/auth";
-import OrderDetailForm from "./OrderForm";
+import OrderForm from "./OrderForm";
 
 /**
  * Order details panel
@@ -19,7 +19,13 @@ export default function OrderDetails({ cartHandler }: any) {
 
   return (
     <>
-      {!loggedIn && (
+      {loggedIn ? (
+        <>
+          <Container sx={{ py: 1 }}>
+            <OrderForm cartHandler={cartHandler} />
+          </Container>
+        </>
+      ) : (
         <>
           <Tabs
             value={authTab}
@@ -34,7 +40,7 @@ export default function OrderDetails({ cartHandler }: any) {
           <Container sx={{ py: 1 }}>
             {authTab === 0 && <LoginForm />}
             {authTab === 1 && <SignupForm />}
-            {authTab === 2 && <OrderDetailForm cartHandler={cartHandler} />}
+            {authTab === 2 && <OrderForm cartHandler={cartHandler} />}
           </Container>
         </>
       )}
