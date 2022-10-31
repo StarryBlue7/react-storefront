@@ -46,12 +46,12 @@ const typeDefs = gql`
   }
 
   type Product {
-    _id: ID!
-    fullName: String!
+    _id: ID
+    fullName: String
     shortName: String
     modelNumber: String
-    price: Float!
-    imgURL: String!
+    price: Float
+    imgURL: String
     description: String
     popularity: Int
     tags: [Tag]
@@ -80,7 +80,7 @@ const typeDefs = gql`
 
   type Query {
     me: User
-    order(orderId: String!): Order
+    order(orderId: String, stripeId: String, orderNum: String): Order
     products(tags: [ID], category: ID): [Product]
     product(productId: String!): Product
     tags: [Tag]

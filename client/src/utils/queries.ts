@@ -76,6 +76,28 @@ export const QUERY_PRODUCT = gql`
   }
 `;
 
+export const QUERY_ORDER = gql`
+  query order($orderId: String, $stripeId: String, $orderNum: String) {
+    order(orderId: $orderId, stripeId: $stripeId, orderNum: $orderNum) {
+      orderNum
+      items {
+        product {
+          _id
+          fullName
+          imgURL
+          modelNumber
+        }
+        quantity
+        priceAtSale
+      }
+      itemCount
+      createdAt
+      shippedAt
+      estimatedArrival
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
   query me {
     me {

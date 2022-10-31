@@ -1,4 +1,4 @@
-import { AuthenticationError } from "apollo-server-express";
+import { AuthenticationError, UserInputError } from "apollo-server-express";
 import { User, Product, Category, Tag, Order } from "../models";
 
 import Stripe from "stripe";
@@ -51,12 +51,27 @@ const resolvers = {
           })
           .populate("likes");
       } else {
-        new AuthenticationError("You need to be logged in!");
+        throw new AuthenticationError("You need to be logged in!");
       }
     },
-    // Get single order data, todo: check user matches createdBy
-    order: async (_parent, { orderId }) => {
-      return await Order.findOne({ orderId }).populate("items.product");
+    // Get single order data, TODO: Add auth check for returning order data
+    order: async (_parent, { orderId, stripeId, orderNum }) => {
+      // Search by order ID
+      if (orderId) {
+        return await Order.findById(orderId).populate("items.product");
+      }
+
+      // Search by other identifiers
+      let searchBy = {};
+      if (stripeId) {
+        searchBy = { stripeId };
+      } else if (orderNum) {
+        searchBy = { orderNum };
+      } else {
+        throw new UserInputError("No order identifier given!");
+      }
+
+      return await Order.findOne(searchBy).populate("items.product");
     },
     paymentIntent: async (_parent, { items }, context) => {
       console.log("payment intent", items);
