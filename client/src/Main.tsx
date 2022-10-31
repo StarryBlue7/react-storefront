@@ -20,6 +20,7 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { QUERY_CART } from "./utils/queries";
 import { UPDATE_CART } from "./utils/mutations";
 import CheckoutPage from "./pages/CheckoutPage";
+import SuccessPage from "./pages/SuccessPage";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
@@ -237,6 +238,10 @@ function Main() {
             element={<CheckoutPage cartHandler={cartHandler} />}
           />
           <Route path="*" element={<h1>Page not found!</h1>} />
+          <Route
+            path="/success"
+            element={<SuccessPage cartHandler={cartHandler} />}
+          />
         </Routes>
         <CartButton toggleDrawers={toggleDrawers} />
       </Container>
