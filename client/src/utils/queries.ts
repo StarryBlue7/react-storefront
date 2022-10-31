@@ -91,6 +91,8 @@ export const QUERY_ORDER = gql`
         priceAtSale
       }
       itemCount
+      subtotal
+      total
       createdAt
       shippedAt
       estimatedArrival
