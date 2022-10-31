@@ -37,9 +37,13 @@ const typeDefs = gql`
     _id: ID!
     orderNum: String!
     items: [Item]
+    createdBy: ID
+    paymentComplete: Boolean
+    paidOn: String
     subtotal: Float
     total: Float
     createdAt: String!
+    toAddress: String
     shippedAt: String
     estimatedArrival: String
     itemCount: Int
