@@ -80,25 +80,25 @@ export const QUERY_ORDER = gql`
   query order($orderId: String, $stripeId: String, $orderNum: String) {
     order(orderId: $orderId, stripeId: $stripeId, orderNum: $orderNum) {
       orderNum
+      tax
+      taxPercent
+      total
       items {
         product {
-          _id
           fullName
-          imgURL
           modelNumber
+          _id
         }
         quantity
         priceAtSale
       }
-      itemCount
-      createdAt
-      shippedAt
-      estimatedArrival
-      subtotal
-      total
-      createdBy
       paidOn
+      subtotal
+      shipping
       toAddress
+      shippedOn
+      estimatedArrival
+      itemCount
     }
   }
 `;

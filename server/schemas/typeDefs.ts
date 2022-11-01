@@ -42,9 +42,12 @@ const typeDefs = gql`
     paidOn: String
     subtotal: Float
     total: Float
+    taxPercent: Float
+    tax: Float
+    shipping: Float
     createdAt: String!
     toAddress: String
-    shippedAt: String
+    shippedOn: String
     estimatedArrival: String
     itemCount: Int
   }
@@ -90,6 +93,7 @@ const typeDefs = gql`
       phone: String
       email: String
       toAddress: String
+      shippingOption: String
     ): ClientSecret
   }
 
@@ -102,7 +106,6 @@ const typeDefs = gql`
       orderId: ID
     ): Auth
     login(username: String!, password: String!): Auth
-    # newOrder(items: [OrderInput]!, toAddress: String!): Order
     updateCart(cart: [OrderInput]!): User
   }
 `;

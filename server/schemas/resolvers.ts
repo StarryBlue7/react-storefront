@@ -103,9 +103,12 @@ const resolvers = {
           await stripe.paymentIntents.create(params);
 
         newOrder.stripeId = paymentIntent.id;
+        newOrder.items.forEach((item: any) => {
+          item.priceAtSale = item.product.price;
+        });
+        console.log("priced", newOrder);
         await newOrder.save();
         // Send publishable key and PaymentIntent client_secret to client.
-        // console.log("intent created: ", paymentIntent);
         return {
           clientSecret: paymentIntent.client_secret,
         };
@@ -148,60 +151,6 @@ const resolvers = {
 
       return { token, user };
     },
-
-    // newOrder: async (_parent, { source, items, email, toAddress }, context) => {
-    //   let createdBy,
-    //     stripeId = "";
-    //   let order;
-
-    //   if (context.user) {
-    //     const account = await User.findById(context.user._id);
-    //     createdBy = context.user._id;
-
-    //     if (account.stripeId) {
-    //       stripeId = account.stripeId;
-    //     } else {
-    //       const customer = await stripe.customers.create({
-    //         email: context.user.email,
-    //         source,
-    //       });
-    //       stripeId = customer.id;
-    //       await User.findByIdAndUpdate(context.user._id, { stripeId });
-    //     }
-
-    //     await stripe.customers.update(stripeId, {
-    //       source,
-    //     });
-    //     order = await stripe.orders.create({
-    //       customer: stripeId,
-    //       items,
-    //     });
-    //   } else if (email) {
-    //     order = await stripe.orders.create({
-    //       email,
-    //       source,
-    //       items,
-    //     });
-    //   } else {
-    //     throw new AuthenticationError("No user or email found.");
-    //   }
-
-    //   const newOrder = (
-    //     await Order.create({ items, createdBy, stripeId, toAddress })
-    //   ).populate({
-    //     path: "items",
-    //     populate: { path: "product" },
-    //   });
-
-    //   console.log(newOrder);
-    //   if (context.user) {
-    //     await User.findByIdAndUpdate(context.user._id, {
-    //       $addToSet: { orders: newOrder._id },
-    //     });
-    //   }
-
-    //   return newOrder;
-    // },
     updateCart: async (_parent, { cart }, context) => {
       if (!context.user) {
         throw new AuthenticationError("Not logged in!");
