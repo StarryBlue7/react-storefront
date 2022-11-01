@@ -12,12 +12,14 @@ import {
 type Row = {
   row: string;
   values: (string | number)[];
+  spacer?: number;
 };
 
 type Data = {
   label: string;
   headers?: string[];
   entries: Row[];
+  footers?: Row[];
 };
 
 type Props = {
@@ -30,7 +32,7 @@ export default function DetailsTable({ data }: Props) {
       <Table sx={{ width: "100%" }} aria-label={data.label}>
         {data?.headers && data?.headers.length && (
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ bgcolor: "gainsboro" }}>
               {data?.headers.map((header, i) => (
                 <TableCell align={i === 0 ? "left" : "right"} key={header}>
                   {header}
@@ -55,6 +57,27 @@ export default function DetailsTable({ data }: Props) {
               ))}
             </TableRow>
           ))}
+          {data?.footers &&
+            data?.footers.length &&
+            data.footers.map((entry) => (
+              <TableRow
+                key={entry.row}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  bgcolor: "gainsboro",
+                }}
+              >
+                <TableCell component="th" scope="row" colSpan={entry.spacer} />
+                <TableCell component="th" scope="row" sx={{ py: 0 }}>
+                  {entry.row}
+                </TableCell>
+                {entry.values.map((value, i) => (
+                  <TableCell align="right" key={entry.row + i} sx={{ py: 0 }}>
+                    {value}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
