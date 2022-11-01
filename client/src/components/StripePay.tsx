@@ -6,7 +6,7 @@ import {
   PaymentElement,
 } from "@stripe/react-stripe-js";
 
-export default function CheckoutForm() {
+export default function StripePay() {
   const [errorMessage, setErrorMessage] = React.useState<string>("");
   const [submitted, setSubmitted] = React.useState<boolean>(false);
 

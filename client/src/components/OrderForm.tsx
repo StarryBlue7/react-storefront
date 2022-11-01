@@ -11,7 +11,7 @@ import {
 
 import Validate from "../utils/formValidations";
 import StripeWrapper from "./StripeWrapper";
-import CheckoutForm from "./CheckoutForm";
+import StripePay from "./StripePay";
 
 type OrderInfoState = {
   email: string;
@@ -229,7 +229,7 @@ export default function OrderForm({ cartHandler }: any) {
       {activeStep === 2 && (
         <>
           <StripeWrapper cart={cartHandler.cart} formState={formState}>
-            <CheckoutForm />
+            <StripePay />
           </StripeWrapper>
         </>
       )}
