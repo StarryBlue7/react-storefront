@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import Validate from "../utils/formValidations";
+import Validate from "../../utils/formValidations";
 import StripeWrapper from "./StripeWrapper";
 import StripePay from "./StripePay";
 

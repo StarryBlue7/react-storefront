@@ -1,5 +1,5 @@
 import React from "react";
-import ProductsResults from "../components/ProductsResults";
+import ProductsResults from "../components/product/ProductsResults";
 import PromoCarousel from "../components/PromoCarousel";
 import TagList from "../components/TagList";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 
-import DetailsTable from "../components/DetailsTable";
+import DetailsTable from "../DetailsTable";
 
 /**
  * Order details display

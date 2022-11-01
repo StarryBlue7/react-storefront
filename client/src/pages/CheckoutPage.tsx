@@ -1,8 +1,8 @@
 import React from "react";
 import { Divider, Grid, Typography } from "@mui/material";
 
-import Cart from "../components/Cart";
-import OrderForm from "../components/OrderForm";
+import Cart from "../components/cart/Cart";
+import OrderForm from "../components/checkout/OrderForm";
 
 /**
  * Checkout page

@@ -5,7 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { useLazyQuery } from "@apollo/client";
-import { QUERY_PAYMENT_INTENT } from "../utils/queries";
+import { QUERY_PAYMENT_INTENT } from "../../utils/queries";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.

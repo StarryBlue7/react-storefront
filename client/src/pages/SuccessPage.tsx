@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { QUERY_ORDER } from "../utils/queries";
 
-import OrderDetails from "../components/OrderDetails";
+import OrderDetails from "../components/order/OrderDetails";
 
 /**
  * Successful order complete page

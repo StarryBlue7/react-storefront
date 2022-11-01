@@ -4,8 +4,8 @@ import { Grid, Typography } from "@mui/material";
 // import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCT } from "../utils/queries";
-import ProductDetails from "../components/ProductDetails";
-import ProductsCarousel from "../components/ProductsCarousel";
+import ProductDetails from "../components/product/ProductDetails";
+import ProductsCarousel from "../components/product/ProductsCarousel";
 
 /**
  * Individual product page

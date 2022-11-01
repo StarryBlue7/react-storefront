@@ -10,11 +10,11 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { QUERY_CART } from "./utils/queries";
 import { UPDATE_CART } from "./utils/mutations";
 
-import NavBar from "./components/NavBar";
-import AuthModal from "./components/AuthModal";
-import CategoriesDrawer from "./components/CategoriesDrawer";
-import CartDrawer from "./components/CartDrawer";
-import CartButton from "./components/CartButton";
+import NavBar from "./components/navigation/NavBar";
+import AuthModal from "./components/auth/AuthModal";
+import CategoriesDrawer from "./components/categories/CategoriesDrawer";
+import CartDrawer from "./components/cart/CartDrawer";
+import CartButton from "./components/navigation/CartButton";
 
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";

@@ -3,7 +3,7 @@ import { Box, Drawer, Divider } from "@mui/material";
 import { ShoppingCartCheckout, ShoppingBasket } from "@mui/icons-material";
 
 import Cart from "./Cart";
-import ButtonSet from "./ButtonSet";
+import ButtonSet from "../ButtonSet";
 
 export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
   const buttons = [

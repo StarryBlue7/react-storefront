@@ -7,13 +7,12 @@ import { Navigation } from "swiper";
 import ProductCard from "./ProductCard";
 
 import { useQuery } from "@apollo/client";
-import { QUERY_PRODUCTS } from "../utils/queries";
+import { QUERY_PRODUCTS } from "../../utils/queries";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-// import "swiper/css/navigation";
-import "../styles/swiper.css";
+import "../../styles/swiper.css";
 
 type Product = {
   _id: string;

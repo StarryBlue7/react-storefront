@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { useQuery } from "@apollo/client";
-import { QUERY_CATEGORIES } from "../utils/queries";
+import { QUERY_CATEGORIES } from "../../utils/queries";
 import { NavLink } from "react-router-dom";
 import CategoryTree from "./CategoryTree";
 import { Home } from "@mui/icons-material";

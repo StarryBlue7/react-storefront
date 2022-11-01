@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import ProductCard from "./ProductCard";
 
 import { useQuery } from "@apollo/client";
-import { QUERY_PRODUCTS } from "../utils/queries";
+import { QUERY_PRODUCTS } from "../../utils/queries";
 
 type Product = {
   _id: string;

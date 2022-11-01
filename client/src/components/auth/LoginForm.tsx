@@ -2,10 +2,10 @@ import React from "react";
 import { Button, DialogActions, TextField } from "@mui/material";
 
 import { useMutation } from "@apollo/client";
-import { LOGIN } from "../utils/mutations";
+import { LOGIN } from "../../utils/mutations";
 
-import Auth from "../utils/auth";
-import Validate from "../utils/formValidations";
+import Auth from "../../utils/auth";
+import Validate from "../../utils/formValidations";
 
 type LoginFormProps = {
   modalStates?: {

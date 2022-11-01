@@ -19,7 +19,7 @@ import {
   Login,
 } from "@mui/icons-material";
 
-import Auth from "../utils/auth";
+import Auth from "../../utils/auth";
 import NavLogo from "./NavLogo";
 import { NavLink } from "react-router-dom";
 

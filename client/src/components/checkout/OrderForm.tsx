@@ -1,9 +1,9 @@
 import React from "react";
 import { Tabs, Tab, Container } from "@mui/material";
 
-import LoginForm from "./LoginForm";
-import SignupForm from "./SignupForm";
-import Auth from "../utils/auth";
+import LoginForm from "../auth/LoginForm";
+import SignupForm from "../auth/SignupForm";
+import Auth from "../../utils/auth";
 import CheckoutForm from "./CheckoutForm";
 
 /**

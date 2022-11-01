@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 
 import { useMutation } from "@apollo/client";
-import { ADD_USER } from "../utils/mutations";
+import { ADD_USER } from "../../utils/mutations";
 
-import Auth from "../utils/auth";
-import Validate from "../utils/formValidations";
-import TagList from "./TagList";
+import Auth from "../../utils/auth";
+import Validate from "../../utils/formValidations";
+import TagList from "../TagList";
 
 type SignupFormProps = {
   modalStates?: {

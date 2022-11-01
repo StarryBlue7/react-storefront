@@ -5,7 +5,7 @@ import {
 } from "@mui/icons-material";
 import { Divider, Grid } from "@mui/material";
 
-import Cart from "../components/Cart";
+import Cart from "../components/cart/Cart";
 import ButtonSet from "../components/ButtonSet";
 
 /**
