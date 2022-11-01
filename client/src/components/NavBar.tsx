@@ -33,11 +33,17 @@ type ModalStates = {
   closeAuth: () => void;
 };
 
+type Location = {
+  pathname: string;
+  search: string;
+};
+
 type NavBarProps = {
   mainPages: Page[];
   accountPages: Page[];
   toggleDrawers: Function;
   modalStates: ModalStates;
+  location: Location;
 };
 
 function NavBar({
@@ -45,6 +51,7 @@ function NavBar({
   accountPages,
   toggleDrawers,
   modalStates,
+  location,
 }: NavBarProps) {
   // Account menu control
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -122,17 +129,22 @@ function NavBar({
                 justifyContent: "flex-end",
               }}
             >
-              <Tooltip title="Open cart">
-                <IconButton onClick={toggleDrawers("cart", true)} sx={{ p: 0 }}>
-                  <ShoppingBasketOutlined
-                    sx={{
-                      display: { xs: "flex", md: "flex" },
-                      mr: 1,
-                      color: "white",
-                    }}
-                  />
-                </IconButton>
-              </Tooltip>
+              {location.pathname.substring(0, 5) !== "/cart" && (
+                <Tooltip title="Open cart">
+                  <IconButton
+                    onClick={toggleDrawers("cart", true)}
+                    sx={{ p: 0 }}
+                  >
+                    <ShoppingBasketOutlined
+                      sx={{
+                        display: { xs: "flex", md: "flex" },
+                        mr: 1,
+                        color: "white",
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
               {Auth.loggedIn() ? (

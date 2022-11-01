@@ -3,6 +3,13 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { Container } from "@mui/material";
 import { Discount, NewReleases } from "@mui/icons-material";
 
+import Auth from "./utils/auth";
+import CartHandler from "./utils/cartHandler";
+
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { QUERY_CART } from "./utils/queries";
+import { UPDATE_CART } from "./utils/mutations";
+
 import NavBar from "./components/NavBar";
 import AuthModal from "./components/AuthModal";
 import CategoriesDrawer from "./components/CategoriesDrawer";
@@ -12,13 +19,6 @@ import CartButton from "./components/CartButton";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
-
-import Auth from "./utils/auth";
-import CartHandler from "./utils/cartHandler";
-
-import { useLazyQuery, useMutation } from "@apollo/client";
-import { QUERY_CART } from "./utils/queries";
-import { UPDATE_CART } from "./utils/mutations";
 import CheckoutPage from "./pages/CheckoutPage";
 import SuccessPage from "./pages/SuccessPage";
 
@@ -182,6 +182,7 @@ function Main() {
   // Close drawers on category or page change
   const location = useLocation();
   React.useEffect(() => {
+    console.log(location);
     setDrawers({
       categories: false,
       cart: false,
@@ -195,6 +196,7 @@ function Main() {
         accountPages={accountPages}
         toggleDrawers={toggleDrawers}
         modalStates={modalStates}
+        location={location}
       />
       <AuthModal modalStates={modalStates} />
       <CategoriesDrawer
@@ -243,7 +245,9 @@ function Main() {
             element={<SuccessPage cartHandler={cartHandler} />}
           />
         </Routes>
-        <CartButton toggleDrawers={toggleDrawers} />
+        {location.pathname.substring(0, 5) !== "/cart" && (
+          <CartButton toggleDrawers={toggleDrawers} />
+        )}
       </Container>
     </>
   );
