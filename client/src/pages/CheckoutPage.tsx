@@ -8,6 +8,11 @@ import OrderDetails from "../components/OrderDetails";
  * Checkout page
  */
 export default function CheckoutPage({ cartHandler }: any) {
+  // Redirect to homepage if cart is empty
+  if (cartHandler.cart.length < 1) {
+    window.location.replace("/");
+  }
+
   return (
     <>
       <Grid container flexDirection="column" width="100%" rowGap={2}>
