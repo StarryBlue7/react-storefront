@@ -10,6 +10,7 @@ import {
   Button,
   Tooltip,
   MenuItem,
+  Badge,
 } from "@mui/material";
 import {
   ShoppingBasketOutlined,
@@ -38,11 +39,16 @@ type Location = {
   search: string;
 };
 
+type CartHandler = {
+  totals: any;
+};
+
 type NavBarProps = {
   mainPages: Page[];
   accountPages: Page[];
   toggleDrawers: Function;
   modalStates: ModalStates;
+  cartHandler?: CartHandler;
   location: Location;
 };
 
@@ -51,6 +57,7 @@ function NavBar({
   accountPages,
   toggleDrawers,
   modalStates,
+  cartHandler,
   location,
 }: NavBarProps) {
   // Account menu control
@@ -133,15 +140,22 @@ function NavBar({
                 <Tooltip title="Open cart">
                   <IconButton
                     onClick={toggleDrawers("cart", true)}
-                    sx={{ p: 0 }}
+                    sx={{ pr: 1 }}
                   >
-                    <ShoppingBasketOutlined
-                      sx={{
-                        display: { xs: "flex", md: "flex" },
-                        mr: 1,
-                        color: "white",
-                      }}
-                    />
+                    {/* Cart item qty badge on cart icon */}
+                    <Badge
+                      badgeContent={cartHandler?.totals.totalQty}
+                      color="secondary"
+                      overlap="circular"
+                    >
+                      <ShoppingBasketOutlined
+                        sx={{
+                          display: { xs: "flex", md: "flex" },
+                          mr: 1,
+                          color: "white",
+                        }}
+                      />
+                    </Badge>
                   </IconButton>
                 </Tooltip>
               )}

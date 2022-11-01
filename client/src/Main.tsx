@@ -111,7 +111,6 @@ function Main() {
 
   // Keep local & account carts updated to app cart state
   React.useEffect(() => {
-    console.log("cart state", cart);
     // Update account cart in db if logged in
     async function refreshAccountCart() {
       if (loggedIn) {
@@ -182,7 +181,6 @@ function Main() {
   // Close drawers on category or page change
   const location = useLocation();
   React.useEffect(() => {
-    console.log(location);
     setDrawers({
       categories: false,
       cart: false,
@@ -196,6 +194,7 @@ function Main() {
         accountPages={accountPages}
         toggleDrawers={toggleDrawers}
         modalStates={modalStates}
+        cartHandler={cartHandler}
         location={location}
       />
       <AuthModal modalStates={modalStates} />
@@ -246,7 +245,7 @@ function Main() {
           />
         </Routes>
         {location.pathname.substring(0, 5) !== "/cart" && (
-          <CartButton toggleDrawers={toggleDrawers} />
+          <CartButton toggleDrawers={toggleDrawers} cartHandler={cartHandler} />
         )}
       </Container>
     </>
