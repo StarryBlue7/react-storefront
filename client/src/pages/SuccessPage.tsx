@@ -42,7 +42,7 @@ export default function SuccessPage({ cartHandler }: any) {
         row: "Order Placed",
         values: [new Date(parseInt(order.paidOn)).toLocaleString()],
       },
-      { row: "Subtotal", values: ["$" + order.subtotal] },
+      { row: "Total", values: ["$" + order.total] },
       { row: "Shipping Address", values: [order.toAddress] },
       { row: "Estimated Arrival", values: [order.estimatedArrival || "TBD"] },
     ],
@@ -50,13 +50,12 @@ export default function SuccessPage({ cartHandler }: any) {
 
   const orderItems = {
     label: "Order Items",
-    headers: ["Item", "Model", "Qty.", "Price", "Total"],
+    headers: ["Item", "Qty.", "Price", "Total"],
     entries: order?.items
       ? order?.items.map((item: any) => {
           return {
-            row: item.product.fullName,
+            row: `${item.product.fullName} (${item.product.modelNumber})`,
             values: [
-              item.product.modelNumber,
               item.quantity,
               item.priceAtSale,
               (item.quantity * item.priceAtSale).toFixed(2),
@@ -65,10 +64,10 @@ export default function SuccessPage({ cartHandler }: any) {
         })
       : [],
     footers: [
-      { row: "Subtotal", values: ["$" + order.subtotal], spacer: 3 },
-      { row: "Shipping", values: ["$" + order.shipping], spacer: 3 },
-      { row: "Tax", values: ["$" + order.tax], spacer: 3 },
-      { row: "Total", values: ["$" + order.total], spacer: 3 },
+      { row: "Subtotal", values: ["$" + order.subtotal], spacer: 2 },
+      { row: "Shipping", values: ["$" + order.shipping], spacer: 2 },
+      { row: "Tax", values: ["$" + order.tax], spacer: 2 },
+      { row: "Total", values: ["$" + order.total], spacer: 2 },
     ],
   };
 
@@ -83,10 +82,10 @@ export default function SuccessPage({ cartHandler }: any) {
           </Typography>
         </Grid>
         <Grid container flexDirection="row">
-          <Grid item md={6} flexGrow={1} p={2}>
+          <Grid item md={6} flexGrow={1} px={{ xs: 0, sm: 2 }} pb={2}>
             <DetailsTable data={orderDetails} />
           </Grid>
-          <Grid item md={6} flexGrow={1} p={2}>
+          <Grid item md={6} flexGrow={1} px={{ xs: 0, sm: 2 }} pb={2}>
             <DetailsTable data={orderItems} />
           </Grid>
         </Grid>
