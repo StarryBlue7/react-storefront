@@ -33,7 +33,7 @@ type OrderInfoValidation = {
 
 type Field = "email" | "phone" | "address" | "all";
 
-export default function OrderForm({ cartHandler }: any) {
+export default function CheckoutForm({ cartHandler }: any) {
   // Form control
   const [formState, setFormState] = React.useState<OrderInfoState>({
     email: "",
