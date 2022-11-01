@@ -8,12 +8,15 @@ interface IOrder {
   phone: string;
   email: string;
   subtotal: number;
+  taxPercent: number;
+  tax: number;
+  shipping: number;
   paymentComplete: boolean;
   paidOn: Date;
   stripeId: string;
   createdAt: Date;
   toAddress: string;
-  shippedAt?: Date;
+  shippedOn?: Date;
   estimatedArrival?: Date;
 }
 
@@ -47,6 +50,14 @@ const orderSchema = new Schema<IOrder>(
     },
     phone: String,
     email: String,
+    taxPercent: {
+      type: Number,
+      default: 0.0725,
+    },
+    shipping: {
+      type: Number,
+      default: 5,
+    },
     paymentComplete: {
       type: Boolean,
       default: false,
@@ -63,7 +74,7 @@ const orderSchema = new Schema<IOrder>(
       type: String,
       // required: true,
     },
-    shippedAt: {
+    shippedOn: {
       type: Date,
     },
     estimatedArrival: {
@@ -78,6 +89,7 @@ const orderSchema = new Schema<IOrder>(
   }
 );
 
+// Calculate total item count virtual
 orderSchema.virtual("itemCount").get(function () {
   let itemCount = 0;
   this.items.forEach((item) => {
@@ -86,6 +98,7 @@ orderSchema.virtual("itemCount").get(function () {
   return itemCount;
 });
 
+// Calculate subtotal virtual
 orderSchema
   .virtual("subtotal", {
     ref: "Product",
@@ -100,6 +113,18 @@ orderSchema
     });
     return new Number(subtotal.toFixed(2));
   });
+
+// Calculate tax virtual
+orderSchema.virtual("tax").get(function () {
+  const tax = this.subtotal * this.taxPercent;
+  return new Number(tax.toFixed(2));
+});
+
+// Calculate total charge
+orderSchema.virtual("total").get(function () {
+  const tax = this.subtotal + this.tax + this.shipping;
+  return new Number(tax.toFixed(2));
+});
 
 const Order = model("Order", orderSchema);
 
