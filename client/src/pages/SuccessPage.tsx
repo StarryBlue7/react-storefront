@@ -58,8 +58,8 @@ export default function SuccessPage({ cartHandler }: any) {
             values: [
               item.product.modelNumber,
               item.quantity,
-              item.product.price,
-              (item.quantity * item.product.price).toFixed(2),
+              item.priceAtSale,
+              (item.quantity * item.priceAtSale).toFixed(2),
             ],
           };
         })
