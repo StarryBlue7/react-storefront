@@ -9,7 +9,7 @@ import CheckoutForm from "./CheckoutForm";
 /**
  * Order details panel
  */
-export default function OrderDetails({ cartHandler }: any) {
+export default function OrderForm({ cartHandler }: any) {
   const [authTab, setAuthTab] = React.useState<number>(0);
   const changeTab = (_event: React.SyntheticEvent, tabIndex: number) => {
     setAuthTab(tabIndex);
