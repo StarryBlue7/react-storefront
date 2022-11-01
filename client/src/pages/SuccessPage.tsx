@@ -52,7 +52,12 @@ export default function SuccessPage({ cartHandler }: any) {
         ],
       };
     }),
-    footers: [{ row: "Subtotal" }],
+    footers: [
+      { row: "Subtotal", values: ["$" + order.subtotal], spacer: 3 },
+      { row: "Shipping", values: ["$" + order.shipping], spacer: 3 },
+      { row: "Tax", values: ["$" + order.tax], spacer: 3 },
+      { row: "Total", values: ["$" + order.total], spacer: 3 },
+    ],
   };
 
   return loading || !data ? (
@@ -70,7 +75,6 @@ export default function SuccessPage({ cartHandler }: any) {
             <DetailsTable data={orderDetails} />
           </Grid>
           <Grid item md={6} flexGrow={1} p={2}>
-            {/* <Cart cartHandler={cartHandler} label="Items" disable /> */}
             <DetailsTable data={orderItems} />
           </Grid>
         </Grid>
