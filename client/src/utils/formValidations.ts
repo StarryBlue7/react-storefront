@@ -1,9 +1,15 @@
 const alphanumeric = new RegExp(/^\w+$/);
 const emailPattern = new RegExp(/.+@.+\..+/);
+const phonePattern = new RegExp(
+  /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
+);
+const addressPattern = new RegExp(/\d+\s+\w+\s+\w+/);
 
 type UsernameValidation = { usernameError: boolean; usernameHelper: string };
 type PasswordValidation = { passwordError: boolean; passwordHelper: string };
 type EmailValidation = { emailError: boolean; emailHelper: string };
+type PhoneValidation = { phoneError: boolean; phoneHelper: string };
+type AddressValidation = { addressError: boolean; addressHelper: string };
 
 class FormValidation {
   username(username: string): UsernameValidation {
@@ -45,6 +51,24 @@ class FormValidation {
     const emailError = !emailPattern.test(email);
     const emailHelper: string = emailError ? "Must be valid email." : " ";
     return { emailError, emailHelper };
+  }
+
+  phone(phone: string): PhoneValidation {
+    const phoneError = !phonePattern.test(phone);
+    const phoneHelper: string = phoneError
+      ? "Must be valid phone number."
+      : " ";
+    return { phoneError, phoneHelper };
+  }
+
+  address(line1: string, line2: string, line3: string): AddressValidation {
+    const addressError = !addressPattern.test(
+      line1 + " " + line2 + " " + line3
+    );
+    const addressHelper: string = addressError
+      ? "Must be valid shipping address."
+      : " ";
+    return { addressError, addressHelper };
   }
 }
 

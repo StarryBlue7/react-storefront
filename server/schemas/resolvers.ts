@@ -1,4 +1,4 @@
-import { AuthenticationError } from "apollo-server-express";
+import { AuthenticationError, UserInputError } from "apollo-server-express";
 import { User, Product, Category, Tag, Order } from "../models";
 
 import Stripe from "stripe";
@@ -51,19 +51,41 @@ const resolvers = {
           })
           .populate("likes");
       } else {
-        new AuthenticationError("You need to be logged in!");
+        throw new AuthenticationError("You need to be logged in!");
       }
     },
-    // Get single order data, todo: check user matches createdBy
-    order: async (_parent, { orderId }) => {
-      return await Order.findOne({ orderId }).populate("items.product");
+    // Get single order data, TODO: Add auth check for returning order data
+    order: async (_parent, { orderId, stripeId, orderNum }) => {
+      // Search by order ID
+      if (orderId) {
+        return await Order.findById(orderId).populate("items.product");
+      }
+
+      // Search by other identifiers
+      let searchBy = {};
+      if (stripeId) {
+        searchBy = { stripeId };
+      } else if (orderNum) {
+        searchBy = { orderNum };
+      } else {
+        throw new UserInputError("No order identifier given!");
+      }
+
+      return await Order.findOne(searchBy).populate("items.product");
     },
-    paymentIntent: async (_parent, { items }, context) => {
+    paymentIntent: async (
+      _parent,
+      { items, email, phone, toAddress },
+      context
+    ) => {
       console.log("payment intent", items);
       console.log("context", context.user);
       const createdBy = context.user ? context.user._id : null;
       const newOrder = await Order.create({
-        items: items,
+        items,
+        email,
+        phone,
+        toAddress,
         createdBy,
       });
       await newOrder.populate("items.product");
@@ -81,9 +103,12 @@ const resolvers = {
           await stripe.paymentIntents.create(params);
 
         newOrder.stripeId = paymentIntent.id;
+        newOrder.items.forEach((item: any) => {
+          item.priceAtSale = item.product.price;
+        });
+        console.log("priced", newOrder);
         await newOrder.save();
         // Send publishable key and PaymentIntent client_secret to client.
-        // console.log("intent created: ", paymentIntent);
         return {
           clientSecret: paymentIntent.client_secret,
         };
@@ -125,58 +150,6 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
-    },
-
-    newOrder: async (_parent, { source, items, email }, context) => {
-      let createdBy,
-        stripeId = "";
-      let order;
-
-      if (context.user) {
-        const account = await User.findById(context.user._id);
-        createdBy = context.user._id;
-
-        if (account.stripeId) {
-          stripeId = account.stripeId;
-        } else {
-          const customer = await stripe.customers.create({
-            email: context.user.email,
-            source,
-          });
-          stripeId = customer.id;
-          await User.findByIdAndUpdate(context.user._id, { stripeId });
-        }
-
-        await stripe.customers.update(stripeId, {
-          source,
-        });
-        order = await stripe.orders.create({
-          customer: stripeId,
-          items,
-        });
-      } else if (email) {
-        order = await stripe.orders.create({
-          email,
-          source,
-          items,
-        });
-      } else {
-        throw new AuthenticationError("No user or email found.");
-      }
-
-      console.log(order);
-
-      const newOrder = (
-        await Order.create({ items, createdBy, stripeId })
-      ).populate({
-        path: "items",
-        populate: { path: "product" },
-      });
-
-      if (context.user) {
-      }
-
-      return newOrder;
     },
     updateCart: async (_parent, { cart }, context) => {
       if (!context.user) {

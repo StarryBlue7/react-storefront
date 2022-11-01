@@ -37,21 +37,28 @@ const typeDefs = gql`
     _id: ID!
     orderNum: String!
     items: [Item]
+    createdBy: ID
+    paymentComplete: Boolean
+    paidOn: String
     subtotal: Float
     total: Float
+    taxPercent: Float
+    tax: Float
+    shipping: Float
     createdAt: String!
-    shippedAt: String
+    toAddress: String
+    shippedOn: String
     estimatedArrival: String
     itemCount: Int
   }
 
   type Product {
-    _id: ID!
-    fullName: String!
+    _id: ID
+    fullName: String
     shortName: String
     modelNumber: String
-    price: Float!
-    imgURL: String!
+    price: Float
+    imgURL: String
     description: String
     popularity: Int
     tags: [Tag]
@@ -70,22 +77,24 @@ const typeDefs = gql`
     subCategories: [Category]
   }
 
-  type Checkout {
-    session: ID
-  }
-
   type ClientSecret {
     clientSecret: String
   }
 
   type Query {
     me: User
-    order(orderId: String!): Order
+    order(orderId: String, stripeId: String, orderNum: String): Order
     products(tags: [ID], category: ID): [Product]
     product(productId: String!): Product
     tags: [Tag]
     categories: [Category]
-    paymentIntent(items: [OrderInput]): ClientSecret
+    paymentIntent(
+      items: [OrderInput]
+      phone: String
+      email: String
+      toAddress: String
+      shippingOption: String
+    ): ClientSecret
   }
 
   type Mutation {
@@ -97,8 +106,6 @@ const typeDefs = gql`
       orderId: ID
     ): Auth
     login(username: String!, password: String!): Auth
-    checkout(items: [OrderInput]!): Checkout
-    newOrder(items: [OrderInput]!): Order
     updateCart(cart: [OrderInput]!): User
   }
 `;

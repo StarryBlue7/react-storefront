@@ -8,7 +8,7 @@ import Auth from "../utils/auth";
 import Validate from "../utils/formValidations";
 
 type LoginFormProps = {
-  modalStates: {
+  modalStates?: {
     authOpen: boolean;
     openAuth: () => void;
     closeAuth: () => void;
@@ -69,6 +69,12 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
   const handleLogin = async (e: React.FormEvent) => {
     // Prevent default form behavior
     e.preventDefault();
+
+    // Prevent invalid submits
+    if (formValidate.preventSubmit) {
+      return;
+    }
+
     // Prevent multiple submits
     setFormValidate((prev: LoginValidation) => {
       return { ...prev, preventSubmit: true };
@@ -79,7 +85,8 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
         variables: { ...formState, username: formState.username.toLowerCase() },
       });
       Auth.login(data.login.token);
-      modalStates.closeAuth();
+      // Close modal if given in props
+      modalStates && modalStates.closeAuth();
     } catch (e: any) {
       console.error(e);
       setFormValidate((prev: LoginValidation) => {
@@ -93,12 +100,8 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
     }
   };
 
-  // Submit form with Enter key
-  const submitOnEnter = (e: React.KeyboardEvent) =>
-    e.key === "Enter" && handleLogin(e);
-
   return (
-    <>
+    <form>
       <TextField
         autoFocus
         margin="dense"
@@ -125,13 +128,15 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
         helperText={formValidate.passwordHelper}
         value={formState.password}
         onChange={updateForm}
-        onKeyDown={submitOnEnter}
       />
       <DialogActions>
-        <Button variant="outlined" onClick={modalStates.closeAuth}>
-          Cancel
-        </Button>
+        {modalStates && (
+          <Button variant="outlined" onClick={modalStates.closeAuth}>
+            Cancel
+          </Button>
+        )}
         <Button
+          type="submit"
           variant="contained"
           onClick={handleLogin}
           disabled={formValidate.preventSubmit}
@@ -139,6 +144,6 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
           Login
         </Button>
       </DialogActions>
-    </>
+    </form>
   );
 }

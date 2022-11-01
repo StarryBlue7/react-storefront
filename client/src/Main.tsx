@@ -1,7 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Container } from "@mui/material";
 import { Discount, NewReleases } from "@mui/icons-material";
+
+import Auth from "./utils/auth";
+import CartHandler from "./utils/cartHandler";
+
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { QUERY_CART } from "./utils/queries";
+import { UPDATE_CART } from "./utils/mutations";
 
 import NavBar from "./components/NavBar";
 import AuthModal from "./components/AuthModal";
@@ -12,14 +19,8 @@ import CartButton from "./components/CartButton";
 import Home from "./pages/Home";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
-
-import Auth from "./utils/auth";
-import Cart from "./utils/cartHandler";
-
-import { useLazyQuery, useMutation } from "@apollo/client";
-import { QUERY_CART } from "./utils/queries";
-import { UPDATE_CART } from "./utils/mutations";
 import CheckoutPage from "./pages/CheckoutPage";
+import SuccessPage from "./pages/SuccessPage";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
@@ -93,14 +94,14 @@ function Main() {
   const loggedIn = Auth.loggedIn();
   const accountCart = React.useMemo(() => cartData?.me?.cart || [], [cartData]);
 
-  const [cart, setCart] = React.useState<CartState>(Cart.getLocal());
+  const [cart, setCart] = React.useState<CartState>(CartHandler.getLocal());
 
   // Use account cart if local cart empty
   React.useEffect(() => {
     async function retrieveCart() {
       if (loggedIn) {
         await fetchCart();
-        if (Cart.getLocal().length === 0) {
+        if (CartHandler.getLocal().length === 0) {
           setCart(accountCart);
         }
       }
@@ -110,7 +111,6 @@ function Main() {
 
   // Keep local & account carts updated to app cart state
   React.useEffect(() => {
-    console.log("cart state", cart);
     // Update account cart in db if logged in
     async function refreshAccountCart() {
       if (loggedIn) {
@@ -123,28 +123,32 @@ function Main() {
     }
     refreshAccountCart();
     // Update local storage cart
-    Cart.setLocal(cart);
+    CartHandler.setLocal(cart);
   }, [cart, loggedIn, fetchCart, updateAccountCart]);
 
   // Cart handling functions & states for passing as props
   const cartHandler = {
     cartLoading,
     cart,
-    totals: React.useMemo(() => Cart.getTotals(cart), [cart]),
+    totals: React.useMemo(() => CartHandler.getTotals(cart), [cart]),
     addToCart: (product: Product, quantity?: number) => () => {
-      setCart((prev: CartState) => Cart.addItem(prev, product, quantity));
+      setCart((prev: CartState) =>
+        CartHandler.addItem(prev, product, quantity)
+      );
     },
     updateQty: (productId: string, quantity: number) => () => {
-      setCart((prev: CartState) => Cart.updateQty(prev, productId, quantity));
+      setCart((prev: CartState) =>
+        CartHandler.updateQty(prev, productId, quantity)
+      );
     },
     deleteItem: (productId: string) => () => {
-      setCart((prev: CartState) => Cart.deleteItem(prev, productId));
+      setCart((prev: CartState) => CartHandler.deleteItem(prev, productId));
     },
     updateCart: (cart: CartState) => () => {
       setCart(cart);
     },
     clearAll: () => () => {
-      setCart(Cart.clearAll);
+      setCart(CartHandler.clearAll);
     },
   };
 
@@ -174,21 +178,24 @@ function Main() {
     selectCategory: (category: string) => () => setSelectedCategory(category),
   };
 
-  // Close drawers on category change
+  // Close drawers on category or page change
+  const location = useLocation();
   React.useEffect(() => {
     setDrawers({
       categories: false,
       cart: false,
     });
-  }, [selectedCategory]);
+  }, [selectedCategory, location]);
 
   return (
-    <Router>
+    <>
       <NavBar
         mainPages={mainPages}
         accountPages={accountPages}
         toggleDrawers={toggleDrawers}
         modalStates={modalStates}
+        cartHandler={cartHandler}
+        location={location}
       />
       <AuthModal modalStates={modalStates} />
       <CategoriesDrawer
@@ -232,10 +239,16 @@ function Main() {
             element={<CheckoutPage cartHandler={cartHandler} />}
           />
           <Route path="*" element={<h1>Page not found!</h1>} />
+          <Route
+            path="/success"
+            element={<SuccessPage cartHandler={cartHandler} />}
+          />
         </Routes>
-        <CartButton toggleDrawers={toggleDrawers} />
+        {location.pathname.substring(0, 5) !== "/cart" && (
+          <CartButton toggleDrawers={toggleDrawers} cartHandler={cartHandler} />
+        )}
       </Container>
-    </Router>
+    </>
   );
 }
 

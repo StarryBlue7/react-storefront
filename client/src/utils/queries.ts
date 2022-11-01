@@ -76,6 +76,33 @@ export const QUERY_PRODUCT = gql`
   }
 `;
 
+export const QUERY_ORDER = gql`
+  query order($orderId: String, $stripeId: String, $orderNum: String) {
+    order(orderId: $orderId, stripeId: $stripeId, orderNum: $orderNum) {
+      orderNum
+      tax
+      taxPercent
+      total
+      items {
+        product {
+          fullName
+          modelNumber
+          _id
+        }
+        quantity
+        priceAtSale
+      }
+      paidOn
+      subtotal
+      shipping
+      toAddress
+      shippedOn
+      estimatedArrival
+      itemCount
+    }
+  }
+`;
+
 export const QUERY_ME = gql`
   query me {
     me {
@@ -139,8 +166,18 @@ export const QUERY_CART = gql`
 `;
 
 export const QUERY_PAYMENT_INTENT = gql`
-  query paymentIntent($items: [OrderInput]) {
-    paymentIntent(items: $items) {
+  query paymentIntent(
+    $items: [OrderInput]
+    $phone: String
+    $email: String
+    $toAddress: String
+  ) {
+    paymentIntent(
+      items: $items
+      phone: $phone
+      email: $email
+      toAddress: $toAddress
+    ) {
       clientSecret
     }
   }
