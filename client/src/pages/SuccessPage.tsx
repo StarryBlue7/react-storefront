@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { QUERY_ORDER } from "../utils/queries";
 
-import DetailsTable from "../components/DetailsTable";
+import OrderDetails from "../components/OrderDetails";
 
 /**
  * Successful order complete page
@@ -31,45 +31,9 @@ export default function SuccessPage({ cartHandler }: any) {
       cartHandler.clearAll()();
     }
   }, [data]); // eslint-disable-line
+  // Ignore ESLint dependency suggestion to prevent cyclical useEffect calls
 
   const order = data?.order || {};
-
-  const orderDetails = {
-    label: "Order Details",
-    entries: [
-      { row: "Order Number", values: [order.orderNum] },
-      {
-        row: "Order Placed",
-        values: [new Date(parseInt(order.paidOn)).toLocaleString()],
-      },
-      { row: "Total", values: ["$" + order.total] },
-      { row: "Shipping Address", values: [order.toAddress] },
-      { row: "Estimated Arrival", values: [order.estimatedArrival || "TBD"] },
-    ],
-  };
-
-  const orderItems = {
-    label: "Order Items",
-    headers: ["Item", "Qty.", "Price", "Total"],
-    entries: order?.items
-      ? order?.items.map((item: any) => {
-          return {
-            row: `${item.product.fullName} (${item.product.modelNumber})`,
-            values: [
-              item.quantity,
-              item.priceAtSale,
-              (item.quantity * item.priceAtSale).toFixed(2),
-            ],
-          };
-        })
-      : [],
-    footers: [
-      { row: "Subtotal", values: ["$" + order.subtotal], spacer: 2 },
-      { row: "Shipping", values: ["$" + order.shipping], spacer: 2 },
-      { row: "Tax", values: ["$" + order.tax], spacer: 2 },
-      { row: "Total", values: ["$" + order.total], spacer: 2 },
-    ],
-  };
 
   return loading || !data ? (
     <Typography variant="h3">Loading...</Typography>
@@ -81,14 +45,7 @@ export default function SuccessPage({ cartHandler }: any) {
             Order Complete!
           </Typography>
         </Grid>
-        <Grid container flexDirection="row">
-          <Grid item md={6} flexGrow={1} px={{ xs: 0, sm: 2 }} pb={2}>
-            <DetailsTable data={orderDetails} />
-          </Grid>
-          <Grid item md={6} flexGrow={1} px={{ xs: 0, sm: 2 }} pb={2}>
-            <DetailsTable data={orderItems} />
-          </Grid>
-        </Grid>
+        <OrderDetails order={order} />
         <Divider />
       </Grid>
     </>
