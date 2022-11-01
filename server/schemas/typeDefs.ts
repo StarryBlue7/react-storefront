@@ -74,10 +74,6 @@ const typeDefs = gql`
     subCategories: [Category]
   }
 
-  type Checkout {
-    session: ID
-  }
-
   type ClientSecret {
     clientSecret: String
   }
@@ -89,7 +85,12 @@ const typeDefs = gql`
     product(productId: String!): Product
     tags: [Tag]
     categories: [Category]
-    paymentIntent(items: [OrderInput]): ClientSecret
+    paymentIntent(
+      items: [OrderInput]
+      phone: String
+      email: String
+      toAddress: String
+    ): ClientSecret
   }
 
   type Mutation {
@@ -101,8 +102,7 @@ const typeDefs = gql`
       orderId: ID
     ): Auth
     login(username: String!, password: String!): Auth
-    checkout(items: [OrderInput]!): Checkout
-    newOrder(items: [OrderInput]!): Order
+    # newOrder(items: [OrderInput]!, toAddress: String!): Order
     updateCart(cart: [OrderInput]!): User
   }
 `;

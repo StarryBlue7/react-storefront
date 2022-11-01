@@ -1,11 +1,10 @@
-import * as React from "react";
+import React, { FormEvent } from "react";
 import { Button, Typography } from "@mui/material";
 import {
   useStripe,
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
-import { FormEvent } from "react";
 
 export default function CheckoutForm() {
   const [errorMessage, setErrorMessage] = React.useState<string>("");

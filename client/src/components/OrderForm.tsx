@@ -228,7 +228,7 @@ export default function OrderForm({ cartHandler }: any) {
       )}
       {activeStep === 2 && (
         <>
-          <StripeWrapper cart={cartHandler.cart}>
+          <StripeWrapper cart={cartHandler.cart} formState={formState}>
             <CheckoutForm />
           </StripeWrapper>
         </>

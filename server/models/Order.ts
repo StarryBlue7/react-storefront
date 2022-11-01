@@ -5,6 +5,8 @@ interface IOrder {
   orderNum: string;
   items: IItem[];
   createdBy: Types.ObjectId;
+  phone: string;
+  email: string;
   subtotal: number;
   paymentComplete: boolean;
   paidOn: Date;
@@ -43,6 +45,8 @@ const orderSchema = new Schema<IOrder>(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    phone: String,
+    email: String,
     paymentComplete: {
       type: Boolean,
       default: false,
