@@ -3,6 +3,9 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { Container } from "@mui/material";
 import { Discount, NewReleases } from "@mui/icons-material";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Auth from "./utils/auth";
 import CartHandler from "./utils/cartHandler";
 
@@ -132,6 +135,7 @@ function Main() {
     cart,
     totals: React.useMemo(() => CartHandler.getTotals(cart), [cart]),
     addToCart: (product: Product, quantity?: number) => () => {
+      toast(product.shortName + " added to cart.");
       setCart((prev: CartState) =>
         CartHandler.addItem(prev, product, quantity)
       );
@@ -248,6 +252,16 @@ function Main() {
           <CartButton toggleDrawers={toggleDrawers} cartHandler={cartHandler} />
         )}
       </Container>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }
