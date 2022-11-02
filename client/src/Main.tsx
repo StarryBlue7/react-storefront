@@ -135,7 +135,7 @@ function Main() {
     cart,
     totals: React.useMemo(() => CartHandler.getTotals(cart), [cart]),
     addToCart: (product: Product, quantity?: number) => () => {
-      toast(product.shortName + " added to cart.");
+      toast(`🛒 ${product.shortName} added to cart.`);
       setCart((prev: CartState) =>
         CartHandler.addItem(prev, product, quantity)
       );
@@ -255,6 +255,7 @@ function Main() {
       <ToastContainer
         position="bottom-left"
         autoClose={4000}
+        limit={3}
         newestOnTop
         closeOnClick
         pauseOnFocusLoss
