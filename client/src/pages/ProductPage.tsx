@@ -10,7 +10,7 @@ import ProductsCarousel from "../components/product/ProductsCarousel";
 /**
  * Individual product page
  */
-export default function ProductPage() {
+export default function ProductPage({ cartHandler }: any) {
   const { productId } = useParams();
 
   const { loading, data } = useQuery(QUERY_PRODUCT, {
@@ -23,7 +23,7 @@ export default function ProductPage() {
     <Typography variant="h3">Loading...</Typography>
   ) : (
     <Grid container width="100%" rowGap={2}>
-      <ProductDetails product={product} />
+      <ProductDetails product={product} cartHandler={cartHandler} />
       <ProductsCarousel
         title="Similar items: "
         tags={product.tags.map((tag: any) => tag._id)}

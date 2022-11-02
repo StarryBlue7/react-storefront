@@ -233,7 +233,10 @@ function Main() {
               />
             }
           />
-          <Route path="/products/:productId" element={<ProductPage />} />
+          <Route
+            path="/products/:productId"
+            element={<ProductPage cartHandler={cartHandler} />}
+          />
           <Route
             path="/cart"
             element={<CartPage cartHandler={cartHandler} />}
