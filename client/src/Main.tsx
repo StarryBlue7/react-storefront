@@ -257,7 +257,7 @@ function Main() {
       </Container>
       <ToastContainer
         position="bottom-left"
-        autoClose={4000}
+        autoClose={3000}
         limit={3}
         newestOnTop
         closeOnClick
