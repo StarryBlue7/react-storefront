@@ -14,6 +14,7 @@ import { ADD_USER } from "../../utils/mutations";
 import Auth from "../../utils/auth";
 import Validate from "../../utils/formValidations";
 import TagList from "../TagList";
+import ButtonLoader from "../feedback/ButtonLoader";
 
 type SignupFormProps = {
   modalStates?: {
@@ -155,7 +156,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
   };
 
   // Submit login to server
-  const [signup] = useMutation(ADD_USER);
+  const [signup, { loading }] = useMutation(ADD_USER);
   const handleSignup = async (e: React.FormEvent) => {
     // Prevent default form behavior
     e.preventDefault();
@@ -280,6 +281,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
             disabled={formValidate.preventSubmit}
           >
             Sign Up
+            {loading && <ButtonLoader />}
           </Button>
         ) : (
           <Button

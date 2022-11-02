@@ -6,6 +6,7 @@ import { LOGIN } from "../../utils/mutations";
 
 import Auth from "../../utils/auth";
 import Validate from "../../utils/formValidations";
+import ButtonLoader from "../feedback/ButtonLoader";
 
 type LoginFormProps = {
   modalStates?: {
@@ -65,7 +66,7 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
   }, [formState]);
 
   // Submit login to server
-  const [login] = useMutation(LOGIN);
+  const [login, { loading }] = useMutation(LOGIN);
   const handleLogin = async (e: React.FormEvent) => {
     // Prevent default form behavior
     e.preventDefault();
@@ -142,6 +143,7 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
           disabled={formValidate.preventSubmit}
         >
           Login
+          {loading && <ButtonLoader />}
         </Button>
       </DialogActions>
     </form>
