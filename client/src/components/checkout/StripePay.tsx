@@ -6,6 +6,7 @@ import {
   PaymentElement,
 } from "@stripe/react-stripe-js";
 import Loader from "../feedback/Loader";
+import ButtonLoader from "../feedback/ButtonLoader";
 
 export default function StripePay() {
   const [errorMessage, setErrorMessage] = React.useState<string>(" ");
@@ -71,6 +72,7 @@ export default function StripePay() {
           sx={{ alignSelf: "flex-end", flexGrow: 0, mt: 2 }}
         >
           Submit
+          {submitted && <ButtonLoader />}
         </Button>
       </div>
     </form>
