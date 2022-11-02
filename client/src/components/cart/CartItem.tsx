@@ -122,7 +122,7 @@ export default function CartItem({
               color: "black",
             }}
           >
-            <ListItemIcon>
+            <ListItemIcon sx={{ flexGrow: options ? 1 : 0 }}>
               <img
                 src={item.product.imgURL}
                 alt={item.product.shortName}
