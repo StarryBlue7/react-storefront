@@ -156,7 +156,7 @@ const resolvers = {
         throw new AuthenticationError("Not logged in!");
       }
       return (
-        await User.findByIdAndUpdate(context.user._id, { cart })
+        await User.findByIdAndUpdate(context.user._id, { cart }, { new: true })
       ).populate({
         path: "cart",
         populate: { path: "product" },
