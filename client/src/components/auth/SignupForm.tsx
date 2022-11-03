@@ -11,9 +11,9 @@ import {
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../../utils/mutations";
 
-import Auth from "../../utils/auth";
 import Validate from "../../utils/formValidations";
 import TagList from "../TagList";
+import ButtonLoader from "../feedback/ButtonLoader";
 
 type SignupFormProps = {
   modalStates?: {
@@ -21,6 +21,7 @@ type SignupFormProps = {
     openAuth: () => void;
     closeAuth: () => void;
   };
+  authHandler: any;
 };
 
 type SignupState = {
@@ -44,7 +45,10 @@ type SelectedTags = Set<string>;
 
 type Field = "username" | "email" | "password" | "all";
 
-export default function SignupForm({ modalStates }: SignupFormProps) {
+export default function SignupForm({
+  modalStates,
+  authHandler,
+}: SignupFormProps) {
   // Form control
   const [formState, setFormState] = React.useState<SignupState>({
     username: "",
@@ -155,7 +159,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
   };
 
   // Submit login to server
-  const [signup] = useMutation(ADD_USER);
+  const [signup, { loading }] = useMutation(ADD_USER);
   const handleSignup = async (e: React.FormEvent) => {
     // Prevent default form behavior
     e.preventDefault();
@@ -180,7 +184,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
           likes: Array.from(selectedTags),
         },
       });
-      Auth.login(data.addUser.token);
+      authHandler.login(data.addUser.token);
       // Close modal if given in props
       modalStates && modalStates.closeAuth();
     } catch (e) {
@@ -280,6 +284,7 @@ export default function SignupForm({ modalStates }: SignupFormProps) {
             disabled={formValidate.preventSubmit}
           >
             Sign Up
+            {loading && <ButtonLoader />}
           </Button>
         ) : (
           <Button

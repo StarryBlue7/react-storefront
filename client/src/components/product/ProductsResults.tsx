@@ -1,9 +1,10 @@
 import React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import ProductCard from "./ProductCard";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../../utils/queries";
+import Loader from "../feedback/Loader";
 
 type Product = {
   _id: string;
@@ -36,7 +37,7 @@ export default function ProductsResults({
   return (
     <Grid container spacing={2}>
       {loading ? (
-        <Typography>Loading results...</Typography>
+        <Loader message="Loading results..." />
       ) : (
         products.map((product: Product, i: number) => (
           <Grid item xs={12} sm={6} md={4} lg={3} m={0} key={i}>

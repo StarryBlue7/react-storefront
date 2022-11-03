@@ -43,9 +43,9 @@ export default function CartPage({ cartHandler }: any) {
         <Grid item>
           <Cart cartHandler={cartHandler} />
         </Grid>
-        <Grid item>
-          <Divider />
-          <ButtonSet buttons={buttons} />
+        <Divider />
+        <Grid item width="50%" alignSelf="flex-end">
+          <ButtonSet buttons={buttons} span />
         </Grid>
       </Grid>
     </>

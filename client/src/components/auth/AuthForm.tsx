@@ -7,7 +7,7 @@ import SignupForm from "./SignupForm";
 /**
  * Login/signup form
  */
-export default function AuthForm({ modalStates }: any) {
+export default function AuthForm({ modalStates, authHandler }: any) {
   const [authTab, setAuthTab] = React.useState<number>(0);
   const changeTab = (_event: React.SyntheticEvent, tabIndex: number) => {
     setAuthTab(tabIndex);
@@ -26,9 +26,9 @@ export default function AuthForm({ modalStates }: any) {
       </Tabs>
       <Container sx={{ py: 1 }}>
         {authTab === 0 ? (
-          <LoginForm modalStates={modalStates} />
+          <LoginForm modalStates={modalStates} authHandler={authHandler} />
         ) : (
-          <SignupForm modalStates={modalStates} />
+          <SignupForm modalStates={modalStates} authHandler={authHandler} />
         )}
       </Container>
     </>

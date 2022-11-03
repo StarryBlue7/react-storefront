@@ -7,6 +7,8 @@ import { useQuery } from "@apollo/client";
 import { QUERY_ORDER } from "../utils/queries";
 
 import OrderDetails from "../components/order/OrderDetails";
+import ButtonSet from "../components/ButtonSet";
+import Loader from "../components/feedback/Loader";
 
 /**
  * Successful order complete page
@@ -35,8 +37,10 @@ export default function SuccessPage({ cartHandler }: any) {
 
   const order = data?.order || {};
 
+  const buttons = [{ label: "Continue Shopping", path: "/" }];
+
   return loading || !data ? (
-    <Typography variant="h3">Loading...</Typography>
+    <Loader message="Completing order..." />
   ) : (
     <>
       <Grid container flexDirection="column" width="100%" rowGap={2}>
@@ -47,6 +51,7 @@ export default function SuccessPage({ cartHandler }: any) {
         </Grid>
         <OrderDetails order={order} />
         <Divider />
+        <ButtonSet buttons={buttons} />
       </Grid>
     </>
   );

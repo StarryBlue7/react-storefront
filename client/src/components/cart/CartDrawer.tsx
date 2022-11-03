@@ -46,7 +46,7 @@ export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
         >
           <Cart cartHandler={cartHandler} />
           <Divider />
-          <ButtonSet buttons={buttons} />
+          <ButtonSet buttons={buttons} span />
         </Box>
       </Drawer>
     </>

@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Typography } from "@mui/material";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { useLazyQuery } from "@apollo/client";
 import { QUERY_PAYMENT_INTENT } from "../../utils/queries";
+import Loader from "../feedback/Loader";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -54,7 +54,7 @@ export default function StripeWrapper({ cart, children, formState }: any) {
         </Elements>
       ) : (
         <>
-          <Typography variant="h3">Loading...</Typography>
+          <Loader message="Processing order..." />
         </>
       )}
     </>

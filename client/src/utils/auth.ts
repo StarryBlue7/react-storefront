@@ -32,14 +32,18 @@ class AuthService {
     return token;
   }
 
-  login(idToken: string): void {
+  login(idToken: string, redirect?: string): void {
     localStorage.setItem("id_token", idToken);
-    window.location.reload();
+    if (redirect) {
+      window.location.replace(redirect);
+    }
   }
 
-  logout(): void {
+  logout(redirect?: string): void {
     localStorage.removeItem("id_token");
-    window.location.reload();
+    if (redirect) {
+      window.location.replace(redirect);
+    }
   }
 }
 

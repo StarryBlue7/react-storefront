@@ -5,9 +5,9 @@ import HeartRating from "./HeartRating";
 /**
  * Individual product info
  */
-export default function ProductDetails({ product }: any) {
+export default function ProductDetails({ product, cartHandler }: any) {
   return (
-    <Card sx={{ width: "100%", mt: 5, borderRadius: 5, p: 3 }}>
+    <Card sx={{ width: "100%", mt: { xs: 2, sm: 5 }, borderRadius: 5, p: 3 }}>
       <Grid container justifyContent={"evenly"} gap={3}>
         <Grid
           item
@@ -35,7 +35,9 @@ export default function ProductDetails({ product }: any) {
           <Typography variant="caption">{product.modelNumber}</Typography>
           <HeartRating value={product.rating || 4.5} />
           <Typography variant="h4">{"$" + product.price}</Typography>
-          <Button variant="contained">Add to Cart</Button>
+          <Button onClick={cartHandler.addToCart(product)} variant="contained">
+            Add to Cart
+          </Button>
           <Typography sx={{ mt: 5 }}>{product.description}</Typography>
         </Grid>
       </Grid>

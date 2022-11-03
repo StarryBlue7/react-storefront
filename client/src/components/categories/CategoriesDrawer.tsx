@@ -17,6 +17,7 @@ import { NavLink } from "react-router-dom";
 import CategoryTree from "./CategoryTree";
 import { Home } from "@mui/icons-material";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
+import Loader from "../feedback/Loader";
 
 type Category = {
   _id: string;
@@ -60,7 +61,7 @@ export default function CategoriesDrawer({
   categoryStates,
 }: Props) {
   // Retrieve category root nodes with populated child nodes
-  const { data } = useQuery(QUERY_CATEGORIES, {
+  const { loading, data } = useQuery(QUERY_CATEGORIES, {
     fetchPolicy: "no-cache",
   });
 
@@ -123,15 +124,19 @@ export default function CategoriesDrawer({
           <Typography variant="h5" sx={{ px: 2, pt: 2 }}>
             Shop Categories
           </Typography>
-          <List>
-            {categories.map((category: Category) => (
-              <CategoryTree
-                category={category}
-                categoryStates={categoryStates}
-                key={category.name}
-              />
-            ))}
-          </List>
+          {loading ? (
+            <Loader message="Loading categories..." />
+          ) : (
+            <List>
+              {categories.map((category: Category) => (
+                <CategoryTree
+                  category={category}
+                  categoryStates={categoryStates}
+                  key={category.name}
+                />
+              ))}
+            </List>
+          )}
         </Box>
       </Drawer>
     </>

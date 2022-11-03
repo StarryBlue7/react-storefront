@@ -7,7 +7,7 @@ import OrderForm from "../components/checkout/OrderForm";
 /**
  * Checkout page
  */
-export default function CheckoutPage({ cartHandler }: any) {
+export default function CheckoutPage({ cartHandler, authHandler }: any) {
   // Redirect to homepage if cart is empty
   if (cartHandler.cart.length < 1) {
     window.location.replace("/");
@@ -21,7 +21,7 @@ export default function CheckoutPage({ cartHandler }: any) {
             <Typography variant="h5" sx={{ p: 2 }}>
               Order Details
             </Typography>
-            <OrderForm cartHandler={cartHandler} />
+            <OrderForm cartHandler={cartHandler} authHandler={authHandler} />
           </Grid>
           <Grid item md={6} flexGrow={1} p={2}>
             <Cart cartHandler={cartHandler} label="Items" disable />

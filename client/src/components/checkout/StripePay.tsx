@@ -5,10 +5,13 @@ import {
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
+import Loader from "../feedback/Loader";
+import ButtonLoader from "../feedback/ButtonLoader";
 
 export default function StripePay() {
-  const [errorMessage, setErrorMessage] = React.useState<string>("");
+  const [errorMessage, setErrorMessage] = React.useState<string>(" ");
   const [submitted, setSubmitted] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   // Stripe
   const stripe = useStripe();
@@ -48,17 +51,30 @@ export default function StripePay() {
       style={{ padding: 20, display: "flex", flexFlow: "column" }}
       onSubmit={handleSubmit}
     >
-      <PaymentElement />
-      {errorMessage && <Typography>{errorMessage}</Typography>}
-      <Button
-        type="submit"
-        variant="contained"
-        id="submit"
-        disabled={!stripe || !elements || submitted}
-        sx={{ alignSelf: "flex-end", flexGrow: 0 }}
+      {loading && <Loader message="Loading payment..." />}
+      <div
+        style={{
+          display: loading ? "none" : "flex",
+          flexFlow: "column",
+          width: "100%",
+        }}
       >
-        Submit
-      </Button>
+        <PaymentElement
+          onReady={() => setLoading(false)}
+          onFocus={() => setErrorMessage(" ")}
+        />
+        {errorMessage && <Typography>{errorMessage}</Typography>}
+        <Button
+          type="submit"
+          variant="contained"
+          id="submit"
+          disabled={!stripe || !elements || submitted}
+          sx={{ alignSelf: "flex-end", flexGrow: 0, mt: 2 }}
+        >
+          Submit
+          {submitted && <ButtonLoader />}
+        </Button>
+      </div>
     </form>
   );
 }

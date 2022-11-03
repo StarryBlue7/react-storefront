@@ -13,6 +13,7 @@ import { QUERY_PRODUCTS } from "../../utils/queries";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../../styles/swiper.css";
+import Loader from "../feedback/Loader";
 
 type Product = {
   _id: string;
@@ -57,7 +58,7 @@ export default function ProductsCarousel({
   return (
     <>
       {loading ? (
-        <Typography>Loading...</Typography>
+        <Loader />
       ) : (
         <>
           <Grid
