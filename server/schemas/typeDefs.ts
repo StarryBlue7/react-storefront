@@ -85,9 +85,10 @@ const typeDefs = gql`
     me: User
     order(orderId: String, stripeId: String, orderNum: String): Order
     products(tags: [ID], category: ID): [Product]
-    product(productId: String!): Product
+    product(productId: ID!): Product
     tags: [Tag]
     categories: [Category]
+    category(categoryId: ID!): Category
     paymentIntent(
       items: [OrderInput]
       phone: String

@@ -35,7 +35,10 @@ const resolvers = {
     // All categories
     categories: async () => {
       return Category.find({ parentCategory: null }).populate("subCategories");
-      // .populate("parentCategory");
+    },
+    // Single category &
+    category: async (_parent, { categoryId }) => {
+      return Category.findById(categoryId).populate("parentCategory");
     },
     // Current user
     me: async (_parent, _args, context) => {

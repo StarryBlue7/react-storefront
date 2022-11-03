@@ -17,6 +17,7 @@ const categorySchema = new Schema<ICategory>(
     parentCategory: {
       type: Schema.Types.ObjectId,
       ref: "Category",
+      autopopulate: true,
     },
     subCategories: [
       {
