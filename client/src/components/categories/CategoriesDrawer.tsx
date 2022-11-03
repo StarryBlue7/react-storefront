@@ -62,7 +62,7 @@ export default function CategoriesDrawer({
 }: Props) {
   // Retrieve category root nodes with populated child nodes
   const { loading, data } = useQuery(QUERY_CATEGORIES, {
-    fetchPolicy: "no-cache",
+    fetchPolicy: "cache-first",
   });
 
   const categories = data?.categories || [];
