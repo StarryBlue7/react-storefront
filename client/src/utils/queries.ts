@@ -33,6 +33,8 @@ export const QUERY_CATEGORIES = gql`
 export const QUERY_CATEGORY = gql`
   query category($categoryId: ID!) {
     category(categoryId: $categoryId) {
+      _id
+      name
       parentCategory {
         _id
         name
