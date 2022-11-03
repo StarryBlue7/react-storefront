@@ -57,6 +57,9 @@ const accountPages = [
 ];
 
 function Main() {
+  // Current page URL location
+  const location = useLocation();
+
   // Login/signup modal control
   const [authOpen, setAuthOpen] = React.useState<boolean>(false);
   const modalStates = {
@@ -90,27 +93,30 @@ function Main() {
     };
 
   // User account cart data retrieval
-  const [fetchCart, { loading: cartLoading, data: cartData }] =
-    useLazyQuery(QUERY_CART);
+  const [fetchCart, { loading: cartLoading }] = useLazyQuery(QUERY_CART, {
+    fetchPolicy: "no-cache",
+  });
   const [updateAccountCart] = useMutation(UPDATE_CART);
 
   const loggedIn = Auth.loggedIn();
-  const accountCart = React.useMemo(() => cartData?.me?.cart || [], [cartData]);
+  // const accountCart = React.useMemo(() => cartData?.me?.cart || [], [cartData]);
 
   const [cart, setCart] = React.useState<CartState>(CartHandler.getLocal());
 
-  // Use account cart if local cart empty
+  // Use account cart if local cart empty, except on order success page
   React.useEffect(() => {
     async function retrieveCart() {
-      if (loggedIn) {
-        await fetchCart();
-        if (CartHandler.getLocal().length === 0) {
+      if (loggedIn && location.pathname !== "/success") {
+        const { data } = await fetchCart();
+        const accountCart = data.me.cart;
+        if (CartHandler.getLocal().length === 0 && accountCart.length > 0) {
           setCart(accountCart);
         }
       }
     }
     retrieveCart();
-  }, [loggedIn, accountCart, fetchCart]);
+  }, [loggedIn, fetchCart]); // eslint-disable-line react-hooks/exhaustive-deps
+  // location dependency ignored to prevent unnecessary cart fetching
 
   // Keep local & account carts updated to app cart state
   React.useEffect(() => {
@@ -120,14 +126,17 @@ function Main() {
         const newCart = cart.map((item: Item) => {
           return { product: item.product._id, quantity: item.quantity };
         });
-        await updateAccountCart({ variables: { cart: newCart } });
-        await fetchCart();
+        await updateAccountCart({
+          variables: { cart: newCart },
+        });
       }
     }
     refreshAccountCart();
+
     // Update local storage cart
     CartHandler.setLocal(cart);
-  }, [cart, loggedIn, fetchCart, updateAccountCart]);
+  }, [cart, updateAccountCart]); // eslint-disable-line react-hooks/exhaustive-deps
+  // loggedIn dependency ignored to prevent overwriting remote cart on login
 
   // Cart handling functions & states for passing as props
   const cartHandler = {
@@ -183,7 +192,6 @@ function Main() {
   };
 
   // Close drawers on category or page change
-  const location = useLocation();
   React.useEffect(() => {
     setDrawers({
       categories: false,
