@@ -19,7 +19,6 @@ import {
   Login,
 } from "@mui/icons-material";
 
-import Auth from "../../utils/auth";
 import NavLogo from "./NavLogo";
 import { NavLink } from "react-router-dom";
 
@@ -48,6 +47,7 @@ type NavBarProps = {
   accountPages: Page[];
   toggleDrawers: Function;
   modalStates: ModalStates;
+  authHandler: any;
   cartHandler?: CartHandler;
   location: Location;
 };
@@ -58,6 +58,7 @@ function NavBar({
   toggleDrawers,
   modalStates,
   cartHandler,
+  authHandler,
   location,
 }: NavBarProps) {
   // Account menu control
@@ -70,6 +71,10 @@ function NavBar({
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  React.useEffect(() => {
+    setAnchorElUser(null);
+  }, [authHandler.loggedIn]);
 
   return (
     <>
@@ -161,7 +166,7 @@ function NavBar({
               )}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              {Auth.loggedIn() ? (
+              {authHandler.loggedIn ? (
                 <>
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -203,7 +208,7 @@ function NavBar({
                         </MenuItem>
                       </NavLink>
                     ))}
-                    <MenuItem onClick={Auth.logout}>
+                    <MenuItem onClick={authHandler.logout}>
                       <Typography textAlign="center" color="primary">
                         Logout
                       </Typography>

@@ -4,9 +4,9 @@ import { Button, DialogActions, TextField } from "@mui/material";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../../utils/mutations";
 
-import Auth from "../../utils/auth";
 import Validate from "../../utils/formValidations";
 import ButtonLoader from "../feedback/ButtonLoader";
+import { useLocation } from "react-router-dom";
 
 type LoginFormProps = {
   modalStates?: {
@@ -14,6 +14,7 @@ type LoginFormProps = {
     openAuth: () => void;
     closeAuth: () => void;
   };
+  authHandler: any;
 };
 
 type LoginState = {
@@ -29,7 +30,13 @@ type LoginValidation = {
   preventSubmit: boolean;
 };
 
-export default function LoginForm({ modalStates }: LoginFormProps) {
+export default function LoginForm({
+  modalStates,
+  authHandler,
+}: LoginFormProps) {
+  // Current page location URL
+  const location = useLocation();
+
   // Form control
   const [formState, setFormState] = React.useState<LoginState>({
     username: "",
@@ -85,7 +92,7 @@ export default function LoginForm({ modalStates }: LoginFormProps) {
       const { data } = await login({
         variables: { ...formState, username: formState.username.toLowerCase() },
       });
-      Auth.login(data.login.token);
+      authHandler.login(data.login.token, location.pathname + location.search);
       // Close modal if given in props
       modalStates && modalStates.closeAuth();
     } catch (e: any) {

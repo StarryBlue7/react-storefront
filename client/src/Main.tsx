@@ -60,8 +60,22 @@ function Main() {
   // Current page URL location
   const location = useLocation();
 
-  // User authentication status
-  const loggedIn = Auth.loggedIn();
+  // User authentication state control
+  const [loggedIn, setLoggedIn] = React.useState<boolean>(Auth.loggedIn());
+  const authHandler = {
+    loggedIn,
+    authRefresh: function () {
+      setLoggedIn(Auth.loggedIn());
+    },
+    login: function (token: string) {
+      Auth.login(token);
+      setLoggedIn(Auth.loggedIn());
+    },
+    logout: function () {
+      Auth.logout();
+      setLoggedIn(Auth.loggedIn());
+    },
+  };
 
   // Login/signup modal control
   const [authOpen, setAuthOpen] = React.useState<boolean>(false);
@@ -196,7 +210,7 @@ function Main() {
       categories: false,
       cart: false,
     });
-  }, [selectedCategory, location]);
+  }, [selectedCategory, location, loggedIn]);
 
   return (
     <>
@@ -206,9 +220,10 @@ function Main() {
         toggleDrawers={toggleDrawers}
         modalStates={modalStates}
         cartHandler={cartHandler}
+        authHandler={authHandler}
         location={location}
       />
-      <AuthModal modalStates={modalStates} />
+      <AuthModal modalStates={modalStates} authHandler={authHandler} />
       <CategoriesDrawer
         mainPages={mainPages}
         open={drawers.categories}
@@ -250,7 +265,12 @@ function Main() {
           />
           <Route
             path="/cart/checkout"
-            element={<CheckoutPage cartHandler={cartHandler} />}
+            element={
+              <CheckoutPage
+                cartHandler={cartHandler}
+                authHandler={authHandler}
+              />
+            }
           />
           <Route path="*" element={<h1>Page not found!</h1>} />
           <Route
