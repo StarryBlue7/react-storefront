@@ -60,6 +60,9 @@ function Main() {
   // Current page URL location
   const location = useLocation();
 
+  // User authentication status
+  const loggedIn = Auth.loggedIn();
+
   // Login/signup modal control
   const [authOpen, setAuthOpen] = React.useState<boolean>(false);
   const modalStates = {
@@ -92,51 +95,13 @@ function Main() {
       });
     };
 
-  // User account cart data retrieval
+  const [cart, setCart] = React.useState<CartState>(CartHandler.getLocal());
+
+  // Database user account cart retrieval/update
   const [fetchCart, { loading: cartLoading }] = useLazyQuery(QUERY_CART, {
     fetchPolicy: "no-cache",
   });
   const [updateAccountCart] = useMutation(UPDATE_CART);
-
-  const loggedIn = Auth.loggedIn();
-  // const accountCart = React.useMemo(() => cartData?.me?.cart || [], [cartData]);
-
-  const [cart, setCart] = React.useState<CartState>(CartHandler.getLocal());
-
-  // Use account cart if local cart empty, except on order success page
-  React.useEffect(() => {
-    async function retrieveCart() {
-      if (loggedIn && location.pathname !== "/success") {
-        const { data } = await fetchCart();
-        const accountCart = data.me.cart;
-        if (CartHandler.getLocal().length === 0 && accountCart.length > 0) {
-          setCart(accountCart);
-        }
-      }
-    }
-    retrieveCart();
-  }, [loggedIn, fetchCart]); // eslint-disable-line react-hooks/exhaustive-deps
-  // location dependency ignored to prevent unnecessary cart fetching
-
-  // Keep local & account carts updated to app cart state
-  React.useEffect(() => {
-    // Update account cart in db if logged in
-    async function refreshAccountCart() {
-      if (loggedIn) {
-        const newCart = cart.map((item: Item) => {
-          return { product: item.product._id, quantity: item.quantity };
-        });
-        await updateAccountCart({
-          variables: { cart: newCart },
-        });
-      }
-    }
-    refreshAccountCart();
-
-    // Update local storage cart
-    CartHandler.setLocal(cart);
-  }, [cart, updateAccountCart]); // eslint-disable-line react-hooks/exhaustive-deps
-  // loggedIn dependency ignored to prevent overwriting remote cart on login
 
   // Cart handling functions & states for passing as props
   const cartHandler = {
@@ -164,6 +129,40 @@ function Main() {
       setCart(CartHandler.clearAll);
     },
   };
+
+  // Use account cart if local cart empty, except on order success page
+  React.useEffect(() => {
+    async function retrieveCart() {
+      if (loggedIn && location.pathname !== "/success") {
+        const { data } = await fetchCart();
+        const accountCart = data.me.cart;
+        if (CartHandler.getLocal().length === 0 && accountCart.length > 0) {
+          setCart(accountCart);
+        }
+      }
+    }
+    retrieveCart();
+  }, [loggedIn, fetchCart]); // eslint-disable-line react-hooks/exhaustive-deps
+  // location dependency ignored to prevent unnecessary cart fetching
+
+  // Keep local & account carts updated to app cart state
+  React.useEffect(() => {
+    // Update account cart in db if logged in
+    async function refreshAccountCart() {
+      if (Auth.loggedIn()) {
+        const newCart = cart.map((item: Item) => {
+          return { product: item.product._id, quantity: item.quantity };
+        });
+        await updateAccountCart({
+          variables: { cart: newCart },
+        });
+      }
+    }
+    refreshAccountCart();
+
+    // Update local storage cart
+    CartHandler.setLocal(cart);
+  }, [cart, updateAccountCart]);
 
   // Product tags selection
   const [selectedTags, setSelectedTags] = React.useState<SelectedTags>(
