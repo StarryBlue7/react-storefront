@@ -24,12 +24,12 @@ import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import SuccessPage from "./pages/SuccessPage";
+import CategoryPage from "./pages/CategoryPage";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
 
 type SelectedTags = Set<string>;
-type SelectedCategory = string;
 
 type Product = {
   _id: string;
@@ -196,21 +196,13 @@ function Main() {
     },
   };
 
-  // Category selection
-  const [selectedCategory, setSelectedCategory] =
-    React.useState<SelectedCategory>("");
-  const categoryStates = {
-    selectedCategory,
-    selectCategory: (category: string) => () => setSelectedCategory(category),
-  };
-
   // Close drawers on category or page change
   React.useEffect(() => {
     setDrawers({
       categories: false,
       cart: false,
     });
-  }, [selectedCategory, location, loggedIn]);
+  }, [location, loggedIn]);
 
   return (
     <>
@@ -228,7 +220,6 @@ function Main() {
         mainPages={mainPages}
         open={drawers.categories}
         toggleDrawers={toggleDrawers}
-        categoryStates={categoryStates}
       />
       <CartDrawer
         open={drawers.cart}
@@ -247,12 +238,12 @@ function Main() {
         <Routes>
           <Route
             path="/"
+            element={<Home tagStates={tagStates} cartHandler={cartHandler} />}
+          />
+          <Route
+            path="/category/:categoryId/*"
             element={
-              <Home
-                tagStates={tagStates}
-                categoryStates={categoryStates}
-                cartHandler={cartHandler}
-              />
+              <CategoryPage tagStates={tagStates} cartHandler={cartHandler} />
             }
           />
           <Route

@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { urlString } from "../../utils/url";
 
 type Category = {
   _id: string;
@@ -16,13 +17,7 @@ type Category = {
   subCategories?: Array<Category>;
 };
 
-type CategoryStates = {
-  selectedCategory: string;
-  selectCategory: Function;
-};
-
 type Props = {
-  categoryStates: CategoryStates;
   category: Category;
   autoOpen?: number;
   layer?: number;
@@ -32,7 +27,6 @@ type Props = {
  * Recursively generates collapsible lists of subcategories from parent
  */
 export default function CategoryTree({
-  categoryStates,
   category,
   autoOpen = 1,
   layer = 1,
@@ -46,9 +40,12 @@ export default function CategoryTree({
   return (
     <>
       <ListItem key={category.name} disablePadding>
-        <Link to="/" style={{ flexGrow: 1, textDecoration: "none" }}>
-          <ListItemButton onClick={categoryStates.selectCategory(category._id)}>
-            <ListItemText sx={{ color: "black" }} primary={category.name} />
+        <Link
+          to={`/category/${category._id}/${urlString(category.name)}`}
+          style={{ flexGrow: 1, textDecoration: "none" }}
+        >
+          <ListItemButton>
+            <ListItemText color="text.primary" primary={category.name} />
           </ListItemButton>
         </Link>
         {category?.subCategories && category.subCategories.length > 0 && (
@@ -64,7 +61,6 @@ export default function CategoryTree({
               category.subCategories.map((subcategory: Category) => (
                 <CategoryTree
                   category={subcategory}
-                  categoryStates={categoryStates}
                   autoOpen={autoOpen}
                   layer={layer + 1}
                   key={subcategory.name}

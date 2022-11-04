@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_CATEGORY } from "../../utils/queries";
+import { urlString } from "../../utils/url";
 
 type Props = {
-  categoryStates?: any;
   categoryId?: string;
 };
 
@@ -18,10 +18,7 @@ type Category = {
   parentCategory?: Category;
 };
 
-export default function CategoryBreadcrumbs({
-  categoryStates,
-  categoryId,
-}: Props) {
+export default function CategoryBreadcrumbs({ categoryId }: Props) {
   const { loading, data } = useQuery(QUERY_CATEGORY, {
     variables: { categoryId },
     fetchPolicy: "cache-first",
@@ -65,8 +62,7 @@ export default function CategoryBreadcrumbs({
             }
             return (
               <Link
-                to={`/category/${category._id}`}
-                // onClick={categoryStates.selectCategory(category._id)}
+                to={`/category/${category._id}/${urlString(category.name)}`}
                 key={category.name}
               >
                 <Typography color="text.primary">{category.name}</Typography>

@@ -18,7 +18,7 @@ type Product = {
 
 export default function ProductsResults({
   tagStates,
-  categoryStates,
+  categoryId,
   cartHandler,
 }: any) {
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
@@ -27,7 +27,7 @@ export default function ProductsResults({
         tagStates?.selectedTags?.size || tagStates?.selectedTags?.length
           ? Array.from(tagStates.selectedTags)
           : null,
-      category: categoryStates?.selectedCategory || null,
+      category: categoryId || null,
     },
     fetchPolicy: "no-cache",
   });
