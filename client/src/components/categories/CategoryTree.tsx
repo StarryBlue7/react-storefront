@@ -45,7 +45,10 @@ export default function CategoryTree({
           style={{ flexGrow: 1, textDecoration: "none" }}
         >
           <ListItemButton>
-            <ListItemText color="text.primary" primary={category.name} />
+            <ListItemText
+              primaryTypographyProps={{ color: "text.primary" }}
+              primary={category.name}
+            />
           </ListItemButton>
         </Link>
         {category?.subCategories && category.subCategories.length > 0 && (

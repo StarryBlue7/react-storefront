@@ -86,7 +86,10 @@ export default function CategoriesDrawer({
                   <ListItemIcon sx={styles.pageIcon}>
                     <Home />
                   </ListItemIcon>
-                  <ListItemText primary={"Home"} />
+                  <ListItemText
+                    primary={"Home"}
+                    primaryTypographyProps={{ color: "text.primary" }}
+                  />
                 </ListItemButton>
               </ListItem>
             </NavLink>
@@ -101,7 +104,10 @@ export default function CategoriesDrawer({
                     <ListItemIcon sx={styles.pageIcon}>
                       {page.icon}
                     </ListItemIcon>
-                    <ListItemText primary={page.label} />
+                    <ListItemText
+                      primary={page.label}
+                      primaryTypographyProps={{ color: "text.primary" }}
+                    />
                   </ListItemButton>
                 </ListItem>
               </NavLink>
