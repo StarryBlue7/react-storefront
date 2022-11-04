@@ -7,7 +7,7 @@ import HeartRating from "./HeartRating";
  */
 export default function ProductDetails({ product, cartHandler }: any) {
   return (
-    <Card sx={{ width: "100%", mt: { xs: 2, sm: 5 }, borderRadius: 5, p: 3 }}>
+    <Card sx={{ width: "100%", borderRadius: 5, p: 3 }}>
       <Grid container justifyContent={"evenly"} gap={3}>
         <Grid
           item

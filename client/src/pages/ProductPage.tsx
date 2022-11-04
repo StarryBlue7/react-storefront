@@ -23,7 +23,7 @@ export default function ProductPage({ cartHandler }: any) {
   return loading ? (
     <Loader />
   ) : (
-    <Grid container width="100%" rowGap={2}>
+    <Grid container width="100%" rowGap={2} sx={{ pt: { xs: 2, sm: 5 } }}>
       <CategoryBreadcrumbs
         categoryId={product.categories[product.categories.length - 1]._id}
       />
