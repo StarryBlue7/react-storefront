@@ -1,21 +1,18 @@
 import React from "react";
-import ProductsResults from "../components/product/ProductsResults";
+
 import PromoCarousel from "../components/PromoCarousel";
 import TagList from "../components/TagList";
+import ProductsResults from "../components/product/ProductsResults";
 
 /**
  * Homepage component
  */
-export default function Home({ tagStates, categoryStates, cartHandler }: any) {
+export default function Home({ tagStates, cartHandler }: any) {
   return (
     <>
       <PromoCarousel />
       <TagList tagStates={tagStates} />
-      <ProductsResults
-        tagStates={tagStates}
-        categoryStates={categoryStates}
-        cartHandler={cartHandler}
-      />
+      <ProductsResults tagStates={tagStates} cartHandler={cartHandler} />
     </>
   );
 }

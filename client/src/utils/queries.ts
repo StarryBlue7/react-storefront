@@ -30,6 +30,31 @@ export const QUERY_CATEGORIES = gql`
   }
 `;
 
+export const QUERY_CATEGORY = gql`
+  query category($categoryId: ID!) {
+    category(categoryId: $categoryId) {
+      _id
+      name
+      parentCategory {
+        _id
+        name
+        parentCategory {
+          _id
+          name
+          parentCategory {
+            _id
+            name
+            parentCategory {
+              _id
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const QUERY_PRODUCTS = gql`
   query products($tags: [ID], $category: ID) {
     products(tags: $tags, category: $category) {
@@ -54,7 +79,7 @@ export const QUERY_PRODUCTS = gql`
 `;
 
 export const QUERY_PRODUCT = gql`
-  query product($productId: String!) {
+  query product($productId: ID!) {
     product(productId: $productId) {
       _id
       fullName

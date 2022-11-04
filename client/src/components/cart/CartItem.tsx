@@ -119,7 +119,6 @@ export default function CartItem({
               justifyContent: "flex-end",
               alignItems: "center",
               textDecoration: "none",
-              color: "black",
             }}
           >
             <ListItemIcon sx={{ flexGrow: { xs: options ? 1 : 0, sm: 0 } }}>
@@ -131,6 +130,7 @@ export default function CartItem({
             </ListItemIcon>
             <ListItemText
               primary={item.product.shortName}
+              primaryTypographyProps={{ color: "text.primary" }}
               sx={{
                 overflow: "hidden",
                 textOverflow: "ellipsis",

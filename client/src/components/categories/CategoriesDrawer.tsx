@@ -26,11 +26,6 @@ type Category = {
   subCategories?: Array<Category>;
 };
 
-type CategoryStates = {
-  selectedCategory: string;
-  selectCategory: Function;
-};
-
 type Page = {
   label: string;
   path: string;
@@ -41,7 +36,6 @@ type Props = {
   mainPages: Page[];
   open: boolean;
   toggleDrawers: Function;
-  categoryStates: CategoryStates;
 };
 
 const styles = {
@@ -58,11 +52,10 @@ export default function CategoriesDrawer({
   mainPages,
   open,
   toggleDrawers,
-  categoryStates,
 }: Props) {
   // Retrieve category root nodes with populated child nodes
   const { loading, data } = useQuery(QUERY_CATEGORIES, {
-    fetchPolicy: "no-cache",
+    fetchPolicy: "cache-first",
   });
 
   const categories = data?.categories || [];
@@ -88,15 +81,15 @@ export default function CategoriesDrawer({
             }}
           >
             <NavLink to={"/"} style={{ textDecoration: "none" }}>
-              <ListItem
-                onClick={categoryStates.selectCategory("")}
-                disablePadding
-              >
+              <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon sx={styles.pageIcon}>
                     <Home />
                   </ListItemIcon>
-                  <ListItemText primary={"Home"} />
+                  <ListItemText
+                    primary={"Home"}
+                    primaryTypographyProps={{ color: "text.primary" }}
+                  />
                 </ListItemButton>
               </ListItem>
             </NavLink>
@@ -106,15 +99,15 @@ export default function CategoriesDrawer({
                 style={{ textDecoration: "none" }}
                 key={page.label}
               >
-                <ListItem
-                  onClick={categoryStates.selectCategory("")}
-                  disablePadding
-                >
+                <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon sx={styles.pageIcon}>
                       {page.icon}
                     </ListItemIcon>
-                    <ListItemText primary={page.label} />
+                    <ListItemText
+                      primary={page.label}
+                      primaryTypographyProps={{ color: "text.primary" }}
+                    />
                   </ListItemButton>
                 </ListItem>
               </NavLink>
@@ -129,11 +122,7 @@ export default function CategoriesDrawer({
           ) : (
             <List>
               {categories.map((category: Category) => (
-                <CategoryTree
-                  category={category}
-                  categoryStates={categoryStates}
-                  key={category.name}
-                />
+                <CategoryTree category={category} key={category.name} />
               ))}
             </List>
           )}

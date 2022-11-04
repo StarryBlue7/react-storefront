@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { urlString } from "../../utils/url";
 
 type Product = {
   _id: string;
@@ -52,7 +53,10 @@ export default function ProductCard({
         flexFlow: "column",
       }}
     >
-      <Link to={"/products/" + product._id} style={{ textDecoration: "none" }}>
+      <Link
+        to={`/product/${product._id}/${urlString(product.shortName)}`}
+        style={{ textDecoration: "none" }}
+      >
         <CardActionArea>
           <CardMedia
             component="img"

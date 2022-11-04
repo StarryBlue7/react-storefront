@@ -24,12 +24,12 @@ import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import SuccessPage from "./pages/SuccessPage";
+import CategoryPage from "./pages/CategoryPage";
 
 type DrawerState = { categories: boolean; cart: boolean };
 type Drawer = "categories" | "cart";
 
 type SelectedTags = Set<string>;
-type SelectedCategory = string;
 
 type Product = {
   _id: string;
@@ -196,21 +196,13 @@ function Main() {
     },
   };
 
-  // Category selection
-  const [selectedCategory, setSelectedCategory] =
-    React.useState<SelectedCategory>("");
-  const categoryStates = {
-    selectedCategory,
-    selectCategory: (category: string) => () => setSelectedCategory(category),
-  };
-
   // Close drawers on category or page change
   React.useEffect(() => {
     setDrawers({
       categories: false,
       cart: false,
     });
-  }, [selectedCategory, location, loggedIn]);
+  }, [location, loggedIn]);
 
   return (
     <>
@@ -228,7 +220,6 @@ function Main() {
         mainPages={mainPages}
         open={drawers.categories}
         toggleDrawers={toggleDrawers}
-        categoryStates={categoryStates}
       />
       <CartDrawer
         open={drawers.cart}
@@ -247,16 +238,16 @@ function Main() {
         <Routes>
           <Route
             path="/"
+            element={<Home tagStates={tagStates} cartHandler={cartHandler} />}
+          />
+          <Route
+            path="/category/:categoryId/*"
             element={
-              <Home
-                tagStates={tagStates}
-                categoryStates={categoryStates}
-                cartHandler={cartHandler}
-              />
+              <CategoryPage tagStates={tagStates} cartHandler={cartHandler} />
             }
           />
           <Route
-            path="/products/:productId"
+            path="/product/:productId/*"
             element={<ProductPage cartHandler={cartHandler} />}
           />
           <Route
@@ -272,11 +263,11 @@ function Main() {
               />
             }
           />
-          <Route path="*" element={<h1>Page not found!</h1>} />
           <Route
             path="/success"
             element={<SuccessPage cartHandler={cartHandler} />}
           />
+          <Route path="*" element={<h1>Page not found!</h1>} />
         </Routes>
         {location.pathname.substring(0, 5) !== "/cart" && (
           <CartButton toggleDrawers={toggleDrawers} cartHandler={cartHandler} />
