@@ -7,6 +7,11 @@ import {
   Step,
   StepLabel,
   Typography,
+  FormGroup,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 
 import Validate from "../../utils/formValidations";
@@ -18,7 +23,9 @@ type OrderInfoState = {
   phone: string;
   address1: string;
   address2: string;
-  address3: string;
+  city: string;
+  state: string;
+  postcode: string;
 };
 
 type OrderInfoValidation = {
@@ -31,7 +38,69 @@ type OrderInfoValidation = {
   preventSubmit: boolean;
 };
 
-type Field = "email" | "phone" | "address" | "all";
+type Field = "email" | "phone" | "address" | "city" | "postcode" | "all";
+
+const states = [
+  "AL",
+  "AK",
+  "AS",
+  "AZ",
+  "AR",
+  "CA",
+  "CO",
+  "CT",
+  "DE",
+  "DC",
+  "FM",
+  "FL",
+  "GA",
+  "GU",
+  "HI",
+  "ID",
+  "IL",
+  "IN",
+  "IA",
+  "KS",
+  "KY",
+  "LA",
+  "ME",
+  "MH",
+  "MD",
+  "MA",
+  "MI",
+  "MN",
+  "MS",
+  "MO",
+  "MT",
+  "NE",
+  "NV",
+  "NH",
+  "NJ",
+  "NM",
+  "NY",
+  "NC",
+  "ND",
+  "MP",
+  "OH",
+  "OK",
+  "OR",
+  "PW",
+  "PA",
+  "PR",
+  "RI",
+  "SC",
+  "SD",
+  "TN",
+  "TX",
+  "UT",
+  "VT",
+  "VI",
+  "VA",
+  "WA",
+  "WV",
+  "WI",
+  "WY",
+];
 
 export default function CheckoutForm({ cartHandler }: any) {
   // Form control
@@ -40,16 +109,21 @@ export default function CheckoutForm({ cartHandler }: any) {
     phone: "",
     address1: "",
     address2: "",
-    address3: "",
+    city: "",
+    state: "",
+    postcode: "",
   });
-  const updateForm = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const field = e.target.id;
-    const value = e.target.value;
+
+  const updateForm = (e: any): void => {
+    const field = e.target.id || e.target.name;
+    // e.target.id in formState ? e.target.id : e.target.id.split("-")[0];
+    const value = e.target.value; // || e.target.textContent;
+
     setFormState((prev: OrderInfoState) => {
       return { ...prev, [field]: value };
     });
 
-    if (field === "address3") {
+    if (field === "postcode") {
       validateField("all")();
     }
   };
@@ -79,19 +153,21 @@ export default function CheckoutForm({ cartHandler }: any) {
         field === "email" || field === "all"
           ? Validate.email(formState.email)
           : {};
-      const passwordValidation =
+      const addressValidation =
         field === "address" || field === "all"
           ? Validate.address(
               formState.address1,
               formState.address2,
-              formState.address3
+              formState.city,
+              formState.state,
+              formState.postcode
             )
           : {};
       const newValidation = {
         ...prev,
         ...phoneValidation,
         ...emailValidation,
-        ...passwordValidation,
+        ...addressValidation,
       };
       const preventSubmit =
         formState.phone.length === 0 ||
@@ -117,6 +193,7 @@ export default function CheckoutForm({ cartHandler }: any) {
     ) {
       validateField("all")();
     }
+    console.log(formState);
     // Prevent eslint warning enforcing cyclical useEffect setting
   }, [formState]); // eslint-disable-line
 
@@ -133,7 +210,11 @@ export default function CheckoutForm({ cartHandler }: any) {
       formValidate.phoneError ||
       !formState.email ||
       !formState.phone,
-    formValidate.addressError || !formState.address1 || !formState.address3,
+    formValidate.addressError ||
+      !formState.address1 ||
+      !formState.city ||
+      !formState.state ||
+      !formState.postcode,
   ];
 
   // Advance form with Enter key
@@ -200,7 +281,7 @@ export default function CheckoutForm({ cartHandler }: any) {
           <TextField
             margin="dense"
             id="address2"
-            label="Apt #, Ste #, etc."
+            label="Apt #, Unit #, etc."
             type="text"
             autoComplete="address-line2"
             fullWidth
@@ -209,21 +290,57 @@ export default function CheckoutForm({ cartHandler }: any) {
             value={formState.address2}
             onChange={updateForm}
           />
-          <TextField
-            margin="dense"
-            id="address3"
-            label="City, State, Zip"
-            type="text"
-            autoComplete="address-line3"
-            fullWidth
-            variant="standard"
-            error={formValidate.addressError}
-            helperText={formValidate.addressHelper}
-            value={formState.address3}
-            onChange={updateForm}
-            onBlur={validateField("address")}
-            onKeyDown={nextOnEnter}
-          />
+          <FormGroup row sx={{ columnGap: 2, pt: 1 }}>
+            <TextField
+              margin="dense"
+              id="city"
+              label="City"
+              type="text"
+              autoComplete="address-level2"
+              variant="standard"
+              sx={{ flexGrow: 1 }}
+              error={formValidate.addressError}
+              helperText={formValidate.addressHelper}
+              value={formState.city}
+              onChange={updateForm}
+            />
+            <FormControl
+              sx={{ m: 1, minWidth: 80 }}
+              error={formValidate.addressError}
+            >
+              <InputLabel>State</InputLabel>
+              <Select
+                id="state"
+                name="state"
+                label="State"
+                value={formState.state || ""}
+                onChange={updateForm}
+                autoComplete="address-level1"
+                autoWidth
+                margin="dense"
+              >
+                {states.map((state: string) => (
+                  <MenuItem value={state} key={state}>
+                    {state}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              margin="dense"
+              id="postcode"
+              label="ZIP"
+              type="text"
+              autoComplete="postal-code"
+              variant="standard"
+              sx={{ width: 100 }}
+              error={formValidate.addressError}
+              value={formState.postcode}
+              onChange={updateForm}
+              onBlur={validateField("address")}
+              onKeyDown={nextOnEnter}
+            />
+          </FormGroup>
         </>
       )}
       {activeStep === 2 && (
