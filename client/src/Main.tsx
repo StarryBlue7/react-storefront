@@ -247,7 +247,7 @@ function Main() {
             }
           />
           <Route
-            path="/products/:productId"
+            path="/product/:productId/*"
             element={<ProductPage cartHandler={cartHandler} />}
           />
           <Route
@@ -263,11 +263,11 @@ function Main() {
               />
             }
           />
-          <Route path="*" element={<h1>Page not found!</h1>} />
           <Route
             path="/success"
             element={<SuccessPage cartHandler={cartHandler} />}
           />
+          <Route path="*" element={<h1>Page not found!</h1>} />
         </Routes>
         {location.pathname.substring(0, 5) !== "/cart" && (
           <CartButton toggleDrawers={toggleDrawers} cartHandler={cartHandler} />
