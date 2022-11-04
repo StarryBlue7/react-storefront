@@ -12,7 +12,9 @@ export default function Home({ tagStates, categoryStates, cartHandler }: any) {
     <>
       <PromoCarousel />
       <TagList tagStates={tagStates} />
-      <CategoryBreadcrumbs categoryStates={categoryStates} />
+      {categoryStates.selectedCategory && (
+        <CategoryBreadcrumbs categoryId={categoryStates.selectedCategory} />
+      )}
       <ProductsResults
         tagStates={tagStates}
         categoryStates={categoryStates}
