@@ -6,6 +6,7 @@ import { QUERY_PRODUCT } from "../utils/queries";
 import ProductDetails from "../components/product/ProductDetails";
 import ProductsCarousel from "../components/product/ProductsCarousel";
 import Loader from "../components/feedback/Loader";
+import CategoryBreadcrumbs from "../components/categories/CategoryBreadcrumbs";
 
 /**
  * Individual product page
@@ -23,6 +24,9 @@ export default function ProductPage({ cartHandler }: any) {
     <Loader />
   ) : (
     <Grid container width="100%" rowGap={2}>
+      <CategoryBreadcrumbs
+        categoryId={product.categories[product.categories.length - 1]._id}
+      />
       <ProductDetails product={product} cartHandler={cartHandler} />
       <ProductsCarousel
         title="Similar items: "
