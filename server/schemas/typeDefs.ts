@@ -12,6 +12,14 @@ const typeDefs = gql`
     quantity: Int!
   }
 
+  input AddressInput {
+    address1: String
+    address2: String
+    city: String
+    state: String
+    postcode: String
+  }
+
   type User {
     _id: ID
     username: String!
@@ -33,6 +41,14 @@ const typeDefs = gql`
     priceAtSale: Float
   }
 
+  type Address {
+    address1: String
+    address2: String
+    city: String
+    state: String
+    postcode: String
+  }
+
   type Order {
     _id: ID!
     orderNum: String!
@@ -46,7 +62,7 @@ const typeDefs = gql`
     tax: Float
     shipping: Float
     createdAt: String!
-    toAddress: String
+    toAddress: Address
     shippedOn: String
     estimatedArrival: String
     itemCount: Int
@@ -93,7 +109,7 @@ const typeDefs = gql`
       items: [OrderInput]
       phone: String
       email: String
-      toAddress: String
+      toAddress: AddressInput
       shippingOption: String
     ): ClientSecret
   }

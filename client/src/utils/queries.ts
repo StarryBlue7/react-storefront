@@ -120,7 +120,13 @@ export const QUERY_ORDER = gql`
       paidOn
       subtotal
       shipping
-      toAddress
+      toAddress {
+        address1
+        address2
+        city
+        state
+        postcode
+      }
       shippedOn
       estimatedArrival
       itemCount
@@ -195,7 +201,7 @@ export const QUERY_PAYMENT_INTENT = gql`
     $items: [OrderInput]
     $phone: String
     $email: String
-    $toAddress: String
+    $toAddress: AddressInput
   ) {
     paymentIntent(
       items: $items

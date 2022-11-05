@@ -15,7 +15,7 @@ interface IOrder {
   paidOn: Date;
   stripeId: string;
   createdAt: Date;
-  toAddress: string;
+  toAddress: IAddress;
   shippedOn?: Date;
   estimatedArrival?: Date;
 }
@@ -26,6 +26,14 @@ interface IItem {
   priceAtSale: number;
 }
 
+interface IAddress {
+  address1: string;
+  address2?: string;
+  city: string;
+  state: string;
+  postcode: string;
+}
+
 const itemSchema = new Schema<IItem>({
   product: {
     type: Schema.Types.ObjectId,
@@ -33,6 +41,14 @@ const itemSchema = new Schema<IItem>({
   },
   quantity: Number,
   priceAtSale: Number,
+});
+
+const addressSchema = new Schema<IAddress>({
+  address1: String,
+  address2: String,
+  city: String,
+  state: String,
+  postcode: String,
 });
 
 const orderSchema = new Schema<IOrder>(
@@ -71,8 +87,8 @@ const orderSchema = new Schema<IOrder>(
       default: Date.now,
     },
     toAddress: {
-      type: String,
-      // required: true,
+      type: addressSchema,
+      required: true,
     },
     shippedOn: {
       type: Date,

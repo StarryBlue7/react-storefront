@@ -16,7 +16,14 @@ export default function OrderDetails({ order }: any) {
         values: [new Date(parseInt(order.paidOn)).toLocaleString()],
       },
       { row: "Total", values: ["$" + order.total] },
-      { row: "Shipping Address", values: [order.toAddress] },
+      {
+        row: "Shipping Address",
+        values: [
+          `${order.toAddress.address1}
+${order.toAddress.address2},
+${order.toAddress.city}, ${order.toAddress.state} ${order.toAddress.postcode}`,
+        ],
+      },
       { row: "Estimated Arrival", values: [order.estimatedArrival || "TBD"] },
     ],
   };

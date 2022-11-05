@@ -25,9 +25,13 @@ export default function StripeWrapper({ cart, children, formState }: any) {
     items,
     email: formState.email,
     phone: formState.phone,
-    toAddress: `${formState.address1} 
-${formState.address2}
-${formState.city}, ${formState.state} ${formState.postcode}`,
+    toAddress: {
+      address1: formState.address1,
+      address2: formState.address2,
+      city: formState.city,
+      state: formState.state,
+      postcode: formState.postcode,
+    },
   };
 
   const [getClientSecret, { data: newClientSecret }] = useLazyQuery(

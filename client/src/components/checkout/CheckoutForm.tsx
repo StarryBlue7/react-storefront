@@ -193,9 +193,8 @@ export default function CheckoutForm({ cartHandler }: any) {
     ) {
       validateField("all")();
     }
-    console.log(formState);
-    // Prevent eslint warning enforcing cyclical useEffect setting
   }, [formState]); // eslint-disable-line
+  // Prevent eslint warning enforcing cyclical useEffect setting
 
   // Signup steps
   const steps = ["Contact Info", "Shipping", "Enter Payment"];
