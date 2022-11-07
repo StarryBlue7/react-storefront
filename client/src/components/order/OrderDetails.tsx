@@ -13,7 +13,11 @@ export default function OrderDetails({ order }: any) {
       { row: "Order Number", values: [order.orderNum] },
       {
         row: "Order Placed",
-        values: [new Date(parseInt(order.paidOn)).toLocaleString()],
+        values: [
+          order.paidOn
+            ? new Date(parseInt(order.paidOn)).toLocaleString()
+            : "Payment Processing",
+        ],
       },
       { row: "Total", values: ["$" + order.total] },
       {
@@ -24,7 +28,14 @@ ${order.toAddress.address2},
 ${order.toAddress.city}, ${order.toAddress.state} ${order.toAddress.postcode}`,
         ],
       },
-      { row: "Estimated Arrival", values: [order.estimatedArrival || "TBD"] },
+      {
+        row: "Estimated Arrival",
+        values: [
+          order.estimatedArrival
+            ? new Date(parseInt(order.estimatedArrival)).toLocaleString()
+            : "TBD",
+        ],
+      },
     ],
   };
 
@@ -37,17 +48,17 @@ ${order.toAddress.city}, ${order.toAddress.state} ${order.toAddress.postcode}`,
             row: `${item.product.fullName} (${item.product.modelNumber})`,
             values: [
               item.quantity,
-              item.priceAtSale,
+              item.priceAtSale.toFixed(2),
               (item.quantity * item.priceAtSale).toFixed(2),
             ],
           };
         })
       : [],
     footers: [
-      { row: "Subtotal", values: ["$" + order.subtotal], spacer: 2 },
-      { row: "Shipping", values: ["$" + order.shipping], spacer: 2 },
-      { row: "Tax", values: ["$" + order.tax], spacer: 2 },
-      { row: "Total", values: ["$" + order.total], spacer: 2 },
+      { row: "Subtotal", values: ["$" + order.subtotal.toFixed(2)], spacer: 2 },
+      { row: "Shipping", values: ["$" + order.shipping.toFixed(2)], spacer: 2 },
+      { row: "Tax", values: ["$" + order.tax.toFixed(2)], spacer: 2 },
+      { row: "Total", values: ["$" + order.total.toFixed(2)], spacer: 2 },
     ],
   };
 
