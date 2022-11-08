@@ -199,7 +199,7 @@ export default function SignupForm({
 
   return (
     <>
-      <Stepper activeStep={activeStep} alternativeLabel>
+      <Stepper activeStep={activeStep} alternativeLabel sx={{ my: 2 }}>
         {steps.map((step, i) => (
           <Step key={i}>
             <StepLabel>{step}</StepLabel>

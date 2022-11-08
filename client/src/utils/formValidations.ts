@@ -4,6 +4,7 @@ const phonePattern = new RegExp(
   /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
 );
 const addressPattern = new RegExp(/\d+\s+\w+\s+\w+/);
+const postcodePattern = new RegExp(/^\d{5}(-\d{4})?$/);
 
 type UsernameValidation = { usernameError: boolean; usernameHelper: string };
 type PasswordValidation = { passwordError: boolean; passwordHelper: string };
@@ -61,13 +62,29 @@ class FormValidation {
     return { phoneError, phoneHelper };
   }
 
-  address(line1: string, line2: string, line3: string): AddressValidation {
+  address(
+    line1: string,
+    line2: string,
+    city: string,
+    state: string,
+    postcode: string
+  ): AddressValidation {
     const addressError = !addressPattern.test(
-      line1 + " " + line2 + " " + line3
+      line1 + " " + line2 + " " + city + " " + state + " " + postcode
     );
-    const addressHelper: string = addressError
-      ? "Must be valid shipping address."
-      : " ";
+    const postcodeInvalid = !postcodePattern.test(postcode);
+
+    let addressHelper = " ";
+    if (addressError) {
+      addressHelper = "Must be valid shipping address.";
+    } else if (!city) {
+      addressHelper = "Please enter city name.";
+    } else if (!state) {
+      addressHelper = "Please select state.";
+    } else if (!postcode || postcodeInvalid) {
+      addressHelper = "Please enter valid ZIP code.";
+    }
+
     return { addressError, addressHelper };
   }
 }

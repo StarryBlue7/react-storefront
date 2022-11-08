@@ -11,6 +11,12 @@ type ProductFilter = {
   categories?: any;
 };
 
+const shippingOptions = [
+  { label: "Standard", timeline: "1-2 Weeks", cost: 7 },
+  { label: "Priority", timeline: "5-7 Days", cost: 12 },
+  { label: "Rush", timeline: "1-3 Days", cost: 30 },
+];
+
 const resolvers = {
   Query: {
     /**
@@ -78,21 +84,23 @@ const resolvers = {
     },
     paymentIntent: async (
       _parent,
-      { items, email, phone, toAddress },
+      { items, email, phone, toAddress, shippingOption },
       context
     ) => {
-      console.log("payment intent", items);
-      console.log("context", context.user);
       const createdBy = context.user ? context.user._id : null;
+
+      const shipping = shippingOptions[shippingOption].cost;
+
       const newOrder = await Order.create({
         items,
         email,
         phone,
+        shipping,
         toAddress,
         createdBy,
       });
       await newOrder.populate("items.product");
-      console.log("order created", newOrder.toObject({ virtuals: true }));
+
       const params: Stripe.PaymentIntentCreateParams = {
         amount: dollarsToCents(newOrder.subtotal),
         currency: "USD",
@@ -109,9 +117,11 @@ const resolvers = {
         newOrder.items.forEach((item: any) => {
           item.priceAtSale = item.product.price;
         });
-        console.log("priced", newOrder);
+
         await newOrder.save();
-        // Send publishable key and PaymentIntent client_secret to client.
+
+        console.log("secret", paymentIntent.client_secret);
+        // Send PaymentIntent client_secret to client.
         return {
           clientSecret: paymentIntent.client_secret,
         };

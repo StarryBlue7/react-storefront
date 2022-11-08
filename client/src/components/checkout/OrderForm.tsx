@@ -8,7 +8,7 @@ import CheckoutForm from "./CheckoutForm";
 /**
  * Order details panel
  */
-export default function OrderForm({ cartHandler, authHandler }: any) {
+export default function OrderForm({ cartHandler, authHandler, shipping }: any) {
   const [authTab, setAuthTab] = React.useState<number>(0);
   const changeTab = (_event: React.SyntheticEvent, tabIndex: number) => {
     setAuthTab(tabIndex);
@@ -19,7 +19,7 @@ export default function OrderForm({ cartHandler, authHandler }: any) {
       {authHandler.loggedIn ? (
         <>
           <Container sx={{ py: 1 }}>
-            <CheckoutForm cartHandler={cartHandler} />
+            <CheckoutForm cartHandler={cartHandler} shipping={shipping} />
           </Container>
         </>
       ) : (
@@ -37,7 +37,9 @@ export default function OrderForm({ cartHandler, authHandler }: any) {
           <Container sx={{ py: 1 }}>
             {authTab === 0 && <LoginForm authHandler={authHandler} />}
             {authTab === 1 && <SignupForm authHandler={authHandler} />}
-            {authTab === 2 && <CheckoutForm cartHandler={cartHandler} />}
+            {authTab === 2 && (
+              <CheckoutForm cartHandler={cartHandler} shipping={shipping} />
+            )}
           </Container>
         </>
       )}
