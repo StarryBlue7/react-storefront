@@ -110,7 +110,7 @@ const typeDefs = gql`
       phone: String
       email: String
       toAddress: AddressInput
-      shippingOption: String
+      shippingOption: Int
     ): ClientSecret
   }
 

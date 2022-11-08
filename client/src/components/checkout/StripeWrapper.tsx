@@ -12,7 +12,12 @@ const stripePromise = loadStripe(
   "pk_test_51LvOubG2F40Ds514YpCJ5gAxc7FQTNhWdNcP3xy2GZT7hdMRGoDeReL2ww5cBpLWnFC88LZlN4QLCLhTUQcoHEoN00Z3hNZh3s"
 );
 
-export default function StripeWrapper({ cart, children, formState }: any) {
+export default function StripeWrapper({
+  cart,
+  children,
+  formState,
+  shipping,
+}: any) {
   const [clientSecret, setClientSecret] = React.useState<string>("");
 
   const items = React.useMemo(() => {
@@ -25,6 +30,7 @@ export default function StripeWrapper({ cart, children, formState }: any) {
     items,
     email: formState.email,
     phone: formState.phone,
+    shippingOption: shipping.shippingOption,
     toAddress: {
       address1: formState.address1,
       address2: formState.address2,

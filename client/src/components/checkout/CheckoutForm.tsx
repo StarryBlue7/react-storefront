@@ -380,7 +380,11 @@ export default function CheckoutForm({ cartHandler, shipping }: any) {
       )}
       {activeStep === 2 && (
         <>
-          <StripeWrapper cart={cartHandler.cart} formState={formState}>
+          <StripeWrapper
+            cart={cartHandler.cart}
+            formState={formState}
+            shipping={shipping}
+          >
             <StripePay />
           </StripeWrapper>
         </>

@@ -11,6 +11,12 @@ type ProductFilter = {
   categories?: any;
 };
 
+const shippingOptions = [
+  { label: "Standard", timeline: "1-2 Weeks", cost: 7 },
+  { label: "Priority", timeline: "5-7 Days", cost: 12 },
+  { label: "Rush", timeline: "1-3 Days", cost: 30 },
+];
+
 const resolvers = {
   Query: {
     /**
@@ -78,15 +84,18 @@ const resolvers = {
     },
     paymentIntent: async (
       _parent,
-      { items, email, phone, toAddress },
+      { items, email, phone, toAddress, shippingOption },
       context
     ) => {
       const createdBy = context.user ? context.user._id : null;
+
+      const shipping = shippingOptions[shippingOption].cost;
 
       const newOrder = await Order.create({
         items,
         email,
         phone,
+        shipping,
         toAddress,
         createdBy,
       });
