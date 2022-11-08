@@ -16,11 +16,28 @@ const styles = {
   cartButtonIcon: { minWidth: 0, mr: 1 },
 };
 
+const taxRate = 0.0725;
+
 export default function Cart({
   cartHandler,
-  disable = false,
   label = "Shopping Cart",
+  shippingCost,
+  disable = false,
+  tax = false,
+  total = false,
 }: any) {
+  const estimatedTax = React.useMemo(() => {
+    const tax = cartHandler.totals.totalPrice * taxRate;
+    return Number(tax.toFixed(2));
+  }, [cartHandler]);
+
+  const totalCharge = React.useMemo(() => {
+    const taxCharge = tax ? estimatedTax : 0;
+    const shippingCharge = shippingCost || 0;
+    const total = cartHandler.totals.totalPrice + taxCharge + shippingCharge;
+    return Number(total.toFixed(2));
+  }, [cartHandler, estimatedTax, tax, shippingCost]);
+
   return (
     <>
       <Typography variant="h5" sx={{ px: 2, pt: 2 }}>
@@ -39,20 +56,47 @@ export default function Cart({
       </List>
       <Divider />
       <List>
-        <ListItem key={"total-items"}>
+        <ListItem key={"total-items"} disablePadding>
           <ListItemText primary={"Items:"} sx={styles.totals} />
           <ListItemText
             primary={cartHandler.totals.totalQty}
             sx={styles.totals}
           />
         </ListItem>
-        <ListItem key={"subtotal"}>
+        <ListItem key={"subtotal"} disablePadding>
           <ListItemText primary={"Subtotal:"} sx={styles.totals} />
           <ListItemText
             primary={"$" + cartHandler.totals.totalPrice}
             sx={styles.totals}
           />
         </ListItem>
+        {tax && (
+          <ListItem key={"tax"} disablePadding>
+            <ListItemText primary={"Est. Tax:"} sx={styles.totals} />
+            <ListItemText primary={"$" + estimatedTax} sx={styles.totals} />
+          </ListItem>
+        )}
+        {shippingCost !== undefined && (
+          <ListItem key={"shipping"} disablePadding>
+            <ListItemText primary={"Shipping:"} sx={styles.totals} />
+            <ListItemText
+              primary={"$" + shippingCost.toFixed(2)}
+              sx={styles.totals}
+            />
+          </ListItem>
+        )}
+        {total && (
+          <>
+            <Divider />
+            <ListItem key={"total"} disablePadding>
+              <ListItemText primary={"Total:"} sx={styles.totals} />
+              <ListItemText
+                primary={"$" + totalCharge.toFixed(2)}
+                sx={styles.totals}
+              />
+            </ListItem>
+          </>
+        )}
       </List>
     </>
   );
