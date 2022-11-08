@@ -12,6 +12,10 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Box,
 } from "@mui/material";
 
 import Validate from "../../utils/formValidations";
@@ -102,7 +106,7 @@ const states = [
   "WY",
 ];
 
-export default function CheckoutForm({ cartHandler }: any) {
+export default function CheckoutForm({ cartHandler, shipping }: any) {
   // Form control
   const [formState, setFormState] = React.useState<OrderInfoState>({
     email: "",
@@ -264,6 +268,38 @@ export default function CheckoutForm({ cartHandler }: any) {
       )}
       {activeStep === 1 && (
         <>
+          <Typography variant="h5">Choose Shipping</Typography>
+          <RadioGroup
+            aria-labelledby="shipping-options"
+            defaultValue={0}
+            name="shipping-options"
+            row
+            sx={{ pb: 2, display: "flex", justifyContent: "space-evenly" }}
+          >
+            {shipping.shippingOptions.map((option: any, index: number) => (
+              <FormControlLabel
+                value={index}
+                label={
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography>${option.cost}</Typography>
+                    <Typography>{option.label}</Typography>
+                    <Typography>({option.timeline})</Typography>
+                  </Box>
+                }
+                control={<Radio />}
+                onClick={shipping.chooseShipping(index)}
+                labelPlacement="bottom"
+                key={option.label}
+                sx={{ flex: "1 1 20%", mx: 0 }}
+              />
+            ))}
+          </RadioGroup>
           <Typography variant="h5">Shipping Address</Typography>
           <TextField
             margin="dense"
