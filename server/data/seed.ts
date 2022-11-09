@@ -89,24 +89,24 @@ connection.once("open", async () => {
 
   // Seed orders
   // Replace product & createdBy names with product & user ObjectIds
-  const referOrders: any[] = orderData.map((order) => {
-    const refItems: any[] = order.items.map((item) => {
-      return { ...item, product: productIds[item.product] };
-    });
-    return { ...order, items: refItems, createdBy: userIds[order.createdBy] };
-  });
-  const orders = await Order.create(referOrders);
-  console.log("Orders: ", orders);
-  const updatedUsers = await Promise.all(
-    orders.map(async (order) => {
-      return await User.findByIdAndUpdate(
-        order.createdBy,
-        { $addToSet: { orders: order._id } },
-        { new: true }
-      );
-    })
-  );
-  console.log("Added orders: ", updatedUsers);
+  // const referOrders: any[] = orderData.map((order) => {
+  //   const refItems: any[] = order.items.map((item) => {
+  //     return { ...item, product: productIds[item.product] };
+  //   });
+  //   return { ...order, items: refItems, createdBy: userIds[order.createdBy] };
+  // });
+  // const orders = await Order.create(referOrders);
+  // console.log("Orders: ", orders);
+  // const updatedUsers = await Promise.all(
+  //   orders.map(async (order) => {
+  //     return await User.findByIdAndUpdate(
+  //       order.createdBy,
+  //       { $addToSet: { orders: order._id } },
+  //       { new: true }
+  //     );
+  //   })
+  // );
+  // console.log("Added orders: ", updatedUsers);
 
   console.info("Seeding complete!");
   process.exit(0);
