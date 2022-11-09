@@ -5,8 +5,28 @@
     "modelNumber": "TDT10001",
     "price": 30.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/51B0Setf%2BqL.jpg",
-    "description": "Relive the 70s with this colorful rainbow tie-dyed tee.",
+    "description": "Relive the 70s with this colorful rainbow tie-dyed tee. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     "tags": ["Retro", "Pride", "Casual", "Spring", "Summer", "Hot Weather"],
+    "categories": ["Apparel", "Tops", "T-Shirts"]
+  },
+  {
+    "fullName": "Hand Signs Very Cool Screen Printed Small T-Shirt",
+    "shortName": "Very Cool T-Shirt",
+    "modelNumber": "TSH10001",
+    "price": 21.99,
+    "imgURL": "https://m.media-amazon.com/images/I/A13usaonutL._AC_CLa%7C2140%2C2000%7C81Fw9gPyIxL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_UL1500_.png",
+    "description": "This is a very cool t-shirt for a very cool person. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "tags": ["Casual", "Spring", "Summer", "Hot Weather"],
+    "categories": ["Apparel", "Tops", "T-Shirts"]
+  },
+  {
+    "fullName": "Screen Printed Squirrel Medium T-Shirt",
+    "shortName": "Squirrel T-Shirt",
+    "modelNumber": "SQT10001",
+    "price": 25.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/81GtP6xMmeL._AC_UL1500_.jpg",
+    "description": "A screen printed t-shirt with the best animal on it! Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Retro", "Casual", "Spring", "Summer", "Hot Weather"],
     "categories": ["Apparel", "Tops", "T-Shirts"]
   },
   {
@@ -19,13 +39,142 @@
     "categories": ["Apparel", "Bottoms", "Pants", "Jeans"]
   },
   {
-    "fullName": "Squirrel Mug",
-    "shortName": "Squirrel Mug",
+    "fullName": "High Rise Bootcut Light Wash Capri Jeans",
+    "shortName": "High Rise Jeans",
+    "modelNumber": "DJN10002",
+    "price": 47.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/81YsU3xH3vL._AC_UL1500_.jpg",
+    "description": "'Mom' jeans for all! Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Modern", "Casual", "Cute", "Autumn", "Winter"],
+    "categories": ["Apparel", "Bottoms", "Pants", "Jeans"]
+  },
+  {
+    "fullName": "Texture Block Light Wash Skinny Jeans",
+    "shortName": "Texture Block Jeans",
+    "modelNumber": "DJN10003",
+    "price": 54.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/610mbiYg0YL._AC_UX679_.jpg",
+    "description": "Skinny jeans with blocks of textured pattern denim. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Modern", "Casual", "Autumn", "Winter"],
+    "categories": ["Apparel", "Bottoms", "Pants", "Jeans"]
+  },
+  {
+    "fullName": "Brown Fleece Squirrel Medium Jogger Pants",
+    "shortName": "Squirrel Joggers",
+    "modelNumber": "SQJ10001",
+    "price": 19.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61EBdsj8xBL.__AC_SX342_QL70_ML2_.jpg",
+    "description": "Run at squirrel-like speeds in these jogging sweats. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Cold Weather", "Casual", "Modern", "Autumn", "Winter"],
+    "categories": ["Apparel", "Bottoms", "Pants"]
+  },
+  {
+    "fullName": "Lime Squirrel Print X-Small Board Shorts",
+    "shortName": "Squirrel Board Shorts",
+    "modelNumber": "SQS10001",
+    "price": 22.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61HmEFvBO7L.__AC_SX342_QL70_ML2_.jpg",
+    "description": "Squirrel-print beach shorts. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Casual", "Spring", "Summer", "Hot Weather", "Cute"],
+    "categories": ["Apparel", "Bottoms", "Shorts"]
+  },
+  {
+    "fullName": "Painted Cute Squirrel Mug",
+    "shortName": "Cute Squirrel Mug",
     "modelNumber": "SQM10001",
     "price": 15.99,
-    "imgURL": "https://secure.img1-fg.wfcdn.com/im/16802229/resize-h800-w800%5Ecompr-r85/6412/64129543/Figueiredo+Baby+Squirrel+Coffee+Mug.jpg",
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61%2BU4J7QFCL._SL1400_.jpg",
     "description": "Squirrels are the best animals, as everyone knows. So, why not wake up each morning with a friendly reminder?",
-    "tags": ["Cold Weather", "Cute", "Autumn", "Winter"],
+    "tags": ["Cold Weather", "Cute", "Floral", "Spring", "Autumn", "Summer"],
     "categories": ["Home & Garden", "Mugs"]
+  },
+  {
+    "fullName": "Printed Tomato Devil Squirrel Mug",
+    "shortName": "Devil Squirrel Mug",
+    "modelNumber": "SQM10002",
+    "price": 15.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61KkirnZVUL._AC_SX679_.jpg",
+    "tags": ["Cold Weather", "Autumn", "Spring"],
+    "categories": ["Home & Garden", "Mugs"]
+  },
+  {
+    "fullName": "Sable Squirrel Pattern Large Hooded Sweatshirt",
+    "shortName": "Squirrel Hoodie",
+    "modelNumber": "SQH10001",
+    "price": 61.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71SjV5h0eLL._AC_UL1500_.jpg",
+    "description": "Feel comfy and cozy knowing you've stored enough acorns for the winter. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Cold Weather", "Casual", "Cute", "Autumn", "Winter"],
+    "categories": ["Apparel", "Tops", "Sweaters"]
+  },
+  {
+    "fullName": "Grey Waterproof Down Small Hoodie Jacket",
+    "shortName": "Grey Hoodie Jacket",
+    "modelNumber": "GHJ10001",
+    "price": 55.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71vbhs-0b-L._AC_UL1500_.jpg",
+    "description": "Puffy, warm, & waterproof. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Cold Weather", "Casual", "Modern", "Autumn", "Winter"],
+    "categories": ["Apparel", "Tops", "Jackets"]
+  },
+  {
+    "fullName": "Halloween Witch Hat Squirrel Black Medium Sweater",
+    "shortName": "Witch Squirrel Sweater",
+    "modelNumber": "SQW10001",
+    "price": 59.99,
+    "imgURL": "https://m.media-amazon.com/images/I/A1EHx4FHFjL._CLa%7C2140%2C2000%7CB1zxYvJz5ES.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png",
+    "description": "Spooky season comes but once a year, but you can celebrate anytime. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Cold Weather", "Casual", "Cute", "Autumn"],
+    "categories": ["Apparel", "Tops", "Sweaters"]
+  },
+  {
+    "fullName": "Red Squirrel Baseball Cap",
+    "shortName": "Squirrel Baseball Cap",
+    "modelNumber": "SQC10001",
+    "price": 18.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71NC6k5pU7L._AC_UL1500_.jpg",
+    "description": "There's only one team worth rooting for. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Casual", "Spring", "Summer", "Hot Weather", "Cute"],
+    "categories": ["Apparel", "Hats"]
+  },
+  {
+    "fullName": "Painted Ceramic Squirrel Duo Figurines",
+    "shortName": "Ceramic Squirrels",
+    "modelNumber": "SQF10001",
+    "price": 23.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71egNbmoW0L._AC_SL1500_.jpg",
+    "description": "Grandma's credenza chic. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Retro", "Spring", "Winter", "Cute"],
+    "categories": ["Home & Garden", "Decor", "Figurines"]
+  },
+  {
+    "fullName": "Young Red Squirrel Acrylic Painting Print On Wrapped Canvas",
+    "shortName": "Red Squirrel Painting",
+    "modelNumber": "SQP10001",
+    "price": 44.99,
+    "imgURL": "https://secure.img1-fg.wfcdn.com/im/22295626/resize-h755-w755%5Ecompr-r85/6311/63118961/'Red+Squirrel+Centered'+Acrylic+Painting+Print+on+Wrapped+Canvas.jpg",
+    "description": "Recapture your lost youth and innocence. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Modern", "Autumn", "Winter", "Cute"],
+    "categories": ["Home & Garden", "Decor", "Art Prints"]
+  },
+  {
+    "fullName": "Grey Squirrel Framed Watercolor Painting Print",
+    "shortName": "Grey Squirrel Painting",
+    "modelNumber": "SQP10002",
+    "price": 44.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/413B9nK2D5L._AC_.jpg",
+    "description": "Only slightly judging you from his place on the wall. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Modern", "Autumn", "Winter", "Cute"],
+    "categories": ["Home & Garden", "Decor", "Art Prints"]
+  },
+  {
+    "fullName": "Long Tail Squirrel Soft Plush",
+    "shortName": "Squirrel Plush",
+    "modelNumber": "SQT10002",
+    "price": 9.99,
+    "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61MYox-EU%2BL._AC_UL1250_.jpg",
+    "description": "A fluffy snuggle buddy for the cold, lonely nights. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["Cold Weather", "Autumn", "Winter", "Cute"],
+    "categories": ["Toys & Games", "Plush Toys"]
   }
 ]
