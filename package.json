@@ -1,7 +1,9 @@
 {
   "name": "react-storefront",
   "version": "1.0.0",
+  "author": "Vince Lee",
   "description": "",
+  "homepage": "https://react-stripe-storefront.herokuapp.com/",
   "main": "index.js",
   "scripts": {
     "start": "cd server && npm run start",
@@ -16,16 +18,12 @@
     "url": "git+https://github.com/StarryBlue7/react-storefront.git"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/StarryBlue7/react-storefront/issues"
   },
-  "homepage": "https://github.com/StarryBlue7/react-storefront#readme",
   "dependencies": {
-    "@apollo/client": "^3.6.9",
-    "concurrently": "^7.4.0",
-    "graphql": "^16.6.0"
+    "concurrently": "^7.4.0"
   },
   "devDependencies": {
     "prettier": "^2.7.1"
