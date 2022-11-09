@@ -103,7 +103,7 @@ export default function Cart({
         ))}
       </List>
       <Divider />
-      <List>
+      <List sx={{ px: 2 }}>
         <ListItem key={"total-items"} disablePadding>
           <ListItemText primary={"Items:"} sx={styles.totals} />
           <ListItemText
