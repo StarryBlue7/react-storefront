@@ -1,11 +1,59 @@
 import React from "react";
+
 import { Grid, Typography, Card, Button } from "@mui/material";
+
 import HeartRating from "./HeartRating";
+
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type ProductDetailsProps = {
+  product: Product;
+  cartHandler: CartHandler;
+};
 
 /**
  * Individual product info
  */
-export default function ProductDetails({ product, cartHandler }: any) {
+export default function ProductDetails({
+  product,
+  cartHandler,
+}: ProductDetailsProps) {
   return (
     <Card sx={{ width: "100%", borderRadius: 5, p: 3 }}>
       <Grid container justifyContent={"evenly"} gap={3}>

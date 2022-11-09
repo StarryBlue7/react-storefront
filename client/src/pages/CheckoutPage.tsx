@@ -1,8 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
+
 import { Divider, Grid, Typography } from "@mui/material";
 
 import Cart from "../components/cart/Cart";
 import OrderForm from "../components/checkout/OrderForm";
+
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type AuthHandler = {
+  loggedIn: boolean;
+  authRefresh: () => void;
+  login: (token: string) => void;
+  logout: () => void;
+};
+
+type CheckoutPageProps = {
+  cartHandler: CartHandler;
+  authHandler: AuthHandler;
+};
 
 const shippingOptions = [
   { label: "Standard", timeline: "1-2 Weeks", cost: 7 },
@@ -13,13 +64,16 @@ const shippingOptions = [
 /**
  * Checkout page
  */
-export default function CheckoutPage({ cartHandler, authHandler }: any) {
+export default function CheckoutPage({
+  cartHandler,
+  authHandler,
+}: CheckoutPageProps) {
   // Redirect to homepage if cart is empty
   if (cartHandler.cart.length < 1) {
     window.location.replace("/");
   }
 
-  const [shippingOption, setShippingOption] = React.useState<number>(0);
+  const [shippingOption, setShippingOption] = useState<number>(0);
 
   const shipping = {
     shippingOptions,

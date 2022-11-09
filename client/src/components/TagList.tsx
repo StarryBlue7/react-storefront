@@ -1,6 +1,8 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
+
 import { Box, Chip } from "@mui/material";
+
+import { useQuery } from "@apollo/client";
 import { QUERY_TAGS } from "../utils/queries";
 
 type Tag = {
@@ -10,7 +12,7 @@ type Tag = {
 
 type TagStates = {
   selectedTags: Set<string>;
-  toggleTag: Function;
+  toggleTag: (tag: string) => () => void;
 };
 
 type TagListProps = {

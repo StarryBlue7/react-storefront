@@ -1,4 +1,11 @@
-import React from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  KeyboardEvent,
+  useEffect,
+  useState,
+} from "react";
+
 import {
   Button,
   DialogActions,
@@ -12,16 +19,26 @@ import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../../utils/mutations";
 
 import Validate from "../../utils/formValidations";
+
 import TagList from "../TagList";
 import ButtonLoader from "../feedback/ButtonLoader";
 
+type ModalStates = {
+  authOpen: boolean;
+  openAuth: () => void;
+  closeAuth: () => void;
+};
+
+type AuthHandler = {
+  loggedIn: boolean;
+  authRefresh: () => void;
+  login: (token: string) => void;
+  logout: () => void;
+};
+
 type SignupFormProps = {
-  modalStates?: {
-    authOpen: boolean;
-    openAuth: () => void;
-    closeAuth: () => void;
-  };
-  authHandler: any;
+  modalStates?: ModalStates;
+  authHandler: AuthHandler;
 };
 
 type SignupState = {
@@ -50,13 +67,13 @@ export default function SignupForm({
   authHandler,
 }: SignupFormProps) {
   // Form control
-  const [formState, setFormState] = React.useState<SignupState>({
+  const [formState, setFormState] = useState<SignupState>({
     username: "",
     email: "",
     password: "",
     passwordConfirm: "",
   });
-  const updateForm = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const updateForm = (e: ChangeEvent<HTMLInputElement>): void => {
     const field = e.target.id;
     const value = e.target.value;
     setFormState((prev: SignupState) => {
@@ -72,7 +89,7 @@ export default function SignupForm({
   };
 
   // Validations & helper messages
-  const [formValidate, setFormValidate] = React.useState<SignupValidation>({
+  const [formValidate, setFormValidate] = useState<SignupValidation>({
     usernameError: false,
     usernameHelper: " ",
     emailError: false,
@@ -122,7 +139,7 @@ export default function SignupForm({
   };
 
   // Revalidate errored fields on form update
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       formValidate.usernameError ||
       formValidate.emailError ||
@@ -135,15 +152,13 @@ export default function SignupForm({
 
   // Signup steps
   const steps = ["Account Info", "Personalize"];
-  const [activeStep, setActiveStep] = React.useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
   const nextStep = () => {
     setActiveStep(activeStep + 1);
   };
 
   // Tag selection for user likes
-  const [selectedTags, setSelectedTags] = React.useState<SelectedTags>(
-    new Set()
-  );
+  const [selectedTags, setSelectedTags] = useState<SelectedTags>(new Set());
   const tagStates = {
     selectedTags,
     toggleTag: (tag: string) => () => {
@@ -160,7 +175,7 @@ export default function SignupForm({
 
   // Submit login to server
   const [signup, { loading }] = useMutation(ADD_USER);
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = async (e: FormEvent) => {
     // Prevent default form behavior
     e.preventDefault();
     console.log("submitted");
@@ -194,7 +209,7 @@ export default function SignupForm({
   };
 
   // Advance form with Enter key
-  const nextOnEnter = (e: React.KeyboardEvent) =>
+  const nextOnEnter = (e: KeyboardEvent) =>
     e.key === "Enter" && !formValidate.preventSubmit && nextStep();
 
   return (

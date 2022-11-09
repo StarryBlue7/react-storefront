@@ -1,4 +1,5 @@
-import React from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
+
 import {
   AppBar,
   Box,
@@ -19,8 +20,9 @@ import {
   Login,
 } from "@mui/icons-material";
 
-import NavLogo from "./NavLogo";
 import { NavLink } from "react-router-dom";
+
+import NavLogo from "./NavLogo";
 
 type Page = {
   label: string;
@@ -38,8 +40,49 @@ type Location = {
   search: string;
 };
 
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
 type CartHandler = {
-  totals: any;
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type AuthHandler = {
+  loggedIn: boolean;
+  authRefresh: () => void;
+  login: (token: string) => void;
+  logout: () => void;
 };
 
 type NavBarProps = {
@@ -47,7 +90,7 @@ type NavBarProps = {
   accountPages: Page[];
   toggleDrawers: Function;
   modalStates: ModalStates;
-  authHandler: any;
+  authHandler: AuthHandler;
   cartHandler?: CartHandler;
   location: Location;
 };
@@ -62,17 +105,15 @@ function NavBar({
   location,
 }: NavBarProps) {
   // Account menu control
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setAnchorElUser(null);
   }, [authHandler.loggedIn]);
 

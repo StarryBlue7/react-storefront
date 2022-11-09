@@ -1,4 +1,5 @@
-import React from "react";
+import React, { ReactNode } from "react";
+
 import {
   Button,
   List,
@@ -12,19 +13,19 @@ import { Link } from "react-router-dom";
 
 type Align = "left" | "center" | "right";
 
+type ButtonConfig = {
+  icon?: ReactNode;
+  label: string;
+  path?: string;
+  disabled?: boolean;
+  function?: () => void;
+  variant?: "text" | "outlined" | "contained" | undefined;
+};
+
 type ButtonSetProps = {
   buttons: ButtonConfig[];
   span?: boolean;
   align?: Align;
-};
-
-type ButtonConfig = {
-  icon?: React.ReactElement | "none";
-  label: string;
-  path?: string;
-  disabled?: boolean;
-  function?: Function;
-  variant?: string;
 };
 
 const styles = {
@@ -58,14 +59,14 @@ export default function ButtonSet({
             justifyContent: justification,
           }}
         >
-          {buttons.map((button: any) => (
+          {buttons.map((button: ButtonConfig) => (
             <Link
-              to={!button.disabled && button.path}
+              to={!button.disabled && button.path ? button.path : ""}
               key={button.label}
               style={{ ...styles.links, flexGrow: span ? 1 : 0 }}
             >
               <Button
-                onClick={button.function}
+                onClick={button.function ? button.function : () => {}}
                 disabled={button.disabled}
                 variant={button.variant || "contained"}
                 sx={styles.cartButton}

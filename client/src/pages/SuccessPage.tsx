@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Divider, Grid, Typography } from "@mui/material";
 
 import { useSearchParams } from "react-router-dom";
@@ -10,10 +11,52 @@ import OrderDetails from "../components/order/OrderDetails";
 import ButtonSet from "../components/ButtonSet";
 import Loader from "../components/feedback/Loader";
 
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type SuccessPageProps = {
+  cartHandler: CartHandler;
+};
+
 /**
  * Successful order complete page
  */
-export default function SuccessPage({ cartHandler }: any) {
+export default function SuccessPage({ cartHandler }: SuccessPageProps) {
   const [searchParams] = useSearchParams();
 
   const stripeId = searchParams.get("payment_intent");

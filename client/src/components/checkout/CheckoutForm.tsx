@@ -1,4 +1,10 @@
-import React from "react";
+import React, {
+  KeyboardEvent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
+
 import {
   Button,
   DialogActions,
@@ -16,11 +22,68 @@ import {
   FormControlLabel,
   Radio,
   Box,
+  SelectChangeEvent,
 } from "@mui/material";
 
-import Validate from "../../utils/formValidations";
 import StripeWrapper from "./StripeWrapper";
 import StripePay from "./StripePay";
+
+import Validate from "../../utils/formValidations";
+
+type ShippingOption = {
+  cost: number;
+  label: string;
+  timeline: string;
+};
+
+type Shipping = {
+  shippingOptions: ShippingOption[];
+  shippingOption: number;
+  chooseShipping: (option: number) => () => void;
+};
+
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type CheckoutFormProps = {
+  cartHandler: CartHandler;
+  shipping: Shipping;
+};
 
 type OrderInfoState = {
   email: string;
@@ -106,9 +169,12 @@ const states = [
   "WY",
 ];
 
-export default function CheckoutForm({ cartHandler, shipping }: any) {
+export default function CheckoutForm({
+  cartHandler,
+  shipping,
+}: CheckoutFormProps) {
   // Form control
-  const [formState, setFormState] = React.useState<OrderInfoState>({
+  const [formState, setFormState] = useState<OrderInfoState>({
     email: "",
     phone: "",
     address1: "",
@@ -118,10 +184,10 @@ export default function CheckoutForm({ cartHandler, shipping }: any) {
     postcode: "",
   });
 
-  const updateForm = (e: any): void => {
-    const field = e.target.id || e.target.name;
-    // e.target.id in formState ? e.target.id : e.target.id.split("-")[0];
-    const value = e.target.value; // || e.target.textContent;
+  const updateForm = (e: SyntheticEvent | SelectChangeEvent): void => {
+    const target = e.target as HTMLInputElement;
+    const field = target.id || target.name;
+    const value = target.value;
 
     setFormState((prev: OrderInfoState) => {
       return { ...prev, [field]: value };
@@ -133,7 +199,7 @@ export default function CheckoutForm({ cartHandler, shipping }: any) {
   };
 
   // Validations & helper messages
-  const [formValidate, setFormValidate] = React.useState<OrderInfoValidation>({
+  const [formValidate, setFormValidate] = useState<OrderInfoValidation>({
     phoneError: false,
     phoneHelper: " ",
     emailError: false,
@@ -189,7 +255,7 @@ export default function CheckoutForm({ cartHandler, shipping }: any) {
   };
 
   // Revalidate errored fields on form update
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       formValidate.phoneError ||
       formValidate.emailError ||
@@ -202,7 +268,7 @@ export default function CheckoutForm({ cartHandler, shipping }: any) {
 
   // Signup steps
   const steps = ["Contact Info", "Shipping", "Enter Payment"];
-  const [activeStep, setActiveStep] = React.useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
   const nextStep = () => {
     setActiveStep(activeStep + 1);
   };
@@ -221,7 +287,7 @@ export default function CheckoutForm({ cartHandler, shipping }: any) {
   ];
 
   // Advance form with Enter key
-  const nextOnEnter = (e: React.KeyboardEvent) =>
+  const nextOnEnter = (e: KeyboardEvent) =>
     e.key === "Enter" && !formValidate.preventSubmit && nextStep();
 
   return (
@@ -276,29 +342,31 @@ export default function CheckoutForm({ cartHandler, shipping }: any) {
             row
             sx={{ pb: 2, display: "flex", justifyContent: "space-evenly" }}
           >
-            {shipping.shippingOptions.map((option: any, index: number) => (
-              <FormControlLabel
-                value={index}
-                label={
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography>${option.cost}</Typography>
-                    <Typography>{option.label}</Typography>
-                    <Typography>({option.timeline})</Typography>
-                  </Box>
-                }
-                control={<Radio />}
-                onClick={shipping.chooseShipping(index)}
-                labelPlacement="bottom"
-                key={option.label}
-                sx={{ flex: "1 1 20%", mx: 0 }}
-              />
-            ))}
+            {shipping.shippingOptions.map(
+              (option: ShippingOption, index: number) => (
+                <FormControlLabel
+                  value={index}
+                  label={
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography>${option.cost}</Typography>
+                      <Typography>{option.label}</Typography>
+                      <Typography>({option.timeline})</Typography>
+                    </Box>
+                  }
+                  control={<Radio />}
+                  onClick={shipping.chooseShipping(index)}
+                  labelPlacement="bottom"
+                  key={option.label}
+                  sx={{ flex: "1 1 20%", mx: 0 }}
+                />
+              )
+            )}
           </RadioGroup>
           <Typography variant="h5">Shipping Address</Typography>
           <TextField

@@ -1,17 +1,20 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
+
 import { Button, Typography } from "@mui/material";
+
 import {
   useStripe,
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
+
 import Loader from "../feedback/Loader";
 import ButtonLoader from "../feedback/ButtonLoader";
 
 export default function StripePay() {
-  const [errorMessage, setErrorMessage] = React.useState<string>(" ");
-  const [submitted, setSubmitted] = React.useState<boolean>(false);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string>(" ");
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Stripe
   const stripe = useStripe();

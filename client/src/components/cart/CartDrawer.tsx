@@ -1,12 +1,75 @@
-import React from "react";
+import React, { EventHandler, ReactNode, SyntheticEvent } from "react";
+
 import { Box, Drawer, Divider } from "@mui/material";
 import { ShoppingCartCheckout, ShoppingBasket } from "@mui/icons-material";
 
 import Cart from "./Cart";
 import ButtonSet from "../ButtonSet";
 
-export default function CartDrawer({ open, toggleDrawers, cartHandler }: any) {
-  const buttons = [
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type PageDrawer = "categories" | "cart";
+
+type CartDrawerProps = {
+  open: boolean;
+  toggleDrawers: (
+    drawer: PageDrawer,
+    open: boolean
+  ) => EventHandler<SyntheticEvent>;
+  cartHandler: CartHandler;
+};
+
+type ButtonConfig = {
+  icon?: ReactNode;
+  label: string;
+  path?: string;
+  disabled?: boolean;
+  function?: () => void;
+  variant?: "text" | "outlined" | "contained" | undefined;
+};
+
+export default function CartDrawer({
+  open,
+  toggleDrawers,
+  cartHandler,
+}: CartDrawerProps) {
+  const buttons: ButtonConfig[] = [
     {
       icon: (
         <ShoppingBasket

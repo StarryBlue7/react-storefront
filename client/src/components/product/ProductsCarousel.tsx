@@ -1,19 +1,25 @@
 import React, { ReactElement } from "react";
+
 import { Grid, Typography } from "@mui/material";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
-
-import ProductCard from "./ProductCard";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../../utils/queries";
 
-// Import Swiper styles
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper";
+
+// Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "../../styles/swiper.css";
+
+import ProductCard from "./ProductCard";
 import Loader from "../feedback/Loader";
+
+type Tag = {
+  _id: string;
+  name: string;
+};
 
 type Product = {
   _id: string;
@@ -21,7 +27,7 @@ type Product = {
   shortName: string;
   imgURL: string;
   description: string;
-  tags: string[];
+  tags: Tag[];
   price: number;
 };
 

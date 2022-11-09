@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+
 import {
   List,
   Divider,
@@ -8,6 +9,53 @@ import {
 } from "@mui/material";
 
 import CartItem from "./CartItem";
+
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type CartProps = {
+  cartHandler: CartHandler;
+  label?: string;
+  shippingCost?: number;
+  disable?: boolean;
+  tax?: boolean;
+  total?: boolean;
+};
 
 const styles = {
   totals: { textAlign: "right", width: "50%" },
@@ -25,13 +73,13 @@ export default function Cart({
   disable = false,
   tax = false,
   total = false,
-}: any) {
-  const estimatedTax = React.useMemo(() => {
+}: CartProps) {
+  const estimatedTax = useMemo(() => {
     const tax = cartHandler.totals.totalPrice * taxRate;
     return Number(tax.toFixed(2));
   }, [cartHandler]);
 
-  const totalCharge = React.useMemo(() => {
+  const totalCharge = useMemo(() => {
     const taxCharge = tax ? estimatedTax : 0;
     const shippingCharge = shippingCost || 0;
     const total = cartHandler.totals.totalPrice + taxCharge + shippingCharge;
@@ -45,7 +93,7 @@ export default function Cart({
         {cartHandler.cart.length > 0 ? ` (${cartHandler.totals.totalQty})` : ""}
       </Typography>
       <List sx={{ minHeight: "40vh" }}>
-        {cartHandler.cart.map((item: any) => (
+        {cartHandler.cart.map((item: Item) => (
           <CartItem
             item={item}
             cartHandler={cartHandler}

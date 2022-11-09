@@ -1,4 +1,11 @@
-import React from "react";
+import React, {
+  ChangeEvent,
+  CSSProperties,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import {
   Box,
   Button,
@@ -14,29 +21,47 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Clear } from "@mui/icons-material";
+
 import { Link } from "react-router-dom";
+
+type Tag = {
+  _id: string;
+  name: string;
+};
 
 type Product = {
   _id: string;
-  imgURL: string;
   fullName: string;
   shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
   price: number;
 };
+
 type Item = {
   product: Product;
   quantity: number;
 };
-type CartState = Item[];
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
 type CartHandler = {
   cartLoading: boolean;
-  cart: CartState;
-  addToCart: Function;
-  updateQty: Function;
-  deleteItem: Function;
-  clearAll: Function;
-  updateCart: Function;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
 };
+
 type CartItemProps = {
   item: Item;
   cartHandler: CartHandler;
@@ -50,7 +75,7 @@ const styles = {
     width: 50,
     objectFit: "cover",
   },
-} as React.CSSProperties | any;
+} as CSSProperties | any;
 
 export default function CartItem({
   item,
@@ -59,7 +84,7 @@ export default function CartItem({
   disable = false,
 }: CartItemProps) {
   // Show/hide cart item options
-  const [options, setOptions] = React.useState<boolean>(false);
+  const [options, setOptions] = useState<boolean>(false);
   const showOptions = () => setOptions(true);
   const hideOptions = () => {
     if (qtyInput !== item.quantity) {
@@ -75,7 +100,7 @@ export default function CartItem({
   };
 
   // List of possible quantities
-  const qtyOptions = React.useMemo(() => {
+  const qtyOptions = useMemo(() => {
     const options = [];
     for (let i = 0; i <= maxQty; i++) {
       options.push(i);
@@ -87,11 +112,11 @@ export default function CartItem({
     return options;
   }, [maxQty]);
 
-  const [qtyInput, setQtyInput] = React.useState<number>(item.quantity);
-  React.useEffect(() => {
+  const [qtyInput, setQtyInput] = useState<number>(item.quantity);
+  useEffect(() => {
     setQtyInput(item.quantity);
   }, [item.quantity]);
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleInput = (event: ChangeEvent<HTMLInputElement>): void => {
     const quantity = parseInt(event.target.value);
     // Update qty input only if input is a number
     if (!Number.isNaN(quantity)) {
