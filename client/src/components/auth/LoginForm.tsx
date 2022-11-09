@@ -1,20 +1,30 @@
-import React from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+
 import { Button, DialogActions, TextField } from "@mui/material";
 
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../../utils/mutations";
 
 import Validate from "../../utils/formValidations";
+
 import ButtonLoader from "../feedback/ButtonLoader";
-import { useLocation } from "react-router-dom";
+
+type ModalStates = {
+  authOpen: boolean;
+  openAuth: () => void;
+  closeAuth: () => void;
+};
+
+type AuthHandler = {
+  loggedIn: boolean;
+  authRefresh: () => void;
+  login: (token: string) => void;
+  logout: () => void;
+};
 
 type LoginFormProps = {
-  modalStates?: {
-    authOpen: boolean;
-    openAuth: () => void;
-    closeAuth: () => void;
-  };
-  authHandler: any;
+  modalStates?: ModalStates;
+  authHandler: AuthHandler;
 };
 
 type LoginState = {
@@ -34,15 +44,12 @@ export default function LoginForm({
   modalStates,
   authHandler,
 }: LoginFormProps) {
-  // Current page location URL
-  const location = useLocation();
-
   // Form control
-  const [formState, setFormState] = React.useState<LoginState>({
+  const [formState, setFormState] = useState<LoginState>({
     username: "",
     password: "",
   });
-  const updateForm = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const updateForm = (e: ChangeEvent<HTMLInputElement>): void => {
     const field = e.target.id;
     const value = e.target.value;
     setFormState((prev: LoginState) => {
@@ -51,7 +58,7 @@ export default function LoginForm({
   };
 
   // Validation & helper messages
-  const [formValidate, setFormValidate] = React.useState<LoginValidation>({
+  const [formValidate, setFormValidate] = useState<LoginValidation>({
     usernameError: false,
     usernameHelper: " ",
     passwordError: false,
@@ -59,7 +66,7 @@ export default function LoginForm({
     preventSubmit: true,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (formState.username.length > 0 && formState.password.length > 0) {
       const validated = Validate.username(formState.username);
       setFormValidate((prev: LoginValidation) => {
@@ -74,7 +81,7 @@ export default function LoginForm({
 
   // Submit login to server
   const [login, { loading }] = useMutation(LOGIN);
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     // Prevent default form behavior
     e.preventDefault();
 
@@ -92,7 +99,7 @@ export default function LoginForm({
       const { data } = await login({
         variables: { ...formState, username: formState.username.toLowerCase() },
       });
-      authHandler.login(data.login.token, location.pathname + location.search);
+      authHandler.login(data.login.token);
       // Close modal if given in props
       modalStates && modalStates.closeAuth();
     } catch (e: any) {

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Rating } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
@@ -12,10 +13,20 @@ const StyledRating = styled(Rating)({
   },
 });
 
+type HeartRatingProps = {
+  value: number;
+  readOnly?: boolean;
+  size?: "small" | "medium" | "large";
+};
+
 /**
  * Heart icon rating out of 5
  */
-export default function HeartRating({ value, readOnly, size }: any) {
+export default function HeartRating({
+  value,
+  readOnly,
+  size,
+}: HeartRatingProps) {
   return (
     <StyledRating
       name="customized-color"

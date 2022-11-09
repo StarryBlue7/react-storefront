@@ -1,8 +1,17 @@
+type Tag = {
+  _id: string;
+  name: string;
+};
+
 type Product = {
   _id: string;
-  imgURL: string;
   fullName: string;
   shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
   price: number;
 };
 
@@ -11,41 +20,41 @@ type Item = {
   quantity: number;
 };
 
-type Cart = Item[];
-
 type Totals = {
   totalPrice: number;
   totalQty: number;
 };
+
+type CartState = Item[];
 
 const CART_KEY = "user_cart";
 
 class CartHandler {
   /**
    * Get cart array of product objects from local storage
-   * @return {Cart}
+   * @return {CartState}
    */
-  getLocal(): Cart {
+  getLocal(): CartState {
     const cart = localStorage.getItem(CART_KEY) || "[]";
     return JSON.parse(cart);
   }
 
   /**
    * Update cart in local storage
-   * @param {Cart} cart New cart
+   * @param {CartState} cart New cart
    */
-  setLocal(cart: Cart): void {
+  setLocal(cart: CartState): void {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
   }
 
   /**
    * Add to or increment product quantity in cart
-   * @param {Cart} prev Previous cart state
+   * @param {CartState} prev Previous cart state
    * @param {Product} product Product to be added/incremented
    * @param {number} quantity Optional quantity to add if greater than 1
    * @returns {Cart} Updated cart
    */
-  addItem(prev: Cart, product: Product, quantity: number = 1): Cart {
+  addItem(prev: CartState, product: Product, quantity: number = 1): CartState {
     let added = false;
     const cart = prev.map((item: Item) => {
       if (item.product._id === product._id) {
@@ -63,12 +72,12 @@ class CartHandler {
 
   /**
    * Update a quantity for a product
-   * @param {Cart} prev Previous cart state
+   * @param {CartState} prev Previous cart state
    * @param {string} productId ID of product to update
    * @param {number} quantity New quantity
    * @returns {Cart} Updated cart
    */
-  updateQty(prev: Cart, productId: string, quantity: number): Cart {
+  updateQty(prev: CartState, productId: string, quantity: number): CartState {
     const cart =
       quantity <= 0
         ? [...prev].filter((item) => item.product._id !== productId)
@@ -84,17 +93,17 @@ class CartHandler {
    * @param {string} productId ID of product to remove
    * @returns {Cart} Updated cart
    */
-  deleteItem(prev: Cart, productId: string): Cart {
+  deleteItem(prev: CartState, productId: string): CartState {
     const cart = [...prev].filter((item) => item.product._id !== productId);
     return cart;
   }
 
   /**
    * Get total price & item quantity
-   * @param {Cart} cart
+   * @param {CartState} cart
    * @returns {Totals} Obj with totalPrice & totalQty
    */
-  getTotals(cart: Cart): Totals {
+  getTotals(cart: CartState): Totals {
     let totalQty = 0;
     let subtotal = 0;
     cart.forEach((item: Item) => {
@@ -108,7 +117,7 @@ class CartHandler {
   /**
    * Clear cart
    */
-  clearAll(): Cart {
+  clearAll(): CartState {
     return [];
   }
 }

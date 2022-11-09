@@ -1,10 +1,17 @@
 import React from "react";
+
 import { Grid } from "@mui/material";
-import ProductCard from "./ProductCard";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../../utils/queries";
+
+import ProductCard from "./ProductCard";
 import Loader from "../feedback/Loader";
+
+type Tag = {
+  _id: string;
+  name: string;
+};
 
 type Product = {
   _id: string;
@@ -12,7 +19,7 @@ type Product = {
   shortName: string;
   imgURL: string;
   description: string;
-  tags: string[];
+  tags: Tag[];
   price: number;
 };
 

@@ -1,12 +1,52 @@
 import React from "react";
+
 import { Grid } from "@mui/material";
 
 import DetailsTable from "../DetailsTable";
 
+type Product = {
+  _id: string;
+  fullName: string;
+  modelNumber: string;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+  priceAtSale: number;
+};
+
+type Address = {
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  postcode: string;
+};
+
+type Order = {
+  orderNum: string;
+  tax: number;
+  taxPercent: number;
+  total: number;
+  items: Item[];
+  paidOn: string;
+  subtotal: number;
+  shipping: number;
+  toAddress: Address;
+  shippedOn: string;
+  estimatedArrival: string;
+  itemCount: number;
+};
+
+type OrderDetailsProps = {
+  order: Order;
+};
+
 /**
  * Order details display
  */
-export default function OrderDetails({ order }: any) {
+export default function OrderDetails({ order }: OrderDetailsProps) {
   const orderDetails = {
     label: "Order Details",
     entries: [
@@ -43,7 +83,7 @@ ${order.toAddress.city}, ${order.toAddress.state} ${order.toAddress.postcode}`,
     label: "Order Items",
     headers: ["Item", "Qty.", "Price", "Total"],
     entries: order?.items
-      ? order?.items.map((item: any) => {
+      ? order?.items.map((item: Item) => {
           return {
             row: `${item.product.fullName} (${item.product.modelNumber})`,
             values: [

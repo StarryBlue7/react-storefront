@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+
 import {
   List,
   ListItem,
@@ -7,7 +8,9 @@ import {
   Collapse,
 } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+
 import { Link } from "react-router-dom";
+
 import { urlString } from "../../utils/url";
 
 type Category = {
@@ -17,7 +20,7 @@ type Category = {
   subCategories?: Array<Category>;
 };
 
-type Props = {
+type CategoryTreeProps = {
   category: Category;
   autoOpen?: number;
   layer?: number;
@@ -30,9 +33,9 @@ export default function CategoryTree({
   category,
   autoOpen = 1,
   layer = 1,
-}: Props) {
+}: CategoryTreeProps) {
   // Sublist collapsing state, initially set dependent on autoOpen value and current layer
-  const [subList, setSubList] = React.useState<boolean>(autoOpen >= layer);
+  const [subList, setSubList] = useState<boolean>(autoOpen >= layer);
   const toggleSubList = () => {
     setSubList(!subList);
   };

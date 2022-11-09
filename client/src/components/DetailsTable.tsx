@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Table,
   TableBody,
@@ -22,11 +23,11 @@ type Data = {
   footers?: Row[];
 };
 
-type Props = {
+type DetailsTableProps = {
   data: Data;
 };
 
-export default function DetailsTable({ data }: Props) {
+export default function DetailsTable({ data }: DetailsTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ width: "100%" }} aria-label={data.label}>

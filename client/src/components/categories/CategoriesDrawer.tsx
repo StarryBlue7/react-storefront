@@ -1,4 +1,5 @@
-import React from "react";
+import React, { ReactNode } from "react";
+
 import {
   Box,
   Drawer,
@@ -10,13 +11,14 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
+import { Home } from "@mui/icons-material";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_CATEGORIES } from "../../utils/queries";
+
 import { NavLink } from "react-router-dom";
+
 import CategoryTree from "./CategoryTree";
-import { Home } from "@mui/icons-material";
-import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import Loader from "../feedback/Loader";
 
 type Category = {
@@ -29,10 +31,10 @@ type Category = {
 type Page = {
   label: string;
   path: string;
-  icon: ReactJSXElement;
+  icon: ReactNode;
 };
 
-type Props = {
+type CategoriesDrawerProps = {
   mainPages: Page[];
   open: boolean;
   toggleDrawers: Function;
@@ -52,7 +54,7 @@ export default function CategoriesDrawer({
   mainPages,
   open,
   toggleDrawers,
-}: Props) {
+}: CategoriesDrawerProps) {
   // Retrieve category root nodes with populated child nodes
   const { loading, data } = useQuery(QUERY_CATEGORIES, {
     fetchPolicy: "cache-first",

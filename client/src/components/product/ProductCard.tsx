@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Button,
   Card,
@@ -10,8 +11,15 @@ import {
   Box,
   Typography,
 } from "@mui/material";
+
 import { Link } from "react-router-dom";
+
 import { urlString } from "../../utils/url";
+
+type Tag = {
+  _id: string;
+  name: string;
+};
 
 type Product = {
   _id: string;
@@ -19,14 +27,35 @@ type Product = {
   shortName: string;
   imgURL: string;
   description: string;
-  tags: string[];
+  tags: Tag[];
   price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
 };
 
 type ProductCardProps = {
   product: Product;
   compact?: boolean;
-  cartHandler?: any;
+  cartHandler?: CartHandler;
 };
 
 const styles = {
@@ -93,7 +122,7 @@ export default function ProductCard({
                     mb: 1,
                   }}
                 >
-                  {product.tags.map((tag: any, i: number) => (
+                  {product.tags.map((tag: Tag, i: number) => (
                     <Chip
                       key={i}
                       label={tag.name}

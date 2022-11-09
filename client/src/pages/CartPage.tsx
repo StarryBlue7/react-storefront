@@ -1,4 +1,5 @@
-import React from "react";
+import React, { ReactNode } from "react";
+
 import {
   RemoveShoppingCartOutlined,
   ShoppingCartCheckout,
@@ -8,11 +9,62 @@ import { Divider, Grid } from "@mui/material";
 import Cart from "../components/cart/Cart";
 import ButtonSet from "../components/ButtonSet";
 
+type ButtonConfig = {
+  icon?: ReactNode;
+  label: string;
+  path?: string;
+  disabled?: boolean;
+  function?: () => void;
+  variant?: "text" | "outlined" | "contained" | undefined;
+};
+
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Product = {
+  _id: string;
+  fullName: string;
+  shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type CartPageProps = {
+  cartHandler: CartHandler;
+};
+
 /**
  * Cart page
  */
-export default function CartPage({ cartHandler }: any) {
-  const buttons = [
+export default function CartPage({ cartHandler }: CartPageProps) {
+  const buttons: ButtonConfig[] = [
     {
       icon: (
         <RemoveShoppingCartOutlined

@@ -1,4 +1,10 @@
-import React from "react";
+import React, {
+  KeyboardEvent,
+  MouseEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Container } from "@mui/material";
 import { Discount, NewReleases } from "@mui/icons-material";
@@ -27,21 +33,33 @@ import SuccessPage from "./pages/SuccessPage";
 import CategoryPage from "./pages/CategoryPage";
 
 type DrawerState = { categories: boolean; cart: boolean };
+
 type Drawer = "categories" | "cart";
 
 type SelectedTags = Set<string>;
 
+type Tag = {
+  _id: string;
+  name: string;
+};
+
 type Product = {
   _id: string;
-  imgURL: string;
   fullName: string;
   shortName: string;
+  modelNumber: string;
+  imgURL: string;
+  description: string;
+  rating?: number;
+  tags: Tag[];
   price: number;
 };
+
 type Item = {
   product: Product;
   quantity: number;
 };
+
 type CartState = Item[];
 
 // Page tabs
@@ -61,7 +79,7 @@ function Main() {
   const location = useLocation();
 
   // User authentication state control
-  const [loggedIn, setLoggedIn] = React.useState<boolean>(Auth.loggedIn());
+  const [loggedIn, setLoggedIn] = useState<boolean>(Auth.loggedIn());
   const authHandler = {
     loggedIn,
     authRefresh: function () {
@@ -78,7 +96,7 @@ function Main() {
   };
 
   // Login/signup modal control
-  const [authOpen, setAuthOpen] = React.useState<boolean>(false);
+  const [authOpen, setAuthOpen] = useState<boolean>(false);
   const modalStates = {
     authOpen,
     openAuth: () => {
@@ -90,17 +108,16 @@ function Main() {
   };
 
   // Category & cart drawer display control
-  const [drawers, setDrawers] = React.useState<DrawerState>({
+  const [drawers, setDrawers] = useState<DrawerState>({
     categories: false,
     cart: false,
   });
   const toggleDrawers =
-    (drawer: Drawer, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
+    (drawer: Drawer, open: boolean) => (event: KeyboardEvent | MouseEvent) => {
       if (
         event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
+        ((event as KeyboardEvent).key === "Tab" ||
+          (event as KeyboardEvent).key === "Shift")
       ) {
         return;
       }
@@ -109,7 +126,7 @@ function Main() {
       });
     };
 
-  const [cart, setCart] = React.useState<CartState>(CartHandler.getLocal());
+  const [cart, setCart] = useState<CartState>(CartHandler.getLocal());
 
   // Database user account cart retrieval/update
   const [fetchCart, { loading: cartLoading }] = useLazyQuery(QUERY_CART, {
@@ -121,7 +138,7 @@ function Main() {
   const cartHandler = {
     cartLoading,
     cart,
-    totals: React.useMemo(() => CartHandler.getTotals(cart), [cart]),
+    totals: useMemo(() => CartHandler.getTotals(cart), [cart]),
     addToCart: (product: Product, quantity?: number) => () => {
       toast(`🛒 ${product.shortName} added to cart.`);
       setCart((prev: CartState) =>
@@ -145,7 +162,7 @@ function Main() {
   };
 
   // Use account cart if local cart empty, except on order success page
-  React.useEffect(() => {
+  useEffect(() => {
     async function retrieveCart() {
       if (loggedIn && location.pathname !== "/success") {
         const { data } = await fetchCart();
@@ -160,7 +177,7 @@ function Main() {
   // location dependency ignored to prevent unnecessary cart fetching
 
   // Keep local & account carts updated to app cart state
-  React.useEffect(() => {
+  useEffect(() => {
     // Update account cart in db if logged in
     async function refreshAccountCart() {
       if (Auth.loggedIn()) {
@@ -179,9 +196,7 @@ function Main() {
   }, [cart, updateAccountCart]);
 
   // Product tags selection
-  const [selectedTags, setSelectedTags] = React.useState<SelectedTags>(
-    new Set()
-  );
+  const [selectedTags, setSelectedTags] = useState<SelectedTags>(new Set());
   const tagStates = {
     selectedTags,
     toggleTag: (tag: string) => () => {
@@ -197,7 +212,7 @@ function Main() {
   };
 
   // Close drawers on category or page change
-  React.useEffect(() => {
+  useEffect(() => {
     setDrawers({
       categories: false,
       cart: false,

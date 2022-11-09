@@ -1,11 +1,54 @@
-import * as React from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { useLazyQuery } from "@apollo/client";
 import { QUERY_PAYMENT_INTENT } from "../../utils/queries";
+
 import Loader from "../feedback/Loader";
+
+type Product = {
+  _id: string;
+  imgURL: string;
+  fullName: string;
+  shortName: string;
+  price: number;
+};
+
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type FormState = {
+  email: string;
+  phone: string;
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  postcode: string;
+};
+
+type ShippingOption = {
+  cost: number;
+  label: string;
+  timeline: string;
+};
+
+type Shipping = {
+  shippingOptions: ShippingOption[];
+  shippingOption: number;
+  chooseShipping: (option: number) => () => void;
+};
+
+type StripeWrapperProps = {
+  cart: Item[];
+  formState: FormState;
+  shipping: Shipping;
+  children: ReactNode;
+};
 
 // Load stripe with public key
 const stripePromise = loadStripe(
@@ -14,14 +57,14 @@ const stripePromise = loadStripe(
 
 export default function StripeWrapper({
   cart,
-  children,
   formState,
   shipping,
-}: any) {
-  const [clientSecret, setClientSecret] = React.useState<string>("");
+  children,
+}: StripeWrapperProps) {
+  const [clientSecret, setClientSecret] = useState<string>("");
 
-  const items = React.useMemo(() => {
-    return cart.map((item: any) => {
+  const items = useMemo(() => {
+    return cart.map((item: Item) => {
       return { product: item.product._id, quantity: item.quantity };
     });
   }, [cart]);
@@ -48,12 +91,12 @@ export default function StripeWrapper({
   );
 
   // Get client secret on component render
-  React.useEffect(() => {
+  useEffect(() => {
     getClientSecret();
   }, [getClientSecret]);
 
   // Set client secret
-  React.useEffect(() => {
+  useEffect(() => {
     setClientSecret(newClientSecret?.paymentIntent.clientSecret || "");
   }, [newClientSecret]);
 

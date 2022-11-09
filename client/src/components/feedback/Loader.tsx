@@ -1,3 +1,5 @@
+import React from "react";
+
 import { CircularProgress, Grid, Typography } from "@mui/material";
 
 type LoaderProps = {

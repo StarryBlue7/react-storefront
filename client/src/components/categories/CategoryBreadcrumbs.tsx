@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useMemo } from "react";
+
 import { NavigateNext } from "@mui/icons-material";
 import { Breadcrumbs, Grid, Typography } from "@mui/material";
 
@@ -6,9 +7,10 @@ import { Link } from "react-router-dom";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_CATEGORY } from "../../utils/queries";
+
 import { urlString } from "../../utils/url";
 
-type Props = {
+type CategoryBreadcrumbsProps = {
   categoryId?: string;
 };
 
@@ -18,17 +20,19 @@ type Category = {
   parentCategory?: Category;
 };
 
-export default function CategoryBreadcrumbs({ categoryId }: Props) {
+export default function CategoryBreadcrumbs({
+  categoryId,
+}: CategoryBreadcrumbsProps) {
   const { loading, data } = useQuery(QUERY_CATEGORY, {
     variables: { categoryId },
     fetchPolicy: "cache-first",
   });
 
-  const categoryChain = React.useMemo(() => {
+  const categoryChain = useMemo(() => {
     const category = data?.category || {};
     const chain: Category[] = [];
     // Recursively add parent categories to array
-    function flattenParents(category: Category): any {
+    function flattenParents(category: Category): void {
       chain.push({ _id: category._id, name: category.name });
       if (!category.parentCategory) {
         return;
