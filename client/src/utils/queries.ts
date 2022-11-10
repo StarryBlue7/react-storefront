@@ -58,21 +58,28 @@ export const QUERY_CATEGORY = gql`
 export const QUERY_PRODUCTS = gql`
   query products($tags: [ID], $category: ID, $page: Int, $perPage: Int) {
     products(tags: $tags, category: $category, page: $page, perPage: $perPage) {
-      _id
-      fullName
-      shortName
-      price
-      modelNumber
-      imgURL
-      description
-      popularity
-      categories {
-        _id
-        name
+      pagination {
+        page
+        perPage
+        count
       }
-      tags {
+      results {
         _id
-        name
+        fullName
+        shortName
+        price
+        modelNumber
+        imgURL
+        description
+        popularity
+        categories {
+          _id
+          name
+        }
+        tags {
+          _id
+          name
+        }
       }
     }
   }
