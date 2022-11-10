@@ -165,10 +165,14 @@ function Main() {
   useEffect(() => {
     async function retrieveCart() {
       if (loggedIn && location.pathname !== "/success") {
-        const { data } = await fetchCart();
-        const accountCart = data.me.cart;
-        if (CartHandler.getLocal().length === 0 && accountCart.length > 0) {
-          setCart(accountCart);
+        try {
+          const { data } = await fetchCart();
+          const accountCart = data.me.cart;
+          if (CartHandler.getLocal().length === 0 && accountCart.length > 0) {
+            setCart(accountCart);
+          }
+        } catch (e: any) {
+          console.error(e);
         }
       }
     }
