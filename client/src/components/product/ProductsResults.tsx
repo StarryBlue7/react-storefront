@@ -59,6 +59,17 @@ type ProductResultsProps = {
   perPage?: number;
 };
 
+type PaginationData = {
+  page?: number;
+  perPage?: number;
+  count: number;
+};
+
+type ProductData = {
+  results: Product[];
+  pagination: PaginationData;
+};
+
 export default function ProductsResults({
   categoryId,
   tagStates,
@@ -91,29 +102,44 @@ export default function ProductsResults({
     fetchPolicy: "cache-first",
   });
 
-  const products = data?.products.results || [];
-  const productCount = data?.products.pagination.count;
+  // Product data updated only when results returned
+  const [productData, setProductData] = useState<ProductData>({
+    results: [],
+    pagination: { count: 0 },
+  });
+
+  useEffect(() => {
+    if (data?.products) {
+      setProductData(data?.products);
+    }
+  }, [data]);
+
+  const products = productData.results;
+  const productCount = productData.pagination.count;
 
   // Page total state
-  const [totalPages, setTotalPages] = useState<number>(0);
-
-  // Update page total only when count & perPage change
-  useEffect(() => {
-    if (productCount && perPage) {
-      setTotalPages(Math.ceil(productCount / perPage));
-    }
-  }, [productCount, perPage]);
+  const totalPages = Math.ceil(productCount / perPage);
 
   return (
     <Grid container spacing={2}>
-      <Grid container justifyContent="center" mt={2}>
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={changePage}
-          color="primary"
-        />
-      </Grid>
+      {totalPages > 1 && (
+        <Grid
+          container
+          justifyContent="space-between"
+          alignItems="center"
+          ml={2}
+          mt={2}
+        >
+          <Typography>{productCount} Results</Typography>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={changePage}
+            color="primary"
+          />
+          <Typography>{productCount} Results</Typography>
+        </Grid>
+      )}
       {loading || products.length < 1 ? (
         <Grid container justifyContent="center" my={5}>
           {loading && <Loader message="Loading results..." />}
@@ -132,14 +158,16 @@ export default function ProductsResults({
               />
             </Grid>
           ))}
-          <Grid container justifyContent="center" mt={2}>
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={changePage}
-              color="primary"
-            />
-          </Grid>
+          {totalPages > 1 && (
+            <Grid container justifyContent="center" mt={2}>
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={changePage}
+                color="primary"
+              />
+            </Grid>
+          )}
         </>
       )}
     </Grid>
