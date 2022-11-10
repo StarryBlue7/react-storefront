@@ -1,6 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 
-import { Grid, Pagination, Typography } from "@mui/material";
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../../utils/queries";
@@ -77,17 +86,22 @@ export default function ProductsResults({
   page = 1,
   perPage = 12,
 }: ProductResultsProps) {
-  // Results page state
+  // Current results page displayed state
   const [currentPage, setCurrentPage] = useState<number>(page);
-
   const changePage = (_e: ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
+  };
+
+  // Desired results per page state
+  const [resultsPerPg, setResultsPerPg] = useState<number>(perPage);
+  const changePerPage = (e: SelectChangeEvent) => {
+    setResultsPerPg(parseInt(e.target.value));
   };
 
   // Return to first page on category/tag change
   useEffect(() => {
     setCurrentPage(1);
-  }, [categoryId, tagStates]);
+  }, [categoryId, tagStates, resultsPerPg]);
 
   // Query products with tag/category filters
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
@@ -97,7 +111,7 @@ export default function ProductsResults({
         : null,
       category: categoryId || null,
       page: currentPage,
-      perPage,
+      perPage: resultsPerPg,
     },
     fetchPolicy: "cache-first",
   });
@@ -118,7 +132,7 @@ export default function ProductsResults({
   const productCount = productData.pagination.count;
 
   // Page total state
-  const totalPages = Math.ceil(productCount / perPage);
+  const totalPages = Math.ceil(productCount / resultsPerPg);
 
   return (
     <Grid container spacing={2}>
@@ -137,7 +151,21 @@ export default function ProductsResults({
             onChange={changePage}
             color="primary"
           />
-          <Typography>{productCount} Results</Typography>
+          <FormControl>
+            <InputLabel id="per-page">Per Page</InputLabel>
+            <Select
+              labelId="per-page"
+              value={resultsPerPg.toString()}
+              label="Results per Page"
+              onChange={changePerPage}
+              size="small"
+              sx={{ width: 80 }}
+            >
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={8}>8</MenuItem>
+              <MenuItem value={12}>12</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
       )}
       {loading || products.length < 1 ? (
