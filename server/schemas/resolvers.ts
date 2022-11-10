@@ -34,9 +34,16 @@ const resolvers = {
         pagination = { skip, limit };
       }
 
-      const data = await Product.find(filter, {}, pagination)
+      const count = await Product.countDocuments(filter);
+      const results = await Product.find(filter, {}, pagination)
         .populate("tags")
         .populate("categories");
+
+      const data = {
+        pagination: { count, page, perPage },
+        results,
+      };
+
       return data;
     },
     // Single product
