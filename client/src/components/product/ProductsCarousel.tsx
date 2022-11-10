@@ -25,8 +25,10 @@ type Product = {
   _id: string;
   fullName: string;
   shortName: string;
+  modelNumber: string;
   imgURL: string;
   description: string;
+  rating?: number;
   tags: Tag[];
   price: number;
 };

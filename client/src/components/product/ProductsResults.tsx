@@ -13,28 +13,63 @@ type Tag = {
   name: string;
 };
 
+type TagStates = {
+  selectedTags: Set<string>;
+  toggleTag: (tag: string) => () => void;
+};
+
 type Product = {
   _id: string;
   fullName: string;
   shortName: string;
+  modelNumber: string;
   imgURL: string;
   description: string;
+  rating?: number;
   tags: Tag[];
   price: number;
 };
 
+type Item = {
+  product: Product;
+  quantity: number;
+};
+
+type Totals = {
+  totalPrice: number;
+  totalQty: number;
+};
+
+type CartHandler = {
+  cartLoading: boolean;
+  cart: Item[];
+  totals: Totals;
+  addToCart: (product: Product, quantity?: number) => () => void;
+  updateQty: (productId: string, quantity: number) => () => void;
+  deleteItem: (productId: string) => () => void;
+  updateCart: (cart: Item[]) => () => void;
+  clearAll: () => () => void;
+};
+
+type ProductResultsProps = {
+  categoryId?: string;
+  tagStates: TagStates;
+  cartHandler: CartHandler;
+};
+
 export default function ProductsResults({
-  tagStates,
   categoryId,
+  tagStates,
   cartHandler,
-}: any) {
+}: ProductResultsProps) {
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
     variables: {
-      tags:
-        tagStates?.selectedTags?.size || tagStates?.selectedTags?.length
-          ? Array.from(tagStates.selectedTags)
-          : null,
+      tags: tagStates?.selectedTags?.size
+        ? Array.from(tagStates.selectedTags)
+        : null,
       category: categoryId || null,
+      page: 1,
+      perPage: 12,
     },
     fetchPolicy: "no-cache",
   });
