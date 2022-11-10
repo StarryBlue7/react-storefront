@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 
-import { Grid, Pagination } from "@mui/material";
+import { Grid, Pagination, Typography } from "@mui/material";
 
 import { useQuery } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../../utils/queries";
@@ -107,8 +107,13 @@ export default function ProductsResults({
           color="primary"
         />
       </Grid>
-      {loading ? (
-        <Loader message="Loading results..." />
+      {loading || products.length < 1 ? (
+        <Grid container justifyContent="center" my={5}>
+          {loading && <Loader message="Loading results..." />}
+          {products.length < 1 && (
+            <Typography variant="h4">No results!</Typography>
+          )}
+        </Grid>
       ) : (
         <>
           {products.map((product: Product, i: number) => (
