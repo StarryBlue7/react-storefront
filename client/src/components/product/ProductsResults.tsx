@@ -73,6 +73,11 @@ export default function ProductsResults({
     setCurrentPage(value);
   };
 
+  // Return to first page on category/tag change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [categoryId, tagStates]);
+
   // Query products with tag/category filters
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
     variables: {
@@ -89,8 +94,10 @@ export default function ProductsResults({
   const products = data?.products.results || [];
   const productCount = data?.products.pagination.count;
 
+  // Page total state
   const [totalPages, setTotalPages] = useState<number>(0);
 
+  // Update page total only when count & perPage change
   useEffect(() => {
     if (productCount && perPage) {
       setTotalPages(Math.ceil(productCount / perPage));
