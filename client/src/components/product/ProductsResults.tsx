@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 import { Grid, Pagination } from "@mui/material";
 
@@ -83,30 +83,34 @@ export default function ProductsResults({
       page: currentPage,
       perPage,
     },
-    fetchPolicy: "no-cache",
+    fetchPolicy: "cache-first",
   });
 
   const products = data?.products.results || [];
   const productCount = data?.products.pagination.count;
 
-  const totalPages = useMemo(() => {
-    return Math.ceil(productCount / perPage);
+  const [totalPages, setTotalPages] = useState<number>(0);
+
+  useEffect(() => {
+    if (productCount && perPage) {
+      setTotalPages(Math.ceil(productCount / perPage));
+    }
   }, [productCount, perPage]);
 
   return (
     <Grid container spacing={2}>
+      <Grid container justifyContent="center" mt={2}>
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={changePage}
+          color="primary"
+        />
+      </Grid>
       {loading ? (
         <Loader message="Loading results..." />
       ) : (
         <>
-          <Grid container justifyContent="center" mt={2}>
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={changePage}
-              color="primary"
-            />
-          </Grid>
           {products.map((product: Product, i: number) => (
             <Grid item xs={12} sm={6} md={4} lg={3} m={0} key={i}>
               <ProductCard
