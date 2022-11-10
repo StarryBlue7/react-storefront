@@ -117,7 +117,7 @@ export default function ProductsResults({
       {loading || products.length < 1 ? (
         <Grid container justifyContent="center" my={5}>
           {loading && <Loader message="Loading results..." />}
-          {products.length < 1 && (
+          {!loading && products.length < 1 && (
             <Typography variant="h4">No results!</Typography>
           )}
         </Grid>
