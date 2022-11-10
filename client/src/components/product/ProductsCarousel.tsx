@@ -55,6 +55,8 @@ export default function ProductsCarousel({
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
     variables: {
       tags: tags || null,
+      page: 1,
+      perPage: 10,
     },
     fetchPolicy: "no-cache",
   });
