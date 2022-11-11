@@ -25,8 +25,10 @@ type Product = {
   _id: string;
   fullName: string;
   shortName: string;
+  modelNumber: string;
   imgURL: string;
   description: string;
+  rating?: number;
   tags: Tag[];
   price: number;
 };
@@ -55,6 +57,8 @@ export default function ProductsCarousel({
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
     variables: {
       tags: tags || null,
+      page: 1,
+      perPage: 10,
     },
     fetchPolicy: "no-cache",
   });

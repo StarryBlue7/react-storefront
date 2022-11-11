@@ -81,6 +81,17 @@ const typeDefs = gql`
     categories: [Category]
   }
 
+  type Pagination {
+    count: Int
+    page: Int
+    perPage: Int
+  }
+
+  type ProductsResults {
+    pagination: Pagination
+    results: [Product]
+  }
+
   type Tag {
     _id: ID!
     name: String!
@@ -100,7 +111,7 @@ const typeDefs = gql`
   type Query {
     me: User
     order(orderId: String, stripeId: String, orderNum: String): Order
-    products(tags: [ID], category: ID): [Product]
+    products(tags: [ID], category: ID, page: Int, perPage: Int): ProductsResults
     product(productId: ID!): Product
     tags: [Tag]
     categories: [Category]

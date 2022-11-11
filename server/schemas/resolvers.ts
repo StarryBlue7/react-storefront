@@ -22,11 +22,29 @@ const resolvers = {
     /**
      * Get all products with optional tags & category filters
      */
-    products: async (_parent, { tags, category }) => {
+    products: async (_parent, { tags, category, page, perPage }) => {
       const filter: ProductFilter = {};
       tags && (filter.tags = { $in: tags });
       category && (filter.categories = category);
-      return Product.find(filter).populate("tags").populate("categories");
+
+      let pagination = {};
+      if (!Number.isNaN(page) && !Number.isNaN(perPage)) {
+        const skip = (page - 1) * perPage;
+        const limit = perPage;
+        pagination = { skip, limit };
+      }
+
+      const count = await Product.countDocuments(filter);
+      const results = await Product.find(filter, {}, pagination)
+        .populate("tags")
+        .populate("categories");
+
+      const data = {
+        pagination: { count, page, perPage },
+        results,
+      };
+
+      return data;
     },
     // Single product
     product: async (_parent, { productId }) => {
