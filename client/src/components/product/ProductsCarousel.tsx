@@ -63,7 +63,7 @@ export default function ProductsCarousel({
     fetchPolicy: "no-cache",
   });
 
-  const products = data?.products || [];
+  const products = data?.products.results || [];
 
   return (
     <>
