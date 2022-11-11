@@ -60,12 +60,17 @@ type CartHandler = {
   clearAll: () => () => void;
 };
 
+type PaginationOptions = {
+  page?: number;
+  perPage?: number;
+  perPageOptions: number[];
+};
+
 type ProductResultsProps = {
   categoryId?: string;
   tagStates: TagStates;
   cartHandler: CartHandler;
-  page?: number;
-  perPage?: number;
+  pagination?: PaginationOptions;
 };
 
 type PaginationData = {
@@ -79,21 +84,28 @@ type ProductData = {
   pagination: PaginationData;
 };
 
+const defaultPagination = {
+  page: 1,
+  perPage: 0,
+  perPageOptions: [8, 12, 24, 60],
+};
+
 export default function ProductsResults({
   categoryId,
   tagStates,
   cartHandler,
-  page = 1,
-  perPage = 12,
+  pagination = defaultPagination,
 }: ProductResultsProps) {
   // Current results page displayed state
-  const [currentPage, setCurrentPage] = useState<number>(page);
+  const [currentPage, setCurrentPage] = useState<number>(pagination.page || 1);
   const changePage = (_e: ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 
   // Desired results per page state
-  const [resultsPerPg, setResultsPerPg] = useState<number>(perPage);
+  const [resultsPerPg, setResultsPerPg] = useState<number>(
+    pagination.perPageOptions[pagination.perPage || 0]
+  );
   const changePerPage = (e: SelectChangeEvent) => {
     setResultsPerPg(parseInt(e.target.value));
   };
@@ -161,9 +173,11 @@ export default function ProductsResults({
               size="small"
               sx={{ width: 80 }}
             >
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={8}>8</MenuItem>
-              <MenuItem value={12}>12</MenuItem>
+              {pagination.perPageOptions.map((option) => (
+                <MenuItem value={option} key={option + "-per-pg"}>
+                  {option}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>
