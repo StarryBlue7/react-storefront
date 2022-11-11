@@ -162,6 +162,7 @@ export default function ProductsResults({
             page={currentPage}
             onChange={changePage}
             color="primary"
+            sx={{ display: { xs: "none", sm: "flex" } }}
           />
           <FormControl>
             <InputLabel id="per-page">Per Page</InputLabel>
@@ -180,6 +181,18 @@ export default function ProductsResults({
               ))}
             </Select>
           </FormControl>
+          <Grid
+            container
+            justifyContent="center"
+            sx={{ mt: 1, display: { xs: "flex", sm: "none" } }}
+          >
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={changePage}
+              color="primary"
+            />
+          </Grid>
         </Grid>
       )}
       {loading || products.length < 1 ? (
@@ -201,7 +214,7 @@ export default function ProductsResults({
             </Grid>
           ))}
           {totalPages > 1 && (
-            <Grid container justifyContent="center" mt={2}>
+            <Grid container justifyContent="center" my={2}>
               <Pagination
                 count={totalPages}
                 page={currentPage}
