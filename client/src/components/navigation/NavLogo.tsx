@@ -1,28 +1,29 @@
 import React from "react";
 
-import { Typography } from "@mui/material";
-import { ShoppingCartCheckout } from "@mui/icons-material";
+import { Box, Typography } from "@mui/material";
 
-const appName = "QuickShop";
+import squirrelCart from "../../images/squirrelCart50x30.svg";
+
+const appName = "Ca$hew";
 
 function NavLogo() {
   return (
     <>
       {/* Desktop logo */}
-      <ShoppingCartCheckout
-        sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-      />
+      <Box sx={{ display: { xs: "none", md: "flex" }, mx: 1 }}>
+        <img src={squirrelCart} alt={"Acorn Shop"} />
+      </Box>
       <Typography
-        variant="h6"
+        variant="h5"
         noWrap
         component="a"
         href="/"
         sx={{
           mr: 2,
           display: { xs: "none", md: "flex" },
-          fontFamily: "monospace",
+          fontFamily: "Merienda",
           fontWeight: 700,
-          letterSpacing: ".3rem",
+          // letterSpacing: ".3rem",
           color: "inherit",
           textDecoration: "none",
         }}
@@ -31,9 +32,9 @@ function NavLogo() {
       </Typography>
 
       {/* Mobile/tablet logo */}
-      <ShoppingCartCheckout
-        sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
-      />
+      <Box sx={{ display: { xs: "flex", md: "none" }, mx: 1 }}>
+        <img src={squirrelCart} alt={"Acorn Shop"} />
+      </Box>
       <Typography
         variant="h5"
         noWrap
@@ -43,9 +44,9 @@ function NavLogo() {
           mr: 2,
           display: { xs: "flex", md: "none" },
           flexGrow: 1,
-          fontFamily: "monospace",
+          fontFamily: "Merienda",
           fontWeight: 700,
-          letterSpacing: ".3rem",
+          // letterSpacing: ".3rem",
           color: "inherit",
           textDecoration: "none",
         }}
