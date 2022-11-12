@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Cashew",
+  "name": "Ca$hew | A storefront for your business built with React & Stripe",
   "icons": [
     {
       "src": "squirrel32.png",

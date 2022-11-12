@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 
 import squirrelCart from "../../images/squirrelCart50x30.svg";
 
-const appName = "AcornShop";
+const appName = "Ca$hew";
 
 function NavLogo() {
   return (
@@ -21,7 +21,7 @@ function NavLogo() {
         sx={{
           mr: 2,
           display: { xs: "none", md: "flex" },
-          fontFamily: "monospace",
+          fontFamily: "Merienda",
           fontWeight: 700,
           // letterSpacing: ".3rem",
           color: "inherit",
@@ -44,7 +44,7 @@ function NavLogo() {
           mr: 2,
           display: { xs: "flex", md: "none" },
           flexGrow: 1,
-          fontFamily: "monospace",
+          fontFamily: "Merienda",
           fontWeight: 700,
           // letterSpacing: ".3rem",
           color: "inherit",
