@@ -2,7 +2,7 @@ import React from "react";
 
 import { AppBar, Typography, Container, Grid, Divider } from "@mui/material";
 
-import NavLogo from "./navigation/NavLogo";
+import Logo from "./Logo";
 
 const footerSections = [
   { header: "About Us", links: [{ label: "Company", path: "" }] },
@@ -32,9 +32,10 @@ export default function Footer() {
         sx={{ top: "auto", bottom: 0 }}
       >
         <Container sx={{ maxWidth: { xl: "xl", lg: "lg" }, py: 5 }}>
-          <Grid container columns={15} columnGap={1}>
+          <Grid container columns={15} columnGap={1} justifyContent="center">
             <Grid
               item
+              sm={5}
               md={5}
               sx={{
                 display: "flex",
@@ -43,11 +44,11 @@ export default function Footer() {
                 justifyContent: "center",
               }}
             >
-              <NavLogo />
+              <Logo vertical large />
             </Grid>
 
             {footerSections.map((section) => (
-              <Grid item md={3}>
+              <Grid item sm={3} md={3}>
                 <Typography variant="body1" fontWeight="bold">
                   {section.header}
                 </Typography>
