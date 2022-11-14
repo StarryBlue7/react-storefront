@@ -111,9 +111,10 @@ export default function ProductsResults({
   };
 
   // Return to first page on category/tag change
+  const { selectedTags } = tagStates;
   useEffect(() => {
     setCurrentPage(1);
-  }, [categoryId, tagStates, resultsPerPg]);
+  }, [categoryId, selectedTags, resultsPerPg]);
 
   // Query products with tag/category filters
   const { loading, data } = useQuery(QUERY_PRODUCTS, {
