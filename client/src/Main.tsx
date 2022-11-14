@@ -31,6 +31,7 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import SuccessPage from "./pages/SuccessPage";
 import CategoryPage from "./pages/CategoryPage";
+import Footer from "./components/Footer";
 
 type DrawerState = { categories: boolean; cart: boolean };
 
@@ -292,6 +293,7 @@ function Main() {
           <CartButton toggleDrawers={toggleDrawers} cartHandler={cartHandler} />
         )}
       </Container>
+      <Footer />
       <ToastContainer
         position="bottom-left"
         autoClose={3000}
