@@ -119,7 +119,7 @@ function NavBar({
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Container sx={{ maxWidth: { xl: "xl", lg: "lg" } }}>
           <Toolbar variant="dense" disableGutters>
             {/* Hamburger menu for mobile/tablet */}
