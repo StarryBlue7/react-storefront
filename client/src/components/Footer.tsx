@@ -48,24 +48,23 @@ export default function Footer() {
             </Grid>
 
             {footerSections.map((section) => (
-              <Grid item sm={3} md={3}>
+              <Grid item sm={3} md={3} key={section.header}>
                 <Typography variant="body1" fontWeight="bold">
                   {section.header}
                 </Typography>
                 <Divider sx={{ bgcolor: "white" }} />
                 {section.links.map((link) => (
-                  <>
-                    <Typography
-                      component="a"
-                      href="/"
-                      variant="body2"
-                      color="inherit"
-                      display="block"
-                      sx={{ textDecoration: "none" }}
-                    >
-                      {link.label}
-                    </Typography>
-                  </>
+                  <Typography
+                    component="a"
+                    href="/"
+                    variant="body2"
+                    color="inherit"
+                    display="block"
+                    sx={{ textDecoration: "none" }}
+                    key={link.label}
+                  >
+                    {link.label}
+                  </Typography>
                 ))}
               </Grid>
             ))}
