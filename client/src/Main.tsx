@@ -5,9 +5,11 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
-import { Container } from "@mui/material";
+
+import { Container, Stack } from "@mui/material";
 import { Discount, NewReleases } from "@mui/icons-material";
+
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -225,7 +227,7 @@ function Main() {
   }, [location, loggedIn]);
 
   return (
-    <>
+    <Stack style={{ minHeight: "100vh" }}>
       <NavBar
         mainPages={mainPages}
         accountPages={accountPages}
@@ -305,7 +307,7 @@ function Main() {
         pauseOnHover
         theme="light"
       />
-    </>
+    </Stack>
   );
 }
 
