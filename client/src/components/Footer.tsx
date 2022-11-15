@@ -29,7 +29,7 @@ export default function Footer() {
       <AppBar
         position="relative"
         color="primary"
-        sx={{ top: "auto", bottom: 0 }}
+        sx={{ top: "auto", bottom: 0, mt: 4 }}
       >
         <Container sx={{ maxWidth: { xl: "xl", lg: "lg" }, py: 5 }}>
           <Grid container columns={15} columnGap={1} justifyContent="center">
