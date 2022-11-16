@@ -30,7 +30,7 @@ type ButtonSetProps = {
 
 const styles = {
   totals: { textAlign: "right", width: "50%" },
-  links: { textDecoration: "none", flexGrow: 1 },
+  links: { textDecoration: "none", flexBasis: "0%", minWidth: 200 },
   cartButton: { width: "100%" },
   cartButtonIcon: { minWidth: 0, mr: 1 },
 };
