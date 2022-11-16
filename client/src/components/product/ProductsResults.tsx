@@ -102,6 +102,11 @@ export default function ProductsResults({
     setCurrentPage(value);
   };
 
+  // Return to top of page when paginagion page is changed
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   // Desired results per page state
   const [resultsPerPg, setResultsPerPg] = useState<number>(
     pagination.perPageOptions[pagination.perPage || 0]
