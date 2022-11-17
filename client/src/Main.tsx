@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 
-import { Container, Stack } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { Discount, NewReleases } from "@mui/icons-material";
 
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -296,17 +296,33 @@ function Main() {
         )}
       </Container>
       <Footer />
-      <ToastContainer
-        position="bottom-left"
-        autoClose={3000}
-        limit={3}
-        newestOnTop
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      <Box sx={{ display: { xs: "none", md: "flex" } }}>
+        <ToastContainer
+          position="top-right"
+          style={{ marginTop: 28 }}
+          autoClose={3000}
+          limit={3}
+          newestOnTop
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </Box>
+      <Box sx={{ display: { xs: "flex", md: "none" } }}>
+        <ToastContainer
+          position="bottom-left"
+          autoClose={3000}
+          limit={3}
+          newestOnTop
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </Box>
     </Stack>
   );
 }
