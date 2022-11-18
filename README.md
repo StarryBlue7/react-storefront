@@ -12,23 +12,39 @@
 
 An online shop React webapp where customers can browse products by category and filter by tags, then checkout securely via Stripe payment.
 
-![Example shop](./images/portfolio-site.gif)
+<div style="display: flex; flex-flow: row wrap; gap: 10px; width: 100%">
+  <img alt="Desktop Site" src="./demo/desktop.PNG" style="flex: 1 1 auto; height: 450px; min-width: 150px; object-fit: cover;  object-position: 100% 0" />
+  <img alt="Mobile Site" src="./demo/mobile.PNG" style="flex: 1 1 auto; height: 450px; min-width: 150px; object-fit: cover;  object-position: 100% 0" />
+  <img alt="Tablet Site" src="./demo/tablet.PNG" style="flex: 1 1 auto; height: 450px; min-width: 150px; object-fit: cover;  object-position: 100% 0" />
+</div>
 
-## Features
+---
 
-### Promo Banner
+# Features
 
-### Product Browsing by Category
+## Promo Banner
 
-### Product Filtering by Tags
+## Product Browsing by Category
 
-### Pagination
+![Breadcrumbs](./demo/breadcrumbs.PNG)
 
-### Cart
+## Product Filtering by Tags
 
-### Stripe Checkout
+![Filter by tags](./demo/tags.PNG)
 
-### User Profile
+## Product Recommendations
+
+![Product recommendations](./demo/recommendations.PNG)
+
+## Pagination
+
+## Cart
+
+## Stripe Checkout
+
+![Stripe checkout](./demo/checkout.PNG)
+
+## User Profile
 
 ---
 
