@@ -154,7 +154,7 @@ export default function ProductsResults({
 
   return (
     <Grid container spacing={2}>
-      {totalPages > 1 && (
+      {productCount > pagination.perPageOptions[0] && (
         <Grid
           container
           justifyContent="space-between"
