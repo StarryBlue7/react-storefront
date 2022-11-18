@@ -66,6 +66,11 @@ export default function ProductPage({ cartHandler }: ProductPageProps) {
   });
 
   const product = data?.product || {};
+
+  // Use first 3 tags of product to recommend additional products
+  const recommendTags =
+    product.tags?.slice(0, 3).map((tag: any) => tag._id) || [];
+
   return loading ? (
     <Loader />
   ) : (
@@ -76,7 +81,7 @@ export default function ProductPage({ cartHandler }: ProductPageProps) {
       <ProductDetails product={product} cartHandler={cartHandler} />
       <ProductsCarousel
         title="Similar items: "
-        tags={product.tags.map((tag: any) => tag._id)}
+        tags={recommendTags}
         exclude={product._id}
       />
     </Grid>

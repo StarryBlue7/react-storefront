@@ -96,7 +96,11 @@ export default function CartPage({ cartHandler }: CartPageProps) {
           <Cart cartHandler={cartHandler} />
         </Grid>
         <Divider />
-        <Grid item width="50%" alignSelf="flex-end">
+        <Grid
+          item
+          sx={{ width: { sm: "100%", md: "50%" } }}
+          alignSelf="flex-end"
+        >
           <ButtonSet buttons={buttons} span />
         </Grid>
       </Grid>

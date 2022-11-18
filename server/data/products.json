@@ -6,7 +6,7 @@
     "price": 30.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/51B0Setf%2BqL.jpg",
     "description": "Relive the 70s with this colorful rainbow tie-dyed tee. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "tags": ["Retro", "Pride", "Casual", "Spring", "Summer", "Hot Weather"],
+    "tags": ["Pride", "Retro", "Spring", "Summer", "Hot Weather", "Casual"],
     "categories": ["Apparel", "Tops", "T-Shirts"]
   },
   {
@@ -16,7 +16,7 @@
     "price": 21.99,
     "imgURL": "https://m.media-amazon.com/images/I/A13usaonutL._AC_CLa%7C2140%2C2000%7C81Fw9gPyIxL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_UL1500_.png",
     "description": "This is a very cool t-shirt for a very cool person. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "tags": ["Casual", "Spring", "Summer", "Hot Weather"],
+    "tags": ["Spring", "Summer", "Hot Weather", "Casual"],
     "categories": ["Apparel", "Tops", "T-Shirts"]
   },
   {
@@ -26,7 +26,7 @@
     "price": 25.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/81GtP6xMmeL._AC_UL1500_.jpg",
     "description": "A screen printed t-shirt with the best animal on it! Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Retro", "Casual", "Spring", "Summer", "Hot Weather"],
+    "tags": ["Retro", "Cute", "Spring", "Summer", "Hot Weather", "Casual"],
     "categories": ["Apparel", "Tops", "T-Shirts"]
   },
   {
@@ -35,7 +35,7 @@
     "modelNumber": "DJN10001",
     "price": 45.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71ezbNCkdQL._AC_UL1500_.jpg",
-    "tags": ["Modern", "Casual", "Autumn", "Winter"],
+    "tags": ["Modern", "Autumn", "Winter", "Casual"],
     "categories": ["Apparel", "Bottoms", "Pants", "Jeans"]
   },
   {
@@ -45,7 +45,7 @@
     "price": 47.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/81YsU3xH3vL._AC_UL1500_.jpg",
     "description": "'Mom' jeans for all! Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Modern", "Casual", "Cute", "Autumn", "Winter"],
+    "tags": ["Modern", "Autumn", "Winter", "Casual"],
     "categories": ["Apparel", "Bottoms", "Pants", "Jeans"]
   },
   {
@@ -55,7 +55,7 @@
     "price": 54.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/610mbiYg0YL._AC_UX679_.jpg",
     "description": "Skinny jeans with blocks of textured pattern denim. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Modern", "Casual", "Autumn", "Winter"],
+    "tags": ["Modern", "Autumn", "Winter", "Casual"],
     "categories": ["Apparel", "Bottoms", "Pants", "Jeans"]
   },
   {
@@ -65,7 +65,7 @@
     "price": 19.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61EBdsj8xBL.__AC_SX342_QL70_ML2_.jpg",
     "description": "Run at squirrel-like speeds in these jogging sweats. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Cold Weather", "Casual", "Modern", "Autumn", "Winter"],
+    "tags": ["Modern", "Autumn", "Winter", "Cold Weather", "Casual"],
     "categories": ["Apparel", "Bottoms", "Pants"]
   },
   {
@@ -75,7 +75,7 @@
     "price": 22.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61HmEFvBO7L.__AC_SX342_QL70_ML2_.jpg",
     "description": "Squirrel-print beach shorts. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Casual", "Spring", "Summer", "Hot Weather", "Cute"],
+    "tags": ["Cute", "Spring", "Summer", "Hot Weather", "Casual"],
     "categories": ["Apparel", "Bottoms", "Shorts"]
   },
   {
@@ -85,7 +85,7 @@
     "price": 15.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61%2BU4J7QFCL._SL1400_.jpg",
     "description": "Squirrels are the best animals, as everyone knows. So, why not wake up each morning with a friendly reminder?",
-    "tags": ["Cold Weather", "Cute", "Floral", "Spring", "Autumn", "Summer"],
+    "tags": ["Cute", "Floral", "Spring", "Autumn", "Cold Weather", "Summer"],
     "categories": ["Home & Garden", "Mugs"]
   },
   {
@@ -94,7 +94,7 @@
     "modelNumber": "SQM10002",
     "price": 15.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61KkirnZVUL._AC_SX679_.jpg",
-    "tags": ["Cold Weather", "Autumn", "Spring"],
+    "tags": ["Autumn", "Spring", "Cold Weather"],
     "categories": ["Home & Garden", "Mugs"]
   },
   {
@@ -104,7 +104,7 @@
     "price": 61.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71SjV5h0eLL._AC_UL1500_.jpg",
     "description": "Feel comfy and cozy knowing you've stored enough acorns for the winter. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Cold Weather", "Casual", "Cute", "Autumn", "Winter"],
+    "tags": ["Cute", "Autumn", "Winter", "Cold Weather", "Casual"],
     "categories": ["Apparel", "Tops", "Sweaters"]
   },
   {
@@ -114,7 +114,7 @@
     "price": 55.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71vbhs-0b-L._AC_UL1500_.jpg",
     "description": "Puffy, warm, & waterproof. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Cold Weather", "Casual", "Modern", "Autumn", "Winter"],
+    "tags": ["Modern", "Autumn", "Winter", "Cold Weather", "Casual"],
     "categories": ["Apparel", "Tops", "Jackets"]
   },
   {
@@ -124,7 +124,7 @@
     "price": 59.99,
     "imgURL": "https://m.media-amazon.com/images/I/A1EHx4FHFjL._CLa%7C2140%2C2000%7CB1zxYvJz5ES.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png",
     "description": "Spooky season comes but once a year, but you can celebrate anytime. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Cold Weather", "Casual", "Cute", "Autumn"],
+    "tags": ["Cute", "Autumn", "Cold Weather", "Casual"],
     "categories": ["Apparel", "Tops", "Sweaters"]
   },
   {
@@ -134,7 +134,7 @@
     "price": 18.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71NC6k5pU7L._AC_UL1500_.jpg",
     "description": "There's only one team worth rooting for. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Casual", "Spring", "Summer", "Hot Weather", "Cute"],
+    "tags": ["Cute", "Spring", "Summer", "Hot Weather", "Casual"],
     "categories": ["Apparel", "Hats"]
   },
   {
@@ -144,7 +144,7 @@
     "price": 23.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/71egNbmoW0L._AC_SL1500_.jpg",
     "description": "Grandma's credenza chic. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Retro", "Spring", "Winter", "Cute"],
+    "tags": ["Retro", "Cute", "Spring", "Winter"],
     "categories": ["Home & Garden", "Decor", "Figurines"]
   },
   {
@@ -154,7 +154,7 @@
     "price": 44.99,
     "imgURL": "https://secure.img1-fg.wfcdn.com/im/22295626/resize-h755-w755%5Ecompr-r85/6311/63118961/'Red+Squirrel+Centered'+Acrylic+Painting+Print+on+Wrapped+Canvas.jpg",
     "description": "Recapture your lost youth and innocence. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Modern", "Autumn", "Winter", "Cute"],
+    "tags": ["Modern", "Cute", "Autumn", "Winter"],
     "categories": ["Home & Garden", "Decor", "Art Prints"]
   },
   {
@@ -164,7 +164,7 @@
     "price": 44.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/413B9nK2D5L._AC_.jpg",
     "description": "Only slightly judging you from his place on the wall. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Modern", "Autumn", "Winter", "Cute"],
+    "tags": ["Modern", "Cute", "Autumn", "Winter"],
     "categories": ["Home & Garden", "Decor", "Art Prints"]
   },
   {
@@ -174,7 +174,7 @@
     "price": 9.99,
     "imgURL": "https://images-na.ssl-images-amazon.com/images/I/61MYox-EU%2BL._AC_UL1250_.jpg",
     "description": "A fluffy snuggle buddy for the cold, lonely nights. Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["Cold Weather", "Autumn", "Winter", "Cute"],
+    "tags": ["Autumn", "Winter", "Cute", "Cold Weather"],
     "categories": ["Toys & Games", "Plush Toys"]
   }
 ]

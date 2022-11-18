@@ -120,7 +120,9 @@ function NavBar({
   return (
     <>
       <AppBar position="sticky">
-        <Container sx={{ maxWidth: { xl: "xl", lg: "lg" } }}>
+        <Container
+          sx={{ maxWidth: { xl: "xl", lg: "lg" }, px: { xs: 0, md: 3 } }}
+        >
           <Toolbar
             variant="dense"
             disableGutters
@@ -179,11 +181,10 @@ function NavBar({
               ))}
             </Box>
 
-            <Box display="flex">
+            <Box display="flex" alignItems="center">
               <Box
                 sx={{
                   display: { xs: "none", md: "flex" },
-                  justifyContent: "flex-end",
                 }}
               >
                 {location.pathname.substring(0, 5) !== "/cart" && (
@@ -200,7 +201,6 @@ function NavBar({
                       >
                         <ShoppingBasketOutlined
                           sx={{
-                            display: { xs: "flex", md: "flex" },
                             mr: 1,
                             color: "white",
                           }}
@@ -217,7 +217,6 @@ function NavBar({
                       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                         <AccountCircle
                           sx={{
-                            display: { xs: "flex", md: "flex" },
                             mr: 1,
                             color: "white",
                           }}
@@ -263,10 +262,9 @@ function NavBar({
                 ) : (
                   <>
                     <Tooltip title="Login or signup">
-                      <IconButton onClick={modalStates.openAuth}>
+                      <IconButton onClick={modalStates.openAuth} sx={{ p: 0 }}>
                         <Login
                           sx={{
-                            display: { xs: "flex", md: "flex" },
                             mr: 1,
                             color: "white",
                           }}

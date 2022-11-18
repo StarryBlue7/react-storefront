@@ -1,6 +1,13 @@
 import React from "react";
 
-import { AppBar, Typography, Container, Grid, Divider } from "@mui/material";
+import {
+  AppBar,
+  Typography,
+  Container,
+  Grid,
+  Divider,
+  Box,
+} from "@mui/material";
 
 import Logo from "./Logo";
 
@@ -26,6 +33,9 @@ const footerSections = [
 export default function Footer() {
   return (
     <>
+      {/* Flex spacer to keep footer at bottom of page */}
+      <Box style={{ flexGrow: 1 }} />
+
       <AppBar
         position="relative"
         color="primary"

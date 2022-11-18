@@ -5,9 +5,11 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
-import { Container } from "@mui/material";
+
+import { Box, Container, Stack } from "@mui/material";
 import { Discount, NewReleases } from "@mui/icons-material";
+
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -225,7 +227,7 @@ function Main() {
   }, [location, loggedIn]);
 
   return (
-    <>
+    <Stack style={{ minHeight: "100vh" }}>
       <NavBar
         mainPages={mainPages}
         accountPages={accountPages}
@@ -294,18 +296,34 @@ function Main() {
         )}
       </Container>
       <Footer />
-      <ToastContainer
-        position="bottom-left"
-        autoClose={3000}
-        limit={3}
-        newestOnTop
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    </>
+      <Box sx={{ display: { xs: "none", md: "flex" } }}>
+        <ToastContainer
+          position="top-right"
+          style={{ marginTop: 28 }}
+          autoClose={3000}
+          limit={3}
+          newestOnTop
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </Box>
+      <Box sx={{ display: { xs: "flex", md: "none" } }}>
+        <ToastContainer
+          position="bottom-left"
+          autoClose={3000}
+          limit={3}
+          newestOnTop
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </Box>
+    </Stack>
   );
 }
 

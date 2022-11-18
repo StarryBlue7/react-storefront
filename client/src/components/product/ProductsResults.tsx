@@ -102,6 +102,11 @@ export default function ProductsResults({
     setCurrentPage(value);
   };
 
+  // Return to top of page when paginagion page is changed
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   // Desired results per page state
   const [resultsPerPg, setResultsPerPg] = useState<number>(
     pagination.perPageOptions[pagination.perPage || 0]
@@ -149,7 +154,7 @@ export default function ProductsResults({
 
   return (
     <Grid container spacing={2}>
-      {totalPages > 1 && (
+      {productCount > pagination.perPageOptions[0] && (
         <Grid
           container
           justifyContent="space-between"

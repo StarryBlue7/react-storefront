@@ -24,6 +24,8 @@ import { Clear } from "@mui/icons-material";
 
 import { Link } from "react-router-dom";
 
+import { urlString } from "../../utils/url";
+
 type Tag = {
   _id: string;
   name: string;
@@ -136,7 +138,13 @@ export default function CartItem({
           onMouseOut={hideOptions}
         >
           <Link
-            to={disable ? "" : `/products/${item.product._id}`}
+            to={
+              disable
+                ? ""
+                : `/product/${item.product._id}/${urlString(
+                    item.product.shortName
+                  )}`
+            }
             style={{
               display: "flex",
               flexFlow: "row",
