@@ -26,6 +26,10 @@ See live demo site [here](https://react-stripe-storefront.herokuapp.com/).
 
 ## Promo Banner
 
+An autoscrolling carousel banner allows for display of promotional images.
+
+![Promo banner](./demo/promoCarousel.gif)
+
 ## Product Browsing by Category
 
 ![Breadcrumbs](./demo/breadcrumbs.PNG)
@@ -59,6 +63,10 @@ Data queries are paginated on the back-end to reduce data sizes potentially sent
 If `page` number and `perPage` quantity are not given in query variables, the complete result set is returned.
 
 ## Cart
+
+The cart sidebar allows for adjusting quantities, removing items, proceeding to the cart page, or proceeding to checkout.
+
+![Cart](./demo/cart.gif)
 
 ## Stripe Checkout
 
