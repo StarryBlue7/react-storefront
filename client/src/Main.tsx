@@ -289,6 +289,12 @@ function Main() {
             path="/success"
             element={<SuccessPage cartHandler={cartHandler} />}
           />
+          <Route path="/sale" element={<h1>🔨 Under Construction 🚧</h1>} />
+          <Route path="/new" element={<h1>🔨 Under Construction 🚧</h1>} />
+          <Route
+            path="/account/*"
+            element={<h1>🔨 Under Construction 🚧</h1>}
+          />
           <Route path="*" element={<h1>Page not found!</h1>} />
         </Routes>
         {location.pathname.substring(0, 5) !== "/cart" && (
