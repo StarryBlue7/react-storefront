@@ -93,16 +93,30 @@ Secure credit card checkout via Stripe API.
 
 ## Author
 
-<div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px">
+<!-- <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px">
   <div style="display: flex; flex-flow: column; align-items: center">
     <img alt="Vince Lee" src="https://avatars.githubusercontent.com/u/81829523?s=40&v=4" />
     Vince Lee
   </div>
   <a href="https://github.com/StarryBlue7">
-    <img alt="GitHub" src="./demo/github.svg" height=24 style="filter: invert(1)" />
+    <img alt="GitHub" src="./demo/github.svg" height=24 />
   </a>
   <a href="https://www.linkedin.com/in/vince-lee/">
-    <img alt="LinkedIn" src="./demo/linkedin.svg" height=24 style="filter: invert(1)" />
+    <img alt="LinkedIn" src="./demo/linkedin.svg" height=24 />
+  </a>
+  <a href="https://starryblue7.github.io/portfolio-iv/" style="font-weight: bold">Portfolio</a>
+</div> -->
+
+<div><!-- .element: style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px" -->
+  <div><!-- .element: style="display: flex; flex-flow: column; align-items: center" -->
+    <img alt="Vince Lee" src="https://avatars.githubusercontent.com/u/81829523?s=40&v=4" />
+    Vince Lee
+  </div>
+  <a href="https://github.com/StarryBlue7">
+    <img alt="GitHub" src="./demo/github.svg" height=24 />
+  </a>
+  <a href="https://www.linkedin.com/in/vince-lee/">
+    <img alt="LinkedIn" src="./demo/linkedin.svg" height=24 />
   </a>
   <a href="https://starryblue7.github.io/portfolio-iv/" style="font-weight: bold">Portfolio</a>
 </div>
