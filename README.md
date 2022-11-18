@@ -18,6 +18,8 @@ An online shop React webapp where customers can browse products by category and 
   <img alt="Tablet Site" src="./demo/tablet.PNG" style="flex: 1 1 auto; height: 450px; min-width: 150px; object-fit: cover;  object-position: 100% 0" />
 </div>
 
+See live demo site [here](https://react-stripe-storefront.herokuapp.com/).
+
 ---
 
 # Features
@@ -37,6 +39,24 @@ An online shop React webapp where customers can browse products by category and 
 ![Product recommendations](./demo/recommendations.PNG)
 
 ## Pagination
+
+Data queries are paginated on the back-end to reduce data sizes potentially sent over mobile data. The `pagination` attribute contains the current `page`, quantity of results `perPage`, and a total `count` of database results.
+
+```json
+{
+  "data": {
+    "products": {
+      "pagination": {
+        "page": 2,
+        "perPage": 8,
+        "count": 18
+      },
+      "results": [
+        product data...
+        ...
+```
+
+If `page` number and `perPage` quantity are not given in query variables, the complete result set is returned.
 
 ## Cart
 
